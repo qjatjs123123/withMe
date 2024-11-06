@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import RQProvider from '../(afterLogin)/_components/RQProvider';
 import { ActiveIdProvider } from './_contexts/ActiveIdContext';
 import { MenuItemsProvider } from './_contexts/MenuItemsContext';
 import { EditorProvider } from './_contexts/EditorContext';
@@ -85,24 +86,13 @@ export default function EditPage() {
   }, []);
 
   return (
-    <ActiveIdProvider>
-      <MenuItemsProvider>
-        <MarkdownProvider>
-          <EditorProvider>
-            <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-              <div className="flex flex-col bg-white h-full">
-                <RoomProvider
-                  id="sidebar-room-2"
-                  initialStorage={{
-                    initialMenuItems: INITIAL_MENU_ITEMS,
-                    menuItems: INITIAL_MENU_ITEMS,
-                  }}
-                >
-                  <Nav />
-                </RoomProvider>
-
-                <div className="flex h-full">
-                  <FoldButton />
+    <RQProvider>
+      <ActiveIdProvider>
+        <MenuItemsProvider>
+          <MarkdownProvider>
+            <EditorProvider>
+              <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
+                <div className="flex flex-col bg-white h-full">
                   <RoomProvider
                     id="sidebar-room-2"
                     initialStorage={{
@@ -110,50 +100,63 @@ export default function EditPage() {
                       menuItems: INITIAL_MENU_ITEMS,
                     }}
                   >
-                    <div className="h-inherit">
-                      <LeftBar />
-                    </div>
+                    <Nav />
                   </RoomProvider>
 
-                  <div
-                    className="flex-1"
-                    ref={mainContainerRef}
-                    style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
-                  >
-                    <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 72px)` }}>
-                      <div
-                        style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
-                        className="h-full w-full overflow-y-auto"
-                      >
-                        <LeftMain />
+                  <div className="flex h-full">
+                    <FoldButton />
+                    <RoomProvider
+                      id="sidebar-room-2"
+                      initialStorage={{
+                        initialMenuItems: INITIAL_MENU_ITEMS,
+                        menuItems: INITIAL_MENU_ITEMS,
+                      }}
+                    >
+                      <div className="h-inherit">
+                        <LeftBar />
                       </div>
+                    </RoomProvider>
 
-                      <div
-                        className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
-                        style={{
-                          width: isVertical ? '100%' : '6px',
-                          height: isVertical ? '6px' : '100%',
-                          cursor: isVertical ? 'row-resize' : 'col-resize',
-                        }}
-                        onMouseDown={handleMouseDown}
-                      >
-                        <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
-                      </div>
+                    <div
+                      className="flex-1"
+                      ref={mainContainerRef}
+                      style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
+                    >
+                      <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 72px)` }}>
+                        <div
+                          style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
+                          className="h-full w-full overflow-y-auto"
+                        >
+                          <LeftMain />
+                        </div>
 
-                      <div
-                        style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
-                        className="h-full overflow-y-auto"
-                      >
-                        <RightMain />
+                        <div
+                          className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
+                          style={{
+                            width: isVertical ? '100%' : '6px',
+                            height: isVertical ? '6px' : '100%',
+                            cursor: isVertical ? 'row-resize' : 'col-resize',
+                          }}
+                          onMouseDown={handleMouseDown}
+                        >
+                          <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
+                        </div>
+
+                        <div
+                          style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
+                          className="h-full overflow-y-auto"
+                        >
+                          <RightMain />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </LiveblocksProvider>
-          </EditorProvider>
-        </MarkdownProvider>
-      </MenuItemsProvider>
-    </ActiveIdProvider>
+              </LiveblocksProvider>
+            </EditorProvider>
+          </MarkdownProvider>
+        </MenuItemsProvider>
+      </ActiveIdProvider>
+    </RQProvider>
   );
 }
