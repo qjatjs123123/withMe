@@ -10,6 +10,7 @@ export function AIDraft() {
   const [promptValue, setPromptValue] = useState<string>('');
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [accumulatedContent, setAccumulatedContent] = useState<string>('');
 
   useEffect(() => {
     const activeMenuItem = menuItems.find((item) => item.id === activeId);
@@ -20,39 +21,80 @@ export function AIDraft() {
     setPromptValue(event.target.value);
   };
 
-  const mockResponse = 'This is a simulated streaming response from the GPT mockup.';
-
   const handleSubmit = () => {
     if (!promptValue) return;
 
     setMessages((prev) => [...prev, { text: promptValue, isUser: true }]);
     setPromptValue('');
-
-    startStreamingResponse(mockResponse);
+    startStreamingResponse();
   };
 
-  const startStreamingResponse = (responseText: string) => {
+  const startStreamingResponse = async () => {
     setIsStreaming(true);
-    let index = -1;
+    setAccumulatedContent('');
 
-    const intervalId = setInterval(() => {
-      setMessages((prev) => {
-        const lastMessage = prev[prev.length - 1];
-        if (!lastMessage || lastMessage.isUser) {
-          return [...prev, { text: responseText.charAt(index), isUser: false }];
-        } else {
-          const updatedText = lastMessage.text + responseText.charAt(index);
-          return [...prev.slice(0, -1), { text: updatedText, isUser: false }];
-        }
+    try {
+      const response = await fetch('http://k11a507.p.ssafy.io:4040/api/readme/draft', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+        },
+        body: JSON.stringify({
+          repository_url: 'git-practice',
+          section_name: activeLabel,
+          user_prompt: promptValue,
+        }),
       });
 
-      index += 1;
+      if (!response.body) throw new Error('ReadableStream not supported in this environment');
 
-      if (index >= responseText.length) {
-        clearInterval(intervalId);
-        setIsStreaming(false);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      let isReading = true;
+
+      while (isReading) {
+        const { value, done } = await reader.read();
+        if (done) {
+          isReading = false;
+          break;
+        }
+
+        // 디코딩한 스트림 데이터를 `data:` 접두사를 제거한 후 파싱 준비
+        const chunk = decoder.decode(value, { stream: true }).trim();
+        const lines = chunk.split('\n'); // 여러 줄로 분리
+
+        for (const line of lines) {
+          // "data:"로 시작하는 줄만 처리
+          if (line.startsWith('data:')) {
+            const jsonString = line.slice(5).trim(); // "data:" 접두사 제거
+            console.log('Parsed JSON string:', jsonString); // JSON 문자열 확인
+
+            try {
+              const jsonData = JSON.parse(jsonString);
+
+              // content가 존재하는 경우에만 처리
+              if (jsonData.choices && jsonData.choices[0].delta.content) {
+                const content = jsonData.choices[0].delta.content;
+                console.log('Received content:', content); // content 출력
+
+                // messages 배열에 content 추가 (예: React 상태를 업데이트할 때)
+                setAccumulatedContent((prevContent) => prevContent + content);
+              }
+            } catch (error) {
+              console.error('Failed to parse JSON chunk:', error);
+            }
+          }
+        }
       }
-    }, 50);
+
+      reader.releaseLock();
+    } catch (error) {
+      console.error('Error processing POST response stream:', error);
+    } finally {
+      setIsStreaming(false);
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -64,7 +106,6 @@ export function AIDraft() {
     }
   };
 
-  useEffect(() => {});
   return (
     <div className="flex flex-col w-full h-full p-2">
       <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
@@ -76,7 +117,7 @@ export function AIDraft() {
             </div>
           </div>
         ))}
-        {/* {isStreaming && <div className="p-2 text-left">...</div>} */}
+        {<div className="p-2 text-left text-gray-700">{accumulatedContent}</div>}
       </div>
       <div className="relative">
         <textarea
@@ -87,7 +128,7 @@ export function AIDraft() {
           className="w-full p-3 bg-[#F4F4F4] rounded-lg h-24 resize-none pr-20 focus:outline-none focus:border-none"
         />
         <button onClick={handleSubmit} className="absolute bottom-2 right-2 pb-2 rounded-full " disabled={isStreaming}>
-          <FaArrowCircleUp size={40} />
+          <FaArrowCircleUp size={32} />
         </button>
       </div>
     </div>
