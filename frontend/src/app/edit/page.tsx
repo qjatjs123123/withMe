@@ -13,7 +13,6 @@ import { MarkdownProvider } from './_contexts/MarkdownContext';
 import RightMain from './_components/RightMain';
 import LeftMain from './_components/LeftMain';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import FoldButton from './_components/FoldButton';
 
 const INITIAL_MENU_ITEMS = [
   { id: uuidv4(), label: 'Dashboard' },
@@ -104,7 +103,6 @@ export default function EditPage() {
                   </RoomProvider>
 
                   <div className="flex h-full">
-                    <FoldButton />
                     <RoomProvider
                       id="sidebar-room-2"
                       initialStorage={{
@@ -112,7 +110,7 @@ export default function EditPage() {
                         menuItems: INITIAL_MENU_ITEMS,
                       }}
                     >
-                      <div className="h-inherit">
+                      <div className="h-full fixed z-[100]">
                         <LeftBar />
                       </div>
                     </RoomProvider>
