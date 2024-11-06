@@ -9,8 +9,9 @@ import { DeleteIcon } from '../_icons/DeleteIcon';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
+import FoldButton from './FoldButton';
 
-function LeftBarContent() {
+function LeftBarContent({ toggleSidebar }) {
   const { activeId, setActiveId } = useActiveId();
   const { initialItems, setInitialItems, menuItems, setMenuItems } = useMenuItems();
   const { editorsRef } = useEditor();
@@ -161,6 +162,7 @@ function LeftBarContent() {
 
   return (
     <div className="h-full px-4 py-6 space-y-2">
+      <FoldButton toggleSidebar={toggleSidebar} />
       {menuItems.map((item: MenuItem) => (
         <div
           key={item.id}
@@ -241,11 +243,20 @@ function LeftBarContent() {
 }
 
 export function LeftBar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Toggle function to open and close the sidebar
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <ClientSideSuspense fallback={<div>Loading...</div>}>
       {() => (
-        <div className="bg-gray-900 w-80 border-r h-full ">
-          <LeftBarContent />
+        <div
+          className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
+        >
+          <LeftBarContent toggleSidebar={toggleSidebar} />
         </div>
       )}
     </ClientSideSuspense>
