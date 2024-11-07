@@ -3,6 +3,11 @@ import { FaArrowCircleUp } from 'react-icons/fa';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useAIDraft } from '../_contexts/AIDraftContext';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
+import 'github-markdown-css';
 
 export function AIDraft() {
   const { activeId } = useActiveId();
@@ -132,30 +137,54 @@ export function AIDraft() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full p-2">
+    <div className="flex flex-col w-full h-full p-5 rounded-xl bg-gray-50">
       <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
       <div className="flex-grow rounded-lg p-4 overflow-auto">
         {messages.map((message, idx) => (
           <div key={idx} className={`mb-2 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-            <div className={`p-3 rounded-lg ${message.isUser ? 'bg-gray-200' : 'bg-gray-50'} max-w-[80%]`}>
-              {/* {message.text} */}
-              {message.text.split('\n').map((line, lineIdx) => (
-                <React.Fragment key={lineIdx}>
-                  {line}
-                  <br />
-                </React.Fragment>
-              ))}
+            <div
+              className={`p-3 rounded-lg max-w-[80%] markdown-body`}
+              style={{ backgroundColor: message.isUser ? '#e5e7eb' : 'white' }}
+            >
+              {message.isUser ? (
+                // 사용자 메시지: 일반 텍스트와 줄바꿈 처리
+                message.text.split('\n').map((line, lineIdx) => (
+                  <React.Fragment key={lineIdx}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))
+              ) : (
+                // 사용자 외 메시지: Markdown 플러그인 적용
+                <>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm, remarkBreaks]}
+                    rehypePlugins={[rehypeRaw]}
+                    className="markdown-body"
+                  >
+                    {message.text}
+                  </ReactMarkdown>
+                  <button
+                    onClick={() => navigator.clipboard.writeText(message.text)}
+                    className="absolute top-0 right-0 bg-gray-300 text-xs px-2 py-1 rounded hover:bg-gray-400"
+                  >
+                    Copy
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ))}
+
         {accumulatedContent && (
-          <div className={`mb-2 flex p-3 justify-start rounded-lg bg-gray-50 max-w-[80%]`}>
-            {accumulatedContent.split('\n').map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))}
+          <div className="mb-2 flex p-3 justify-start rounded-lg bg-white max-w-[80%] markdown-body">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw]}
+              className="markdown-body"
+            >
+              {accumulatedContent}
+            </ReactMarkdown>
           </div>
         )}
       </div>
@@ -165,7 +194,7 @@ export function AIDraft() {
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
           placeholder="메시지 ChatGPT"
-          className="w-full p-3 bg-[#F4F4F4] rounded-lg h-24 resize-none pr-20 focus:outline-none focus:border-none"
+          className="w-full p-3 bg-[#F1F1F1] rounded-lg h-24 resize-none pr-20 focus:outline-none focus:border-none"
         />
         <button onClick={handleSubmit} className="absolute bottom-2 right-2 pb-2 rounded-full " disabled={isStreaming}>
           <FaArrowCircleUp size={32} />
