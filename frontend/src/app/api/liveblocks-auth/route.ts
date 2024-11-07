@@ -1,69 +1,42 @@
 import { Liveblocks } from '@liveblocks/node';
-import { NextResponse } from 'next/server';
-
-/**
- * Authenticating your Liveblocks application
- * https://liveblocks.io/docs/authentication
- */
+import { NextRequest, NextResponse } from 'next/server';
 
 const liveblocks = new Liveblocks({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
 });
 
-export async function POST() {
-  // For the avatar example, we're generating random users
-  // and set their info from the authentication endpoint
-  const userIndex = Math.floor(Math.random() * NAMES.length);
+// pages/api/liveblocks-auth.ts
+export async function POST(request: NextRequest) {
+  try {
+    const userDataCookie = request.cookies.get('userData')?.value;
 
-  // Create a session for the current user (access token auth)
-  const session = liveblocks.prepareSession(`user-${userIndex}`, {
-    userInfo: {
-      name: NAMES[userIndex],
-      color: COLORS[Math.floor(Math.random() * COLORS.length)] as [string, string],
+    if (!userDataCookie) {
+      return NextResponse.json({ error: 'No user data found' }, { status: 401 });
+    }
 
-      // Uncomment below and refresh to see with avatar graphics
-      // avatar: `https://liveblocks.io/avatars/avatar-${Math.floor(Math.random() * 30)}.png`,
-    },
-  });
+    const userData = JSON.parse(userDataCookie);
+    const userName = userData.name;
+    const userImage = userData.image_url;
 
-  // Use a naming pattern to allow access to rooms with a wildcard
-  session.allow(`sidebar-room-*`, session.FULL_ACCESS);
-  session.allow(`room-*`, session.FULL_ACCESS);
+    if (!userName) {
+      return NextResponse.json({ error: 'No user name found' }, { status: 401 });
+    }
+    // Liveblocks 세션 생성시 image_url도 포함
+    const session = liveblocks.prepareSession(`user-${Math.random()}`, {
+      userInfo: {
+        name: userName,
+        avatar_url: userImage, // 이미지 URL 전달
+      },
+    });
 
-  const { status, body } = await session.authorize();
-  return new NextResponse(body, { status });
+    // 룸 접근 권한 설정
+    session.allow(`sidebar-room-*`, session.FULL_ACCESS);
+    session.allow(`room-*`, session.FULL_ACCESS);
+
+    const { status, body } = await session.authorize();
+    return new NextResponse(body, { status });
+  } catch (error) {
+    console.error('Authentication error:', error);
+    return NextResponse.json({ error: 'Authentication failed' }, { status: 500 });
+  }
 }
-
-const NAMES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-
-const COLORS = [
-  ['#FF0099', '#FF7A00'],
-  ['#002A95', '#00A0D2'],
-  ['#6116FF', '#E32DD1'],
-  ['#0EC4D1', '#1BCC00'],
-  ['#FF00C3', '#FF3333'],
-  ['#00C04D', '#00FFF0'],
-  ['#5A2BBE', '#C967EC'],
-  ['#46BE2B', '#67EC86'],
-  ['#F49300', '#FFE600'],
-  ['#F42900', '#FF9000'],
-  ['#00FF94', '#0094FF'],
-  ['#00FF40', '#1500FF'],
-  ['#00FFEA', '#BF00FF'],
-  ['#FFD600', '#BF00FF'],
-  ['#484559', '#282734'],
-  ['#881B9A', '#1D051E'],
-  ['#FF00F5', '#00FFD1'],
-  ['#9A501B', '#1E0505'],
-  ['#FF008A', '#FAFF00'],
-  ['#22BC09', '#002B1B'],
-  ['#FF0000', '#000000'],
-  ['#00FFB2', '#000000'],
-  ['#0066FF', '#000000'],
-  ['#FA00FF', '#000000'],
-  ['#00A3FF', '#000000'],
-  ['#00FF94', '#000000'],
-  ['#AD00FF', '#000000'],
-  ['#F07777', '#4E0073'],
-  ['#AC77F0', '#003C73'],
-];

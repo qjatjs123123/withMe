@@ -9,10 +9,8 @@ declare global {
     UserMeta: {
       id: string;
       info: {
-        // Example properties, for useSelf, useUser, useOthers, etc.
         name: string;
-        color: [string, string];
-        avatar?: string;
+        avatar_url?: string;
       };
     };
   }
