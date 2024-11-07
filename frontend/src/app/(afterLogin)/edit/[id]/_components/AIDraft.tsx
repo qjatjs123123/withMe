@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaArrowCircleUp } from 'react-icons/fa';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
@@ -29,19 +29,27 @@ export function AIDraft() {
     startStreamingResponse();
   };
 
+  const getCookieValue = (name: string) => {
+    const matches = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+    return matches ? decodeURIComponent(matches[2]) : null;
+  };
+
+  const userDataCookie = getCookieValue('userData');
+  const userData = JSON.parse(userDataCookie as string);
+
   const startStreamingResponse = async () => {
     setIsStreaming(true);
     setAccumulatedContent('');
 
     try {
-      const response = await fetch('http://k11a507.p.ssafy.io:4040/api/readme/draft', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/readme/draft`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
+          Authorization: `Bearer ${userData.access_token}`,
         },
         body: JSON.stringify({
-          repository_url: 'git-practice',
+          repository_url: 'Algorithm', // 수정 예정: 현재 선택된 레포명
           section_name: activeLabel,
           user_prompt: promptValue,
         }),
@@ -79,8 +87,10 @@ export function AIDraft() {
                 const content = jsonData.choices[0].delta.content;
                 console.log('Received content:', content); // content 출력
 
-                // messages 배열에 content 추가 (예: React 상태를 업데이트할 때)
-                setAccumulatedContent((prevContent) => prevContent + content);
+                setAccumulatedContent((prevContent) => {
+                  const formattedContent = content.includes('\n') ? content.replace(/\n/g, '\n') : content;
+                  return prevContent + formattedContent;
+                });
               }
             } catch (error) {
               console.error('Failed to parse JSON chunk:', error);
@@ -117,7 +127,16 @@ export function AIDraft() {
             </div>
           </div>
         ))}
-        {<div className="p-2 text-left text-gray-700">{accumulatedContent}</div>}
+        {
+          <div className="p-2 text-left text-gray-700">
+            {accumulatedContent.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </div>
+        }
       </div>
       <div className="relative">
         <textarea
