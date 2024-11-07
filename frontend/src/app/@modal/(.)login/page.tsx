@@ -11,7 +11,11 @@ export default function LoginModal() {
   const { sendLoginAPI } = useAuth();
 
   const handleClose = () => {
-    router.back(); // 모달 닫기
+    if (window.history.length == 2) {
+      router.replace('/'); // 예를 들어 홈으로 이동
+    } else {
+      router.back(); // 이전 페이지로 이동
+    }
   };
 
   return (

@@ -1,51 +1,47 @@
 'use client';
 import { useUserRepoQuery } from '@/stores/server/getUserRepoQuery';
+import { useUserSyncQuery } from '@/stores/server/getUserSyncQuery';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const router = useRouter();
-  useUserRepoQuery();
+  const { data: repoData, isLoading: repoLoading } = useUserRepoQuery();
+  const { data: syncData, isLoading: syncLoading } = useUserSyncQuery();
+  const [isReady, setIsReady] = useState(false);
 
   const handleCallback = async () => {
-    const code = getQueryParams('code');
-    const state = getQueryParams('state');
+    const code = new URLSearchParams(window.location.search).get('code');
+    const state = new URLSearchParams(window.location.search).get('state');
     if (!code || !state) return;
 
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/login/oauth2/code/github?code=${code}&state=${state}`,
-
-        {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': `application/json`,
-            'ngrok-skip-browser-warning': '69420',
-          },
-        },
+        { headers: { 'Content-Type': 'application/json' } },
       );
-
       if (response.data) {
-        // 응답 데이터를 쿠키에 저장
-        const serializedData = JSON.stringify(response.data);
-        document.cookie = `userData=${encodeURIComponent(serializedData)}; path=/;`; // 1시간 동안 유효
-
-        router.push(`/workspace`);
+        document.cookie = `userData=${encodeURIComponent(JSON.stringify(response.data))}; path=/;`;
+        router.push('/workspace');
       }
     } catch (error) {
       console.error('Error fetching access token:', error);
     }
   };
 
-  const getQueryParams = (keyword: string) => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get(keyword);
-  };
+  useEffect(() => {
+    // repo와 sync 데이터 로딩이 모두 완료된 후 콜백을 실행
+    if (!repoLoading && !syncLoading) {
+      setIsReady(true);
+    }
+  }, [repoLoading, syncLoading]);
 
   useEffect(() => {
-    handleCallback();
-  }, []);
+    if (isReady) {
+      handleCallback();
+    }
+  }, [isReady]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">

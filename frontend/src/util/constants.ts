@@ -8,4 +8,5 @@ export const API_URL = {
     WORKSPACE_X: '/api/workspace/invisible',
     SYNC: '/api/workspace/refresh',
     LOGIN_LAB: '/oauth2/authorization/gitlab',
+    CREATE_WORKSPACE: '/api/workspace',
   };

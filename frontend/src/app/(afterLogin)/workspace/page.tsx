@@ -4,12 +4,12 @@
 import '@/app/globals.css';
 import PageHeader from '../../_components/PageHeader';
 import { PAGE_HEADER } from '@/util/constants';
-import RepoBtn from './_component/RepoBtn';
 import SyncBtn from './_component/SyncBtn';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import axios from '@/util/axiosConfig';
 import { API_URL } from '@/util/constants';
 import WorkSpaceContainer from './_component/WorkSpaceContainer';
+import RepoBtnContainer from './_component/RepoBtnContainer';
 
 interface PageParam {
   page: number;
@@ -54,7 +54,7 @@ export default async function Home() {
             <PageHeader title={PAGE_HEADER.workspace} />
             <div className="flex justify-end h-full gap-3 w-full">
               <SyncBtn />
-              <RepoBtn />
+              <RepoBtnContainer />
             </div>
           </header>
           <div className="grid_mainGrid ">

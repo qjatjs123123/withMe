@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import RepoCheck from './RepoCheck';
 import { useUserRepoQuery } from '@/stores/server/getUserRepoQuery';
+import { useGlobalState } from '../../_components/RepoModalProvider';
 
 interface RepoListProps {
   searchText: string;
@@ -12,12 +13,11 @@ const RepoList = ({ searchText }: RepoListProps) => {
   const { data } = useUserRepoQuery();
   const repos = data?.data ?? [];
   const [selectedRepo, setSelectedRepo] = useState<number | null>(null);
-  let curRepo = '';
+  const { setCurRepo } = useGlobalState();
 
   const handleClick = (index: number, repo) => {
     setSelectedRepo(index === selectedRepo ? null : index);
-    curRepo = repo;
-    console.log(curRepo);
+    setCurRepo(repo);
   };
 
   // 검색 필터링: name에 searchText가 포함된 항목만 보여줌
