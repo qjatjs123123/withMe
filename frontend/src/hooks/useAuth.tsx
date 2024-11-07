@@ -1,12 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { API_URL } from '@/util/constants';
 
 const useAuth = () => {
   const router = useRouter();
-  const sendLoginAPI = async () => {
-    router.push(`${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.LOGIN}`);
+  const sendLoginAPI = async (urlParam: string) => {
+    router.push(`${process.env.NEXT_PUBLIC_BACKEND_URL}${urlParam}`);
   };
 
   const handleLogout = () => {
