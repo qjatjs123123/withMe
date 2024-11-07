@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MarkdownView } from './MarkdownView';
 import { AIDraft } from './AIDraft';
 import { MarkdownPreview } from './MarkdownPreview';
+import { AIDraftProvider } from '../_contexts/AIDraftContext';
 
 export default function RightMain() {
   const [activeView, setActiveView] = useState<'markdown' | 'preview' | 'ai'>('markdown');
@@ -33,9 +34,11 @@ export default function RightMain() {
         </button>
       </div>
       <div className="mt-5 text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
-        {activeView === 'markdown' && <MarkdownView />}
-        {activeView === 'preview' && <MarkdownPreview />}
-        {activeView === 'ai' && <AIDraft />}
+        <AIDraftProvider>
+          {activeView === 'markdown' && <MarkdownView />}
+          {activeView === 'preview' && <MarkdownPreview />}
+          {activeView === 'ai' && <AIDraft />}
+        </AIDraftProvider>
       </div>
     </div>
   );
