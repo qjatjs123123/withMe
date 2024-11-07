@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/util/constants";
 import axios from '@/util/axiosConfigClient';
 
@@ -27,16 +27,20 @@ interface Workspace {
   
 
 export function useUserSyncQuery() {
+  const queryClient = useQueryClient();
     return useQuery<ApiResponse, Error>({
       queryKey: [`userSync`],
       queryFn: async () => {
         const response = await axios.get<ApiResponse>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.SYNC}`,
         );
-        console.log(response.data);
-        return response.data; // 응답 데이터 반환
+      queryClient.invalidateQueries({ queryKey: ['workspace'] });
+      queryClient.invalidateQueries({ queryKey: ['userReopKey'] });
+
+        return response.data; 
       },
-      staleTime: 1000,
+      staleTime: Infinity,
+      enabled: false,  
     });
   }
   

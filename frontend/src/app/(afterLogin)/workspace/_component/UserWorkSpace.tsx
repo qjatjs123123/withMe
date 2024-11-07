@@ -34,7 +34,11 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
   return (
     <div
       ref={ref}
-      style={{ borderRadius: '16px', border: '1px solid #CCCCCC', backgroundColor: '#CCCCCC' }}
+      style={{
+        borderRadius: '16px',
+        border: '1px solid #CCCCCC',
+        backgroundColor: workspace.thumbnail ? 'transparent' : '#CCCCCC',
+      }}
       className="w-full relative rounded-[16px] overflow-hidden flex flex-col border-2 border-[#CCCCCC] aspect-[1/0.8]"
     >
       {!isVisible ? (
@@ -47,12 +51,13 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
           width={200}
           height={300}
           sizes="100%"
-          style={{ width: 'auto', height: '80%', objectFit: 'fill' }}
+          style={{ width: '100%', height: '80%', objectFit: 'cover' }}
           onLoad={() => setIsVisible(true)}
+          priority
         />
       )}
 
-      <div className="workspace-item absolute flex flex-row">
+      <div className="workspace-item absolute flex flex-row ">
         <div className="flex-1 flex justify-center items-center">
           <ViewIcon />
         </div>
@@ -66,7 +71,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       >
         <div
           style={{ fontSize: '16px' }}
-          className="text-[16px] font-bold overflow-hidden whitespace-nowrap text-ellipsis flex-1"
+          className="text-[16px] font-bold overflow-hidden whitespace-nowrap text-ellipsis flex-1 "
         >
           {workspace.name}
         </div>
