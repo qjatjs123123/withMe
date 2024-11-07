@@ -12,6 +12,7 @@ import { useRoom } from '@liveblocks/react/suspense';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useEditor } from '../_contexts/EditorContext';
 import { useActiveId } from '../_contexts/ActiveIdContext';
+import { getCookieValue } from '@/util/axiosConfigClient';
 
 type EditorProps = {
   doc: Y.Doc;
@@ -58,6 +59,9 @@ function BlockNote({ doc, provider }: EditorProps) {
   const { markdowns, setMarkdowns } = useMarkdown();
   const { editorsRef } = useEditor();
   const id = room.id.slice(5);
+  const userDataCookie = getCookieValue('userData');
+  const userData = JSON.parse(userDataCookie!);
+  const userName = userData.name;
 
   const onChange = async () => {
     // 현재 에디터 내용을 마크다운으로 변환
@@ -79,7 +83,7 @@ function BlockNote({ doc, provider }: EditorProps) {
       provider,
       fragment: doc.getXmlFragment('document-store'),
       user: {
-        name: 'My Username',
+        name: userName,
         color: '#ff0000',
       },
     },
