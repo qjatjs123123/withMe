@@ -15,7 +15,7 @@ interface UserWorkSpaceProps {
 
 const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { setWorkspace } = useWorkspaceState();
+  const { setWorkspace, curWorkspace } = useWorkspaceState();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
           <ViewIcon />
         </div>
         <div className="flex-1 flex justify-center items-center">
-          <EditIcon />
+          <EditIcon src={curWorkspace.current.id} />
         </div>
       </div>
       <div

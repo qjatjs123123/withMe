@@ -5,11 +5,7 @@ type Props = { children: ReactNode; modal: ReactNode };
 export default function Layout({ children }: Props) {
   return (
     <div className="container-wrapper">
-      <RQProvider>
-        <Nav />
-        <div className="container-block"> </div>
-        {children}
-      </RQProvider>
+      <RQProvider>{children}</RQProvider>
     </div>
   );
 }
