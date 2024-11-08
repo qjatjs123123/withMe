@@ -1,10 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MarkdownView } from './MarkdownView';
 import { AIDraft } from './AIDraft';
 import { MarkdownPreview } from './MarkdownPreview';
 import { AIDraftProvider } from '../_contexts/AIDraftContext';
+import { useMenuItems } from '../_contexts/MenuItemsContext';
+import { useMarkdown } from '../_contexts/MarkdownContext';
 
 export default function RightMain() {
+  const { menuItems } = useMenuItems();
+  const { markdowns, setMarkdowns } = useMarkdown();
+
+  useEffect(() => {
+    if (!menuItems) return;
+
+    if (!markdowns) {
+      const emptyMarkdowns = menuItems.map((menuItem) => ({
+        id: menuItem.id,
+        content: '',
+      }));
+      setMarkdowns(emptyMarkdowns);
+    }
+
+    const sortedMarkdowns = menuItems.map((menuItem) => {
+      return (
+        markdowns.find((md) => md.id === menuItem.id) || {
+          id: menuItem.id,
+          content: '',
+        }
+      );
+    });
+    setMarkdowns(sortedMarkdowns);
+  }, [menuItems]);
+
   const [activeView, setActiveView] = useState<'markdown' | 'preview' | 'ai'>('preview');
 
   const handleViewChange = (view: 'markdown' | 'preview' | 'ai') => {
