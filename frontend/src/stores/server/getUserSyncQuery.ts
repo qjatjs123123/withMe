@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/util/constants";
 import axios from '@/util/axiosConfigClient';
+import { useSnackBarState } from "@/app/(afterLogin)/_components/SnackBarProvider";
+import { delaySetApiInfo } from "@/util/snackBarFunc";
 
 interface Workspace {
     id: number;
@@ -34,13 +36,13 @@ export function useUserSyncQuery() {
         const response = await axios.get<ApiResponse>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.SYNC}`,
         );
-      queryClient.invalidateQueries({ queryKey: ['workspace'] });
-      queryClient.invalidateQueries({ queryKey: ['userReopKey'] });
 
         return response.data; 
       },
+      
       staleTime: Infinity,
       enabled: false,  
+      
     });
   }
   

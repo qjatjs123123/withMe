@@ -10,6 +10,7 @@ import axios from '@/util/axiosConfig';
 import { API_URL } from '@/util/constants';
 import WorkSpaceContainer from './_component/WorkSpaceContainer';
 import RepoBtnContainer from './_component/RepoBtnContainer';
+import SnakBarContainer from './_component/_providerComponent/SnakBarContainer';
 
 interface PageParam {
   page: number;
@@ -50,16 +51,7 @@ export default async function Home() {
     <div className="responsive_mainResponsive">
       <HydrationBoundary state={dehydratedState}>
         <main className="w-full ">
-          <header style={{ paddingTop: '30px', paddingBottom: '30px' }} className="responsive_workspaceheader">
-            <PageHeader title={PAGE_HEADER.workspace} />
-            <div className="flex justify-end h-full gap-3 w-full">
-              <SyncBtn />
-              <RepoBtnContainer />
-            </div>
-          </header>
-          <div className="grid_mainGrid ">
-            <WorkSpaceContainer />
-          </div>
+          <SnakBarContainer />
         </main>
       </HydrationBoundary>
     </div>
