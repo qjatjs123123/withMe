@@ -15,7 +15,7 @@ type MarkdownContextType = {
 const MarkdownContext = createContext<MarkdownContextType | undefined>(undefined);
 
 export function MarkdownProvider({ children }: { children: React.ReactNode }) {
-  const [markdowns, setMarkdowns] = useState<Markdown[] | null>(null);
+  const [markdowns, setMarkdowns] = useState<Markdown[] | null>([]);
 
   // 마크다운 내용을 합치는 함수
   const getAllMarkdowns = useCallback(() => {

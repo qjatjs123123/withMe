@@ -9,6 +9,7 @@ const config = {
       'hongboemsunimage.s3.ap-northeast-2.amazonaws.com',
       'avatars.githubusercontent.com',
       'withme.s3.amazonaws.com',
+      'secure.gravatar.com',
     ],
   },
   typescript: {

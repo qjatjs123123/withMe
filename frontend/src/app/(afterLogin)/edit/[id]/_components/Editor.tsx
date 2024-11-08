@@ -67,7 +67,7 @@ function BlockNote({ doc, provider }: EditorProps) {
         throw new Error('Image upload failed');
       }
 
-      return response.data.imageUrl;
+      return response.data;
     } catch (error) {
       console.error('Error uploading image:', error);
       throw error;
