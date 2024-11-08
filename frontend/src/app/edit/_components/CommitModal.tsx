@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { getCookieValue } from '@/util/axiosConfigClient';
+import { useMarkdown } from '../_contexts/MarkdownContext';
+import { useInfo } from '../_contexts/InfoContext';
 
 type CommitModalProps = {
   isOpen: boolean;
@@ -15,30 +15,58 @@ interface GitHubCommitResponse {
 }
 
 export function CommitModal({ isOpen, onClose }: CommitModalProps) {
-  const [author, setAuthor] = useState('');
-
-  const [repository, setRepository] = useState('BlockNote');
-  const branch = 'main';
+  const { userName, setUserName, repoName, setRepoName, token } = useInfo();
+  const { saveMarkdowns, getAllMarkdowns } = useMarkdown();
+  const [isCommitting, setIsCommitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [defaultBranch, setDefaultBranch] = useState<string>('');
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    const cookie = getCookieValue('userData');
-    const userData = JSON.parse(cookie!);
-    const author = userData.name;
-    setAuthor(author);
-  }, []);
-
-  const createCommit = async (message: string) => {
-    const token = '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';
-    const content = btoa('# BlockNote\nThis is a test5 README file.');
-
+  // 레포지토리의 기본 브랜치 확인
+  const checkDefaultBranch = async () => {
     try {
-      // 1. 현재 파일의 SHA 가져오기
-      const getFileResponse = await fetch(`https://api.github.com/repos/${author}/${repository}/contents/README.md`, {
+      const response = await fetch(`https://api.github.com/repos/${userName}/${repoName}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (response.ok) {
+        const repoData = await response.json();
+        setDefaultBranch(repoData.default_branch);
+      } else {
+        console.error('Failed to fetch repository info');
+        setDefaultBranch('main'); // 기본값으로 main 설정
+      }
+    } catch (error) {
+      console.error('Error fetching repository info:', error);
+      setDefaultBranch('main'); // 에러 발생 시 main으로 설정
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && userName && repoName) {
+      checkDefaultBranch();
+    }
+  }, [isOpen, userName, repoName]);
+
+  const createCommit = async (message: string) => {
+    saveMarkdowns();
+    // UTF-8로 인코딩 후 base64로 변환
+    const encoder = new TextEncoder();
+    const contentBytes = encoder.encode(getAllMarkdowns());
+    const content = Buffer.from(contentBytes).toString('base64');
+
+    try {
+      // 1. 현재 파일의 SHA 가져오기
+      const getFileResponse = await fetch(
+        `https://api.github.com/repos/${userName}/${repoName}/contents/README.md?ref=${defaultBranch}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       let sha = '';
       if (getFileResponse.ok) {
@@ -46,21 +74,22 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
         sha = fileData.sha;
       }
 
-      // 2. 파일 업데이트 또는 생성 (SHA가 있으면 업데이트, 없으면 새로 생성)
-      const response = await fetch(`https://api.github.com/repos/${author}/${repository}/contents/README.md`, {
+      // 2. 파일 업데이트 또는 생성
+      const response = await fetch(`https://api.github.com/repos/${userName}/${repoName}/contents/README.md`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
+          // Authorization: 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message,
           content,
-          sha, // SHA가 비어있으면 새로 생성, 있으면 업데이트
-          branch,
+          sha,
+          branch: defaultBranch,
           committer: {
-            name: author,
-            email: `${author}@users.noreply.github.com`,
+            name: userName,
+            email: `${userName}@users.noreply.github.com`,
           },
         }),
       });
@@ -71,25 +100,16 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
         throw new Error(`Failed to create commit: ${errorData.message}`);
       }
 
-      return response.json() as Promise<GitHubCommitResponse>;
+      const data = (await response.json()) as GitHubCommitResponse;
+      onClose();
+      return data;
     } catch (error) {
       console.error('Error:', error);
       throw error;
     }
   };
 
-  const commitMutation = useMutation({
-    mutationFn: createCommit,
-    onSuccess: (data) => {
-      console.log('Commit created successfully:', data.commit.html_url);
-      onClose();
-    },
-    onError: (error) => {
-      console.error('Failed to create commit:', error);
-    },
-  });
-
-  const handleCommit = () => {
+  const handleCommit = async () => {
     const message = messageRef.current?.value.trim();
 
     if (!message) {
@@ -97,7 +117,17 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       return;
     }
 
-    commitMutation.mutate(message);
+    setIsCommitting(true);
+    setError(null);
+
+    try {
+      await createCommit(message);
+    } catch (error) {
+      setError('Failed to create commit. Please try again.');
+      console.error('Failed to create commit:', error);
+    } finally {
+      setIsCommitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -113,8 +143,9 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
         </div>
 
         <div className="space-y-1 mb-4 text-sm text-gray-500">
-          <div className="py-1">Repository: {repository}</div>
-          <div className="py-1">Author: {author}</div>
+          <div className="py-1">Repository: {repoName}</div>
+          <div className="py-1">Author: {userName}</div>
+          <div className="py-1">Branch: {defaultBranch}</div>
         </div>
 
         <div className="space-y-4">
@@ -131,14 +162,12 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
             className="w-full text-white py-2 px-4 rounded-md hover:opacity-75 transition-colors disabled:opacity-50"
             style={{ backgroundColor: '#020623' }}
             onClick={handleCommit}
-            disabled={commitMutation.isPending}
+            disabled={isCommitting}
           >
-            {commitMutation.isPending ? 'Committing...' : 'Commit Changes'}
+            {isCommitting ? 'Committing...' : 'Commit Changes'}
           </button>
 
-          {commitMutation.isError && (
-            <p className="text-red-500 text-sm mt-2">Error creating commit. Please try again.</p>
-          )}
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import axios from 'axios'; // Next.js 13+에서 서버 쿠키 가져오기
+import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`;
