@@ -9,7 +9,9 @@ import { DeleteIcon } from '../_icons/DeleteIcon';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
+import { INITIAL_MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 import FoldButton from './FoldButton';
+import { RoomProvider } from '@liveblocks/react';
 
 function LeftBarContent({ toggleSidebar }) {
   const { activeId, setActiveId } = useActiveId();
@@ -21,7 +23,6 @@ function LeftBarContent({ toggleSidebar }) {
 
   const storageMenuItems = useStorage((root) => root.menuItems);
   const storageInitialMenuItems = useStorage((root) => root.initialMenuItems);
-
   useEffect(() => {
     setMenuItems(storageMenuItems);
     setInitialItems(storageInitialMenuItems);
@@ -244,21 +245,30 @@ function LeftBarContent({ toggleSidebar }) {
 
 export function LeftBar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { roomId } = useInfo();
   // Toggle function to open and close the sidebar
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <ClientSideSuspense fallback={<div>Loading...</div>}>
-      {() => (
-        <div
-          className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
-        >
-          <LeftBarContent toggleSidebar={toggleSidebar} />
-        </div>
-      )}
-    </ClientSideSuspense>
+    <RoomProvider
+      id={roomId}
+      // id="sidebar-room-2"
+      initialStorage={{
+        initialMenuItems: INITIAL_MENU_ITEMS,
+        menuItems: INITIAL_MENU_ITEMS,
+      }}
+    >
+      <ClientSideSuspense fallback={<div>Loading...</div>}>
+        {() => (
+          <div
+            className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
+          >
+            <LeftBarContent toggleSidebar={toggleSidebar} />
+          </div>
+        )}
+      </ClientSideSuspense>
+    </RoomProvider>
   );
 }

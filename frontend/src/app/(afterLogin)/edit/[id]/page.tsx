@@ -6,26 +6,12 @@ import { ActiveIdProvider } from './_contexts/ActiveIdContext';
 import { MenuItemsProvider } from './_contexts/MenuItemsContext';
 import { EditorProvider } from './_contexts/EditorContext';
 import { LeftBar } from './_components/LeftBar';
-import { LiveblocksProvider, RoomProvider } from '@liveblocks/react/suspense';
-import { v4 as uuidv4 } from 'uuid';
+import { LiveblocksProvider } from '@liveblocks/react/suspense';
 import Nav from './_components/Nav';
 import { MarkdownProvider } from './_contexts/MarkdownContext';
 import RightMain from './_components/RightMain';
 import LeftMain from './_components/LeftMain';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-
-const INITIAL_MENU_ITEMS = [
-  { id: uuidv4(), label: 'Dashboard' },
-  { id: uuidv4(), label: 'Projects' },
-  { id: uuidv4(), label: 'Tasks' },
-  { id: uuidv4(), label: 'Messages' },
-  { id: uuidv4(), label: 'Settings' },
-  { id: uuidv4(), label: 'Dashboard' },
-  { id: uuidv4(), label: 'Projects' },
-  { id: uuidv4(), label: 'Tasks' },
-  { id: uuidv4(), label: 'Messages' },
-  { id: uuidv4(), label: 'Settings' },
-];
 
 const LEFT_SIDEBAR_WIDTH = 0;
 
@@ -92,28 +78,12 @@ export default function EditPage() {
             <EditorProvider>
               <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
                 <div className="flex flex-col bg-white h-full">
-                  <RoomProvider
-                    id="sidebar-room-2"
-                    initialStorage={{
-                      initialMenuItems: INITIAL_MENU_ITEMS,
-                      menuItems: INITIAL_MENU_ITEMS,
-                    }}
-                  >
-                    <Nav />
-                  </RoomProvider>
+                  <Nav />
 
                   <div className="flex h-full">
-                    <RoomProvider
-                      id="sidebar-room-2"
-                      initialStorage={{
-                        initialMenuItems: INITIAL_MENU_ITEMS,
-                        menuItems: INITIAL_MENU_ITEMS,
-                      }}
-                    >
-                      <div className="h-full fixed z-[100]">
-                        <LeftBar />
-                      </div>
-                    </RoomProvider>
+                    <div className="h-full fixed z-[100]">
+                      <LeftBar />
+                    </div>
 
                     <div
                       className="flex-1"

@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     });
 
     // 룸 접근 권한 설정
-    session.allow(`sidebar-room-*`, session.FULL_ACCESS);
+    session.allow(`WITHME_ROOM_ID_*`, session.FULL_ACCESS);
     session.allow(`room-*`, session.FULL_ACCESS);
 
     const { status, body } = await session.authorize();
