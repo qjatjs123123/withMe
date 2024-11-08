@@ -11,3 +11,16 @@ export const API_URL = {
     CREATE_WORKSPACE: '/api/workspace',
     IMAGE_UPLOAD:'/api/workspace/thumbnail'
   };
+
+  export const DELAY_TIME_START = 500;
+  export const DELAY_TIME_END = 3000;
+
+  export const MESSAGE = {
+    API_ERROR: '오류가 발생하였습니다.',
+    SYNC_START: '동기화 시작...',
+    SYNC_SUCCESS: '동기화 완료',
+    REPO_CREATE: '레포지토리 생성중...',
+    REPO_SUCCESS: '레포지토리 생성완료...',
+    VISIBLE:'레포지토리 숨기기...',
+    VISIBLE_SUCCCESS:'숨기기 완료'
+  }
