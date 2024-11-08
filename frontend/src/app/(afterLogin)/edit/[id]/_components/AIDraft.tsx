@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getCookieValue } from '@/util/axiosConfigClient';
 import { FaArrowCircleUp } from 'react-icons/fa';
 import { FaCircleStop } from 'react-icons/fa6';
 import { useActiveId } from '../_contexts/ActiveIdContext';
@@ -46,11 +47,6 @@ export function AIDraft() {
     addMessage({ text: promptValue, isUser: true });
     setPromptValue('');
     startStreamingResponse();
-  };
-
-  const getCookieValue = (name: string) => {
-    const matches = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-    return matches ? decodeURIComponent(matches[2]) : null;
   };
 
   const userDataCookie = getCookieValue('userData');
