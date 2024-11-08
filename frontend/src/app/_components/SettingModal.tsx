@@ -4,6 +4,8 @@ import useImageUpload from '../(afterLogin)/workspace/business/useImageUpload';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from '@/util/axiosConfigClient';
 import { API_URL } from '@/util/constants';
+import UpdateImage from '../(afterLogin)/workspace/_component/UpdateImage';
+import TrashIcon from '../(afterLogin)/workspace/_component/TrashIcon';
 
 export default function SettingModal({ isVisible, setIsVisible, ref }) {
   const { curWorkspace } = useWorkspaceState();
@@ -33,7 +35,7 @@ export default function SettingModal({ isVisible, setIsVisible, ref }) {
     isVisible && (
       <div
         ref={ref}
-        className="absolute w-[120px] h-auto bg-white text-black z-[50] rounded-lg p-2"
+        className="absolute w-[150px] h-auto bg-white text-black z-[50] rounded-lg p-2"
         style={{
           bottom: '-70px',
           right: '10px',
@@ -41,16 +43,19 @@ export default function SettingModal({ isVisible, setIsVisible, ref }) {
         }}
       >
         <button
-          className="font-bold block w-full text-left px-2 py-1 hover:bg-gray-100 rounded-md"
+          className="font-bold block w-full text-left px-2 py-1 hover:bg-gray-100 rounded-md flex justify-start justify-between"
           onClick={deleteWorkspaceAPI}
         >
-          숨기기
+          <TrashIcon />
+          레포 숨기기
         </button>
         <input type="file" accept="image/*" onChange={updateImageAPI} id="file-input1" className="hidden" />
+
         <label
           htmlFor="file-input1"
-          className="font-bold block w-full text-left px-2 py-1 hover:bg-gray-100 rounded-md cursor-pointer"
+          className=" flex justify-start justify-between font-bold block w-full text-left px-2 py-1 hover:bg-gray-100 rounded-md cursor-pointer"
         >
+          <UpdateImage />
           이미지 수정
         </label>
       </div>
