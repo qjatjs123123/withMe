@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useRef, useEffect } from 'react';
 import { Editor } from '../_types/Editor';
-import { useMenuItems } from '../_contexts/MenuItemsContext';
+import { useMenuItems } from './MenuItemsContext';
 
 type EditorContextType = {
   editorsRef: React.MutableRefObject<Editor[] | null>;
