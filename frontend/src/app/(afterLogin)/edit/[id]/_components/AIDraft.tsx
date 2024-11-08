@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaArrowCircleUp } from 'react-icons/fa';
+import { FaCircleStop } from 'react-icons/fa6';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useAIDraft } from '../_contexts/AIDraftContext';
@@ -18,6 +19,8 @@ export function AIDraft() {
   const [promptValue, setPromptValue] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [accumulatedContent, setAccumulatedContent] = useState<string>('');
+  const [reader, setReader] = useState<ReadableStreamDefaultReader | null>(null);
+  const [cancelDelay, setCancelDelay] = useState(false);
 
   useEffect(() => {
     const activeMenuItem = menuItems.find((item) => item.id === activeId);
@@ -56,6 +59,7 @@ export function AIDraft() {
   const startStreamingResponse = async () => {
     setIsStreaming(true);
     setAccumulatedContent('');
+    setCancelDelay(false);
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/readme/draft`, {
@@ -73,13 +77,14 @@ export function AIDraft() {
 
       if (!response.body) throw new Error('ReadableStream not supported in this environment');
 
-      const reader = response.body.getReader();
+      const readerInstance = response.body.getReader();
+      setReader(readerInstance);
       const decoder = new TextDecoder();
 
       let isReading = true;
 
       while (isReading) {
-        const { value, done } = await reader.read();
+        const { value, done } = await readerInstance.read();
         if (done) {
           isReading = false;
           break;
@@ -109,6 +114,12 @@ export function AIDraft() {
                 console.log('Received content:', content);
 
                 for (const char of content) {
+                  if (cancelDelay) {
+                    setIsStreaming(false);
+                    setAccumulatedContent('');
+                    return;
+                  }
+
                   await new Promise((resolve) => setTimeout(resolve, 20)); // 30ms 딜레이
                   setAccumulatedContent((prevContent) => prevContent + char);
                 }
@@ -120,11 +131,19 @@ export function AIDraft() {
         }
       }
 
-      reader.releaseLock();
+      readerInstance.releaseLock();
+      setReader(null);
     } catch (error) {
       console.error('Error processing POST response stream:', error);
     } finally {
       setIsStreaming(false);
+    }
+  };
+
+  const stopStreamingResponse = () => {
+    if (reader) {
+      reader.cancel();
+      setReader(null);
     }
   };
 
@@ -192,8 +211,12 @@ export function AIDraft() {
           placeholder="메시지 ChatGPT"
           className="w-full p-3 bg-[#F1F1F1] rounded-lg h-24 resize-none pr-20 focus:outline-none focus:border-none"
         />
-        <button onClick={handleSubmit} className="absolute bottom-2 right-2 pb-2 rounded-full " disabled={isStreaming}>
-          <FaArrowCircleUp size={32} />
+        <button
+          onClick={isStreaming ? stopStreamingResponse : handleSubmit}
+          className="absolute bottom-2 right-2 pb-2 rounded-full "
+          disabled={isStreaming && !reader}
+        >
+          {isStreaming ? <FaCircleStop size={32} /> : <FaArrowCircleUp size={32} />}
         </button>
       </div>
     </div>
