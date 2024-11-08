@@ -8,6 +8,16 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+ARG LIVEBLOCKS_SECRET_KEY
+ENV LIVEBLOCKS_SECRET_KEY=${LIVEBLOCKS_SECRET_KEY}
+
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
+
+ARG NEXT_PUBLIC_BACKEND_URL_D
+ENV NEXT_PUBLIC_BACKEND_URL_D=${NEXT_PUBLIC_BACKEND_URL_D}
+
+# Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
