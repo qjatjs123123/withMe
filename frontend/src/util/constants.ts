@@ -22,5 +22,7 @@ export const API_URL = {
     REPO_CREATE: '레포지토리 생성중...',
     REPO_SUCCESS: '레포지토리 생성완료...',
     VISIBLE:'레포지토리 숨기기...',
-    VISIBLE_SUCCCESS:'숨기기 완료'
+    VISIBLE_SUCCCESS:'숨기기 완료',
+    IMAGE_CREATE: '이미지 등록중...',
+    IMAGE_SUCCESS: '이미지 등록 완료'
   }

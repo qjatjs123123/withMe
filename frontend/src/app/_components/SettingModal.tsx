@@ -33,9 +33,13 @@ export default function SettingModal({ isVisible, changeState, ref }) {
   };
 
   const updateImageAPI = async (e) => {
-    await handleImageChange(e);
-    await queryClient.invalidateQueries({ queryKey: ['workspace'] });
     changeState(false);
+    await handlerAxios(
+      async () => await handleImageChange(e),
+      () => queryClient.invalidateQueries({ queryKey: ['workspace'] }),
+      MESSAGE.IMAGE_CREATE,
+      MESSAGE.IMAGE_SUCCESS,
+    );
   };
 
   return (
