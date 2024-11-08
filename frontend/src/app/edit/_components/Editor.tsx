@@ -13,8 +13,8 @@ import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useEditor } from '../_contexts/EditorContext';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useInfo } from '../_contexts/InfoContext';
-import useImageUpload from '@/app/(afterLogin)/workspace/business/useImageUpload';
 import { API_URL } from '@/util/constants';
+import axios from 'axios';
 
 type EditorProps = {
   doc: Y.Doc;
@@ -53,29 +53,25 @@ function BlockNote({ doc, provider }: EditorProps) {
   const { userName, repoUrl } = useInfo();
 
   const uploadFile = async (file: File) => {
-    useImageUpload(repoUrl);
-    // try {
-    //   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.UPLOAD_IMAGE}`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       repository_url: repoUrl,
-    //       image: file,
-    //     }),
-    //   });
+    const body = new FormData();
+    body.append('image', file);
+    body.append('repository_url', repoUrl);
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.UPLOAD_IMAGE}`, body, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-    //   if (!response.ok) {
-    //     throw new Error('Image upload failed');
-    //   }
+      if (response.status !== 200) {
+        throw new Error('Image upload failed');
+      }
 
-    //   const data = await response.json();
-    //   return data.imageUrl;
-    // } catch (error) {
-    //   console.error('Error uploading image:', error);
-    //   throw error;
-    // }
+      return response.data.imageUrl;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
   };
 
   const onChange = async () => {
