@@ -27,7 +27,7 @@ const INITIAL_MENU_ITEMS = [
   { id: uuidv4(), label: 'Settings' },
 ];
 
-const LEFT_SIDEBAR_WIDTH = 320;
+const LEFT_SIDEBAR_WIDTH = 0;
 
 export default function EditPage() {
   const [leftSize, setLeftSize] = useState(50);
