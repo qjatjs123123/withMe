@@ -108,10 +108,10 @@ export function AIDraft() {
                 const content = jsonData.choices[0].delta.content;
                 console.log('Received content:', content);
 
-                setAccumulatedContent((prevContent) => {
-                  const formattedContent = content.includes('\n') ? content.replace(/\n/g, '\n') : content;
-                  return prevContent + formattedContent;
-                });
+                for (const char of content) {
+                  await new Promise((resolve) => setTimeout(resolve, 20)); // 30ms 딜레이
+                  setAccumulatedContent((prevContent) => prevContent + char);
+                }
               }
             } catch (error) {
               console.error('Failed to parse JSON chunk:', error);
@@ -166,14 +166,6 @@ export function AIDraft() {
                     {message.text}
                   </ReactMarkdown>
                   <ClipBoardButton message={message.text} />
-                  {/* <button
-                    onClick={() => navigator.clipboard.writeText(message.text)}
-                    className="absolute top-1 right-1 flex items-center text-xs px-2 py-1 rounded hover:bg-gray-200"
-                    style={{ zIndex: 10 }}
-                  >
-                    <HiOutlineClipboardCopy className="mr-1" size={20} />
-                    <strong>복사</strong>
-                  </button> */}
                 </div>
               )}
             </div>
