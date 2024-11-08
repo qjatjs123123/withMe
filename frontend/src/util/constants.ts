@@ -1,6 +1,6 @@
 export const PAGE_HEADER = {
-    workspace : '나의 작업공간'
-}
+  workspace: '나의 작업공간',
+};
 
 export const API_URL = {
     LOGIN: '/oauth2/authorization/github',
@@ -9,7 +9,9 @@ export const API_URL = {
     SYNC: '/api/workspace/refresh',
     LOGIN_LAB: '/oauth2/authorization/gitlab',
     CREATE_WORKSPACE: '/api/workspace',
-    IMAGE_UPLOAD:'/api/workspace/thumbnail'
+      SAVE_README: '/api/readme',
+  WORKSPACE_INFO: '/api/workspace/info',
+  UPLOAD_IMAGE: '/api/workspace/thumbnail',
   };
 
   export const DELAY_TIME_START = 500;
@@ -25,4 +27,7 @@ export const API_URL = {
     VISIBLE_SUCCCESS:'숨기기 완료',
     IMAGE_CREATE: '이미지 등록중...',
     IMAGE_SUCCESS: '이미지 등록 완료'
-  }
+
+
+};
+

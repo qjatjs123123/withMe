@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import RQProvider from '../(afterLogin)/_components/RQProvider';
+import { InfoProvider } from './_contexts/InfoContext';
 import { ActiveIdProvider } from './_contexts/ActiveIdContext';
 import { MenuItemsProvider } from './_contexts/MenuItemsContext';
 import { EditorProvider } from './_contexts/EditorContext';
@@ -27,7 +27,7 @@ const INITIAL_MENU_ITEMS = [
   { id: uuidv4(), label: 'Settings' },
 ];
 
-const LEFT_SIDEBAR_WIDTH = 320;
+const LEFT_SIDEBAR_WIDTH = 0;
 
 export default function EditPage() {
   const [leftSize, setLeftSize] = useState(50);
@@ -85,7 +85,7 @@ export default function EditPage() {
   }, []);
 
   return (
-    <RQProvider>
+    <InfoProvider>
       <ActiveIdProvider>
         <MenuItemsProvider>
           <MarkdownProvider>
@@ -155,6 +155,6 @@ export default function EditPage() {
           </MarkdownProvider>
         </MenuItemsProvider>
       </ActiveIdProvider>
-    </RQProvider>
+    </InfoProvider>
   );
 }
