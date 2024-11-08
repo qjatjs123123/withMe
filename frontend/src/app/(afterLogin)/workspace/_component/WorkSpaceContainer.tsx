@@ -6,6 +6,7 @@ import { getPostWorkSpace } from '../page';
 import { ApiResponse, RootResponse, WorkspaceContent } from '../model/workSpaceItem'; // 타입 파일 경로에 맞게 수정
 import UserWorkSpace from './UserWorkSpace';
 import { useRef, useEffect } from 'react';
+import { WorkspaceStateProvider } from '../../_components/WorkspaceInfoProvider';
 
 interface PageParam {
   page: number;
@@ -58,7 +59,9 @@ export default function WorkSpaceContainer() {
   return (
     <>
       {workspaces.map((workspace) => (
-        <UserWorkSpace key={workspace.id} workspace={workspace} /> // 각 workspace를 UserWorkSpace로 전달
+        <WorkspaceStateProvider key={workspace.id}>
+          <UserWorkSpace key={workspace.id} workspace={workspace} />
+        </WorkspaceStateProvider>
       ))}
       {hasNextPage && <div ref={observerRef} style={{ height: '20px', backgroundColor: 'transparent' }} />}
     </>

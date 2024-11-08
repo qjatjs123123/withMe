@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { getCookieValue } from '@/util/axiosConfigClient';
 
@@ -15,13 +15,18 @@ interface GitHubCommitResponse {
 }
 
 export function CommitModal({ isOpen, onClose }: CommitModalProps) {
-  const userDataCookie = getCookieValue('userData');
-  const userData = JSON.parse(userDataCookie!);
-  const author = userData.name;
+  const [author, setAuthor] = useState('');
 
   const [repository, setRepository] = useState('BlockNote');
   const branch = 'main';
   const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const cookie = getCookieValue('userData');
+    const userData = JSON.parse(cookie!);
+    const author = userData.name;
+    setAuthor(author);
+  }, []);
 
   const createCommit = async (message: string) => {
     const token = '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';

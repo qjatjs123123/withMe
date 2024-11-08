@@ -9,4 +9,5 @@ export const API_URL = {
     SYNC: '/api/workspace/refresh',
     LOGIN_LAB: '/oauth2/authorization/gitlab',
     CREATE_WORKSPACE: '/api/workspace',
+    IMAGE_UPLOAD:'/api/workspace/thumbnail'
   };
