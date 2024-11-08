@@ -9,11 +9,9 @@ export default function MoreBtn() {
   const changeState = (flg) => {
     setIsVisible(!isVisible);
   };
-  useEffect(() => {
-    console.log(isVisible);
-  }, [isVisible]);
 
   const handleClickOutside = (e) => {
+    // setIsVisible(false);
     if (btnRef.current.contains(e.target)) return;
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       setIsVisible(false);

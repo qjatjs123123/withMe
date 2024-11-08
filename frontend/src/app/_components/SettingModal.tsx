@@ -40,6 +40,7 @@ export default function SettingModal({ isVisible, changeState, ref }) {
 
   return (
     <div
+      ref={ref}
       className="absolute w-[150px] h-auto bg-white text-black z-[50] rounded-lg p-2"
       style={{
         bottom: '-70px',
