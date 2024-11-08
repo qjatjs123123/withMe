@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import 'github-markdown-css';
+import ClipBoardButton from './ClipBoardButton';
 
 export function AIDraft() {
   const { activeId } = useActiveId();
@@ -64,7 +65,7 @@ export function AIDraft() {
           Authorization: `Bearer ${userData.access_token}`,
         },
         body: JSON.stringify({
-          repository_url: 'Fit-Card-profile', // 수정 예정: 현재 선택된 레포명
+          workspace_id: 95, // 수정 예정: 현재 선택된 레포명
           section_name: activeLabel,
           user_prompt: promptValue,
         }),
@@ -143,7 +144,7 @@ export function AIDraft() {
         {messages.map((message, idx) => (
           <div key={idx} className={`mb-2 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
             <div
-              className={`p-3 rounded-lg max-w-[80%] markdown-body`}
+              className={`p-3 rounded-lg max-w-[80%]`}
               style={{ backgroundColor: message.isUser ? '#e5e7eb' : 'white' }}
             >
               {message.isUser ? (
@@ -156,7 +157,7 @@ export function AIDraft() {
                 ))
               ) : (
                 // 사용자 외 메시지: Markdown 플러그인 적용
-                <>
+                <div className="relative">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm, remarkBreaks]}
                     rehypePlugins={[rehypeRaw]}
@@ -164,13 +165,16 @@ export function AIDraft() {
                   >
                     {message.text}
                   </ReactMarkdown>
-                  <button
+                  <ClipBoardButton message={message.text} />
+                  {/* <button
                     onClick={() => navigator.clipboard.writeText(message.text)}
-                    className="absolute top-0 right-0 bg-gray-300 text-xs px-2 py-1 rounded hover:bg-gray-400"
+                    className="absolute top-1 right-1 flex items-center text-xs px-2 py-1 rounded hover:bg-gray-200"
+                    style={{ zIndex: 10 }}
                   >
-                    Copy
-                  </button>
-                </>
+                    <HiOutlineClipboardCopy className="mr-1" size={20} />
+                    <strong>복사</strong>
+                  </button> */}
+                </div>
               )}
             </div>
           </div>
