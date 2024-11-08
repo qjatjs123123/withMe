@@ -12,7 +12,9 @@ import { useRoom } from '@liveblocks/react/suspense';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useEditor } from '../_contexts/EditorContext';
 import { useActiveId } from '../_contexts/ActiveIdContext';
-import { getCookieValue } from '@/util/axiosConfigClient';
+import { useInfo } from '../_contexts/InfoContext';
+import useImageUpload from '@/app/(afterLogin)/workspace/business/useImageUpload';
+import { API_URL } from '@/util/constants';
 
 type EditorProps = {
   doc: Y.Doc;
@@ -43,31 +45,42 @@ export function Editor() {
   return <BlockNote doc={doc} provider={provider} />;
 }
 
-async function uploadFile(file: File) {
-  const body = new FormData();
-  body.append('file', file);
-
-  const ret = await fetch('https://tmpfiles.org/api/v1/upload', {
-    method: 'POST',
-    body: body,
-  });
-  return (await ret.json()).data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-}
-
 function BlockNote({ doc, provider }: EditorProps) {
   const room = useRoom();
   const { markdowns, setMarkdowns } = useMarkdown();
   const { editorsRef } = useEditor();
   const id = room.id.slice(5);
-  const userDataCookie = getCookieValue('userData');
-  const userData = JSON.parse(userDataCookie!);
-  const userName = userData.name;
+  const { userName, repoUrl } = useInfo();
+
+  const uploadFile = async (file: File) => {
+    useImageUpload(repoUrl);
+    // try {
+    //   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.UPLOAD_IMAGE}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       repository_url: repoUrl,
+    //       image: file,
+    //     }),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error('Image upload failed');
+    //   }
+
+    //   const data = await response.json();
+    //   return data.imageUrl;
+    // } catch (error) {
+    //   console.error('Error uploading image:', error);
+    //   throw error;
+    // }
+  };
 
   const onChange = async () => {
-    // 현재 에디터 내용을 마크다운으로 변환
     const markdown = await editor.blocksToMarkdownLossy(editor.document);
 
-    // markdowns 배열을 순회하면서 id가 일치하는 항목만 content 업데이트
     const updatedMarkdowns = markdowns!.map((item) => {
       if (item.id === id) {
         return { ...item, content: markdown };
