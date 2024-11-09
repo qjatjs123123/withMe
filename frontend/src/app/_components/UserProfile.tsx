@@ -7,9 +7,5 @@ export default async function UserProfile() {
   const userData = (await cookieStore).get('userData')?.value;
   const user = JSON.parse(userData);
 
-  return (
-    <button>
-      <Image alt="User profile image" src={user.image_url} width={52} height={52} className="rounded-full" />
-    </button>
-  );
+  return <Image alt="User profile image" src={user.image_url} width={40} height={40} className="rounded-full" />;
 }

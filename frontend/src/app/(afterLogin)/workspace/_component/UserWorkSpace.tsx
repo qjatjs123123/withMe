@@ -61,7 +61,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
         />
       )}
 
-      <div className="workspace-item absolute flex flex-row ">
+      <div className="workspace-item absolute flex flex-row rounded-t-[16px]">
         <div className="flex-1 flex justify-center items-center">
           <ViewIcon />
         </div>
