@@ -2,6 +2,7 @@ import Image from 'next/image';
 import SearchBar from './SearchBar';
 import Link from 'next/link';
 import UserProfile from './UserProfile';
+import ProfileButton from './ProfileButton';
 
 export default function AfterLoginNav() {
   return (
@@ -35,8 +36,10 @@ export default function AfterLoginNav() {
         {/* ml-[10px] */}
         <SearchBar />
       </div>
-      <div className="text-right" style={{ flex: '1 1 0%' }}>
-        <UserProfile />
+      <div className="flex justify-end" style={{ flex: '1 1 0%' }}>
+        <ProfileButton>
+          <UserProfile />
+        </ProfileButton>
       </div>
     </nav>
   );
