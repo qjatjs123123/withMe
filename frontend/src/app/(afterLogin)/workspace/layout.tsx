@@ -6,7 +6,6 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <AfterLoginNav />
-
       {children}
     </>
   );
