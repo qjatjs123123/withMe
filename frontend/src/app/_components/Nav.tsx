@@ -1,9 +1,21 @@
 import Image from 'next/image';
-import LoginBtn from './LoginBtn';
 import SearchBar from './SearchBar';
 import Link from 'next/link';
+import UserProfile from './UserProfile';
+import ProfileButton from './ProfileButton';
+import { cookies } from 'next/headers';
+import LoginBtn from './LoginBtn';
 
-export default function Nav() {
+export default async function AfterLoginNav() {
+  const cookieStore = cookies();
+  const userDataCookie = (await cookieStore).get('userData');
+  let userData = undefined;
+  let isLogin = false;
+  if (userDataCookie) {
+    userData = JSON.parse(decodeURIComponent(userDataCookie.value));
+    isLogin = true;
+  }
+
   return (
     <>
       <nav
@@ -32,14 +44,19 @@ export default function Nav() {
           </Link>
         </div>
         <div style={{ flex: '2 1 0%', marginLeft: '10px' }}>
-          {' '}
-          {/* ml-[10px] */}
           <SearchBar />
         </div>
-        <div style={{ flex: '1 1 0%' }}>
-          <LoginBtn />
+        <div className="flex justify-end" style={{ flex: '1 1 0%' }}>
+          {isLogin ? (
+            <>
+              <ProfileButton>
+                <UserProfile image_url={userData.image_url} />
+              </ProfileButton>
+            </>
+          ) : (
+            <LoginBtn />
+          )}
         </div>
-
         <style>
           {`
 /* [project]/src/app/geistsans_9fc57718.module.css [app-client] (css) */
