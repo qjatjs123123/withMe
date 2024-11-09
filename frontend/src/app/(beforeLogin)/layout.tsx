@@ -5,7 +5,6 @@ export default function Layout({ children }: Props) {
   return (
     <div className="container-wrapper">
       <Nav />
-      <div className="container-block"> </div>
       {children}
     </div>
   );
