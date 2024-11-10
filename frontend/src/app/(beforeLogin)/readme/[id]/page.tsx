@@ -1312,13 +1312,13 @@ body {
 }
 
 .responsive_mainResponsive {
-  width: 1728px;
+  width: 1328px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
   padding-right: 10px;
   @media screen and (max-width: 1919px) {
-    width: 1376px;
+    width: 1176px;
   }
 
   @media screen and (max-width: 1440px) {
