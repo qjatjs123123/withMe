@@ -6,9 +6,19 @@ import { AIDraftProvider } from '../_contexts/AIDraftContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 
-export default function RightMain() {
+type RightMainProps = {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function RightMain({ setIsLoading }: RightMainProps) {
   const { menuItems } = useMenuItems();
-  const { markdowns, setMarkdowns } = useMarkdown();
+  const { markdowns, setMarkdowns, cnt } = useMarkdown();
+
+  useEffect(() => {
+    if (cnt >= 15) {
+      setIsLoading(false);
+    }
+  }, [cnt, setIsLoading]);
 
   useEffect(() => {
     if (!menuItems) return;
@@ -62,6 +72,7 @@ export default function RightMain() {
       </div>
       <div className="mt-5 text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
         <AIDraftProvider>
+          {cnt}
           {activeView === 'preview' && <MarkdownPreview />}
           {activeView === 'markdown' && <MarkdownView />}
           {activeView === 'ai' && <AIDraft />}

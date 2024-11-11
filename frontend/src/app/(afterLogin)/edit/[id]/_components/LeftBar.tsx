@@ -260,7 +260,7 @@ export function LeftBar() {
         menuItems: INITIAL_MENU_ITEMS,
       }}
     >
-      <ClientSideSuspense fallback={<div>Loading...</div>}>
+      <ClientSideSuspense fallback={<div></div>}>
         {() => (
           <div
             className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}

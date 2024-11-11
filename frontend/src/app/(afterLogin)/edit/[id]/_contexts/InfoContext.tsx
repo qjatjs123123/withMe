@@ -104,7 +104,11 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   }, [workspaceId]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // 또는 로딩 스피너 컴포넌트
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="w-24 h-24 border-8 border-gray-300 border-t-black rounded-full animate-spin mb-4 mt-4"></div>
+      </div>
+    );
   }
 
   return (
