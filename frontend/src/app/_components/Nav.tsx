@@ -31,7 +31,7 @@ export default async function AfterLoginNav() {
         }}
       >
         <div style={{ flex: '1 1 0%' }}>
-          <Link href="/">
+          <Link href={isLogin ? '/workspace' : '/'}>
             <Image
               className="workspace-image cursor-pointer"
               src="/Logo.png"
