@@ -31,8 +31,6 @@ ENV LIVEBLOCKS_SECRET_KEY=${LIVEBLOCKS_SECRET_KEY} \
     NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL} \
     NEXT_PUBLIC_BACKEND_URL_D=${NEXT_PUBLIC_BACKEND_URL_D}
 
-RUN echo $LIVEBLOCKS_SECRET_KEY
-
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
