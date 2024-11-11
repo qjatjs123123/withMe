@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const router = useRouter();
-  const { data: repoData, isLoading: repoLoading } = useUserRepoQuery();
-  const { data: syncData, isLoading: syncLoading } = useUserSyncQuery();
-  const [isReady, setIsReady] = useState(false);
+  const [isCookieSet, setIsCookieSet] = useState(false);
+  const { data: repoData, isSuccess: rePoSuccess } = useUserRepoQuery(isCookieSet);
+  const { data: syncData, isSuccess: syncSuccess, refetch } = useUserSyncQuery();
 
   const handleCallback = async () => {
     const code = new URLSearchParams(window.location.search).get('code');
@@ -23,6 +23,8 @@ export default function Home() {
       );
       if (response.data) {
         document.cookie = `userData=${encodeURIComponent(JSON.stringify(response.data))}; path=/;`;
+        await refetch();
+        setIsCookieSet(true);
       }
     } catch (error) {
       router.push('/');
@@ -30,10 +32,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!repoLoading && !syncLoading) {
+    if (rePoSuccess) {
       router.push('/workspace');
     }
-  }, [repoLoading, syncLoading]);
+  }, [rePoSuccess]);
 
   useEffect(() => {
     handleCallback();
