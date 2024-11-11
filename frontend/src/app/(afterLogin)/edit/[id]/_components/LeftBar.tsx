@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useStorage, useMutation } from '@liveblocks/react/suspense';
 import { ClientSideSuspense } from '@liveblocks/react/suspense';
 import { MenuItem } from '../_types/MenuItem';
@@ -13,7 +13,7 @@ import { INITIAL_MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
 
-function LeftBarContent({ toggleSidebar }) {
+function LeftBarContent({ toggleSidebar, isOpen }) {
   const { activeId, setActiveId } = useActiveId();
   const { initialItems, setInitialItems, menuItems, setMenuItems } = useMenuItems();
   const { editorsRef } = useEditor();
@@ -163,7 +163,7 @@ function LeftBarContent({ toggleSidebar }) {
 
   return (
     <div className="h-full px-4 py-6 space-y-2">
-      <FoldButton toggleSidebar={toggleSidebar} />
+      <FoldButton toggleSidebar={toggleSidebar} isOpen={isOpen} />
       {menuItems.map((item: MenuItem) => (
         <div
           key={item.id}
@@ -251,6 +251,24 @@ export function LeftBar() {
     setIsOpen(!isOpen);
   };
 
+  const leftBarRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // leftBarRef.current가 정의되어 있고, 클릭 이벤트 대상이 leftBarRef 내에 없는 경우
+      if (leftBarRef.current && !leftBarRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    // 마운트 시 이벤트 리스너 추가
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <RoomProvider
       id={roomId}
@@ -260,12 +278,13 @@ export function LeftBar() {
         menuItems: INITIAL_MENU_ITEMS,
       }}
     >
-      <ClientSideSuspense fallback={<div>Loading...</div>}>
+      <ClientSideSuspense fallback={<div></div>}>
         {() => (
           <div
+            ref={leftBarRef}
             className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
           >
-            <LeftBarContent toggleSidebar={toggleSidebar} />
+            <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />
           </div>
         )}
       </ClientSideSuspense>
