@@ -72,7 +72,6 @@ export default function RightMain({ setIsLoading }: RightMainProps) {
       </div>
       <div className="mt-5 text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
         <AIDraftProvider>
-          {cnt}
           {activeView === 'preview' && <MarkdownPreview />}
           {activeView === 'markdown' && <MarkdownView />}
           {activeView === 'ai' && <AIDraft />}
