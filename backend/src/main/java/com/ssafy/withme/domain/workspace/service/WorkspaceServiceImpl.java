@@ -7,7 +7,9 @@ import com.ssafy.withme.domain.repository.repository.RepoRepository;
 import com.ssafy.withme.domain.workspace.dto.Response.IntegratedWorkspaceResponse;
 import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceInfoResponse;
 import com.ssafy.withme.domain.workspace.entity.Workspace;
-import com.ssafy.withme.domain.workspace.repository.WorkspaceRepository;
+import com.ssafy.withme.domain.workspace.entity.WorkspaceDocument;
+import com.ssafy.withme.domain.workspace.repository.elasticsearch.WorkspaceElasticsearchRepository;
+import com.ssafy.withme.domain.workspace.repository.jpa.WorkspaceJpaRepository;
 import com.ssafy.withme.global.exception.BusinessException;
 import com.ssafy.withme.global.exception.ErrorCode;
 import com.ssafy.withme.global.s3.service.S3Service;
@@ -45,13 +47,14 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private final SecurityUtils securityUtils;
     private final APICallService apiCallService;
     private final MemberRepository memberRepository;
-    private final WorkspaceRepository workspaceRepository;
+    private final WorkspaceJpaRepository workspaceJpaRepository;
     private final S3Service s3Service;
     private final Tika tika = new Tika();
+    private final WorkspaceElasticsearchRepository workspaceElasticsearchRepository;
 
     @Override
     public IntegratedWorkspaceResponse makeVisible(Long workspaceId) {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(()->new BusinessException(WORKSPACE_NOT_FOUND));
+        Workspace workspace = workspaceJpaRepository.findById(workspaceId).orElseThrow(()->new BusinessException(WORKSPACE_NOT_FOUND));
 
         // 한번도 활성화가 안된 경우
         if(!workspace.getIsCreated()) {
@@ -120,7 +123,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public WorkspaceInfoResponse getWorkspaceInfo(Long workspaceId) {
         Long memberId = securityUtils.getMemberId();
         repoRepository.findByMember_IdAndWorkspace_Id(memberId, workspaceId).orElseThrow(()->new BusinessException(REPO_NOT_ALLOWED));
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(()->new BusinessException(WORKSPACE_NOT_FOUND));
+        Workspace workspace = workspaceJpaRepository.findById(workspaceId).orElseThrow(()->new BusinessException(WORKSPACE_NOT_FOUND));
         return WorkspaceInfoResponse.from(workspace);
     }
 
@@ -147,7 +150,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         for (RefinedRepoDTO refinedRepo : refinedRepos) {
             String refinedRepoUrl = refinedRepo.htmlUrl();
             if (!existingRepoUrls.contains(refinedRepoUrl)) {
-                Workspace newWorkspace = workspaceRepository.findByRepoUrl(refinedRepoUrl);
+                Workspace newWorkspace = workspaceJpaRepository.findByRepoUrl(refinedRepoUrl);
                 if(newWorkspace == null) {
                     newWorkspace = new Workspace(refinedRepo.name(), refinedRepoUrl, null);
                 }
@@ -155,7 +158,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                         memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(INVALID_ID_TOKEN)),
                         newWorkspace
                 );
-                workspaceRepository.save(newWorkspace);
+                workspaceJpaRepository.save(newWorkspace);
+                workspaceElasticsearchRepository.save(new WorkspaceDocument(newWorkspace));
                 repoRepository.save(newRepo);
             }
         }

@@ -1,10 +1,10 @@
-package com.ssafy.withme.domain.workspace.repository;
+package com.ssafy.withme.domain.workspace.repository.jpa;
 
 import com.ssafy.withme.domain.workspace.entity.Workspace;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WorkspaceRepository extends JpaRepository<Workspace, Long>, WorkspaceRepositoryCustom {
+public interface WorkspaceJpaRepository extends JpaRepository<Workspace, Long> {
     Workspace findByRepoUrl(String repoUrl);
 }

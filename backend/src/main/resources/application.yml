@@ -5,6 +5,8 @@ server:
       enabled: false
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: withme
   profiles:
@@ -14,6 +16,10 @@ spring:
     openai:
       api-key: ENC(e98opFQhXMb/cgglbri7+dNns98aLam2yL+QDgpqgXogquYxAlnDahfVNnUGrPt0hdsrkZ0WqdBsHnaX0NfDHvNdpoej+WW4l0FEn6zv5D3qrFgU26zWR0cxTlpamrCNPw7bigsk8jOGEjxeP0nr2pWSWgoPfKhRk0eLeGjdz2tqOzn8eNfGloBurvMiholNLhtFBUF8BunO8TTAaLhm+8hCSR0SwjRBB+TMj9RFwWk=)
       base-url: https://api.openai.com
+
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
 
   security:
     oauth2:

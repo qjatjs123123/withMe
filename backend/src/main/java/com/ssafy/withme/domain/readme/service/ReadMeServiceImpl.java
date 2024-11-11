@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.ssafy.withme.domain.member.dto.GitToken;
-import com.ssafy.withme.domain.member.entity.Member;
 import com.ssafy.withme.domain.member.repository.MemberRepository;
 import com.ssafy.withme.domain.readme.dto.request.ChatGptRequest;
 import com.ssafy.withme.domain.readme.dto.request.ReadMeDraftRequest;
@@ -13,7 +12,9 @@ import com.ssafy.withme.domain.readme.dto.request.SaveReadMeRequestDTO;
 import com.ssafy.withme.domain.readme.dto.response.GetReadMeResponseDTO;
 import com.ssafy.withme.domain.readme.dto.response.SearchReadMeResponseDTO;
 import com.ssafy.withme.domain.workspace.entity.Workspace;
-import com.ssafy.withme.domain.workspace.repository.WorkspaceRepository;
+import com.ssafy.withme.domain.workspace.entity.WorkspaceDocument;
+import com.ssafy.withme.domain.workspace.repository.elasticsearch.WorkspaceElasticsearchRepository;
+import com.ssafy.withme.domain.workspace.repository.jpa.WorkspaceJpaRepository;
 import com.ssafy.withme.global.exception.BusinessException;
 import com.ssafy.withme.global.exception.ErrorCode;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedRepoDetailDTO;
@@ -27,14 +28,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class ReadMeServiceImpl implements ReadMeService {
 
-    private final WorkspaceRepository workspaceRepository;
+    private final WorkspaceJpaRepository workspaceJpaRepository;
     private final WebClient webClient;
     private final SecurityUtils securityUtils;
     private final APICallService apiCallService;
@@ -42,26 +42,28 @@ public class ReadMeServiceImpl implements ReadMeService {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE );
     private final MemberRepository memberRepository;
+    private final WorkspaceElasticsearchRepository workspaceElasticsearchRepository;
 
     @Override
     public String saveReadme(SaveReadMeRequestDTO readMeRequestDTO) {
-        Workspace workspace = workspaceRepository.findById(readMeRequestDTO.workspace_id())
+        Workspace workspace = workspaceJpaRepository.findById(readMeRequestDTO.workspace_id())
                 .orElseThrow(() -> new BusinessException(ErrorCode.WORKSPACE_NOT_FOUND));
         workspace.changeReadmeContent(readMeRequestDTO.readme_content());
-        workspaceRepository.save(workspace);
+        workspaceJpaRepository.save(workspace);
+        workspaceElasticsearchRepository.save(new WorkspaceDocument(workspace));
         return "successfully saved readme";
     }
 
     @Override
     public GetReadMeResponseDTO getReadme(Long workspace_id) {
-        Workspace workspace = workspaceRepository.findById(workspace_id)
+        Workspace workspace = workspaceJpaRepository.findById(workspace_id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WORKSPACE_NOT_FOUND));
         return new GetReadMeResponseDTO(workspace.getReadmeContent());
     }
 
     @Override
     public List<SearchReadMeResponseDTO> searchReadme(String keyword) {
-        return workspaceRepository.searchByReadMeContent(keyword).stream()
+        return workspaceElasticsearchRepository.findByReadmeContentContaining(keyword).stream()
                 .map(workspace -> new SearchReadMeResponseDTO(
                         workspace.getId(),
                         workspace.getName(),
@@ -73,7 +75,7 @@ public class ReadMeServiceImpl implements ReadMeService {
     @Override
     public Flux<String> makeReadMeDraft(ReadMeDraftRequest readMeDraftRequest) throws JsonProcessingException {
         String message = readMeDraftRequest.userPrompt();
-        Workspace workspace = workspaceRepository.findById(readMeDraftRequest.workspaceId())
+        Workspace workspace = workspaceJpaRepository.findById(readMeDraftRequest.workspaceId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.WORKSPACE_NOT_FOUND));
         String repoUrl = workspace.getRepoUrl();
 
