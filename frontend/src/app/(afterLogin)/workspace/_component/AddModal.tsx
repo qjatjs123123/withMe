@@ -10,6 +10,7 @@ interface AddModalProps {
 
 const AddModal: React.FC<AddModalProps> = ({ onClose, ref }) => {
   const [isCreateImage, setIsCreateImage] = useState(false);
+  const [selectedRepo, setSelectedRepo] = useState<number | null>(null);
 
   const handleNextClick = () => {
     setIsCreateImage(true);
