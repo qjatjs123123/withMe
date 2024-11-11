@@ -44,7 +44,7 @@ export default function LoginModal() {
           </div>
           <h1 className="font-bold text-[40px]">로그인</h1>
           <button
-            className="rounded-3xl border border-black px-4 py-1 flex gap-5 mt-[30px]"
+            className="rounded-3xl border border-black pl-[10px] py-1 flex gap-5 mt-[30px] w-[200px] h-[35px] items-center"
             onClick={() => sendLoginAPI(API_URL.LOGIN)}
           >
             <Image
@@ -58,12 +58,12 @@ export default function LoginModal() {
             Login with Github
           </button>
           <button
-            className="rounded-3xl border border-black px-4 py-1 flex gap-5 mt-[20px]"
+            className="rounded-3xl border border-black pl-[10px] py-1 flex gap-5 mt-[20px] w-[200px] h-[35px] items-center"
             onClick={() => sendLoginAPI(API_URL.LOGIN_LAB)}
           >
             <Image
               className="workspace-image cursor-pointer"
-              src="/ssafy_logo.png"
+              src="/gitlabLogo.png"
               alt="loginLogo of the image"
               width={25}
               height={25}
