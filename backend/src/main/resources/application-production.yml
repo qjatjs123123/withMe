@@ -15,7 +15,7 @@ spring:
 
   elasticsearch:
     rest:
-      uris: els
+      uris: http://els:9200
 
 logging:
   level:
