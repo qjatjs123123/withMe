@@ -14,8 +14,7 @@ spring:
       ddl-auto: update
 
   elasticsearch:
-    rest:
-      uris: http://els:9200
+    uris: http://els:9200
 
 logging:
   level:
