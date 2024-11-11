@@ -26,22 +26,19 @@ export default function Home() {
         router.push('/workspace');
       }
     } catch (error) {
-      console.error('Error fetching access token:', error);
+      router.push('/');
     }
   };
 
   useEffect(() => {
-    // repo와 sync 데이터 로딩이 모두 완료된 후 콜백을 실행
     if (!repoLoading && !syncLoading) {
-      setIsReady(true);
+      router.push('/workspace');
     }
   }, [repoLoading, syncLoading]);
 
   useEffect(() => {
-    if (isReady) {
-      handleCallback();
-    }
-  }, [isReady]);
+    handleCallback();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
