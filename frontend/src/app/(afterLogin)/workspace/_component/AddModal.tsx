@@ -5,9 +5,10 @@ import CreateImage from './CreateImage';
 
 interface AddModalProps {
   onClose: (isClosed: boolean) => void;
+  ref: React.RefObject<HTMLDivElement>;
 }
 
-const AddModal: React.FC<AddModalProps> = ({ onClose }) => {
+const AddModal: React.FC<AddModalProps> = ({ onClose, ref }) => {
   const [isCreateImage, setIsCreateImage] = useState(false);
 
   const handleNextClick = () => {
@@ -22,7 +23,7 @@ const AddModal: React.FC<AddModalProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="modal">
+    <div className="modal" ref={ref}>
       <div className="modal-header">
         <h2 className="font-bold">Creating a New Project</h2>
         <button className="close" onClick={() => onClose(false)}>
