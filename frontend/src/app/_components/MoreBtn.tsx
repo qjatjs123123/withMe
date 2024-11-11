@@ -1,38 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import SettingModal from './SettingModal';
+import useModalClose from '../(afterLogin)/workspace/business/useModalClose';
 
 export default function MoreBtn() {
-  const [isVisible, setIsVisible] = useState(null);
-  const modalRef = useRef(null);
-  const btnRef = useRef(null);
-
-  const changeState = (flg) => {
-    setIsVisible(!isVisible);
-  };
-
-  const handleClickOutside = (e) => {
-    // setIsVisible(false);
-    if (btnRef.current.contains(e.target)) return;
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      setIsVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isVisible]);
+  const { isVisible, modalRef, btnRef, changeState, setIsVisible } = useModalClose();
 
   return (
     <>
-      <div ref={btnRef} onClick={() => setIsVisible(true)}>
+      <div ref={btnRef} onClick={() => setIsVisible(!isVisible)}>
         <svg
           className="cursor-pointer relative"
           width="24"

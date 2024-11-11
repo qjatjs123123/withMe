@@ -7,11 +7,11 @@ import useErrorHandler from '../business/useErrorHandler';
 export default function CreateBtn({ url }) {
   const { curRepo } = useGlobalState();
   const queryClient = useQueryClient();
-  const { setModalOpen } = useGlobalState();
+  const { setIsVisible } = useGlobalState();
   const { handlerAxios } = useErrorHandler();
 
   const handleCreate = async () => {
-    setModalOpen(false);
+    setIsVisible(false);
     await handlerAxios(
       async () => await axios.post(`${API_URL.CREATE_WORKSPACE}`, { workspace_id: curRepo.current.id }),
       () => {
