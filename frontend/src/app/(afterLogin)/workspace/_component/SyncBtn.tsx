@@ -11,7 +11,7 @@ export default function SyncBtn() {
   const { handlerRefetch } = useErrorHandler();
   const { refetch: repoRefetch } = useUserRepoQuery(null);
   const handleClick = async () => {
-    handlerRefetch(refetch, repoRefetch);
+    await handlerRefetch(refetch, repoRefetch);
   };
 
   return (
