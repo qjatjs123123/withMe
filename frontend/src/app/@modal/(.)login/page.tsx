@@ -63,13 +63,13 @@ export default function LoginModal() {
           >
             <Image
               className="workspace-image cursor-pointer"
-              src="/gitlabLogo.png"
+              src="/ssafy_logo.png"
               alt="loginLogo of the image"
               width={25}
               height={25}
               sizes="100%"
             />
-            Login with SSafy Git
+            Login with SSAFY
           </button>
         </div>
       </div>
