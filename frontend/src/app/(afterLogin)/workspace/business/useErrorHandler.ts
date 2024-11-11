@@ -8,7 +8,7 @@ const useErrorHandler = () => {
     const handlerRefetch = async(apiFunc, callFunc) => {
         await delaySetApiInfo(useApiState, `${MESSAGE.SYNC_START}`, DELAY_TIME_START);
         const result = await apiFunc;
-        callFunc?.();
+        await callFunc?.();
         if (result.isSuccess) await delaySetApiInfo(useApiState,  `${MESSAGE.SYNC_SUCCESS}`, DELAY_TIME_END);
         if (result.isError) await delaySetApiInfo(useApiState, `${MESSAGE.API_ERROR}`, DELAY_TIME_END);
     }
