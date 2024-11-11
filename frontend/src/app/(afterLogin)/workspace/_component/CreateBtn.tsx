@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import useErrorHandler from '../business/useErrorHandler';
 
 export default function CreateBtn({ url }) {
-  const { curRepo } = useGlobalState();
+  const { curRepo, setCurRepo } = useGlobalState();
   const queryClient = useQueryClient();
   const { setIsVisible } = useGlobalState();
   const { handlerAxios } = useErrorHandler();
@@ -21,6 +21,7 @@ export default function CreateBtn({ url }) {
       MESSAGE.REPO_CREATE,
       MESSAGE.REPO_SUCCESS,
     );
+    setCurRepo(null);
   };
 
   return (
