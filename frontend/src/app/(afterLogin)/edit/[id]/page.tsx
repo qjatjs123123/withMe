@@ -82,13 +82,16 @@ export default function EditPage() {
                   <Nav />
 
                   {isLoading === true && (
-                    <div className="fixed flex w-screen h-screen bg-gray-700 opacity-70 justify-center items-center mt-4 z-[100]">
-                      <div className="w-24 h-24 border-8 border-gray-300 border-t-black rounded-full animate-spin mb-4 mt-4"></div>
+                    <div
+                      className="fixed bottom-0 flex w-full bg-gray-700 opacity-70 justify-center items-center z-[100]"
+                      style={{ height: `calc(100vh - 72px)` }}
+                    >
+                      <div className="w-20 h-20 border-8 border-gray-300 border-t-black rounded-full animate-spin"></div>
                     </div>
                   )}
 
                   <div className="flex h-full">
-                    <div className="h-full fixed z-[100]">
+                    <div className="h-full fixed z-[50]">
                       <LeftBar />
                     </div>
 
