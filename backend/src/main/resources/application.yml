@@ -24,14 +24,14 @@ spring:
           github:
             client-id: ENC(lshpf6tM+tGvUolf3Qmw79kDmR1XC4v5/CWiA8Uons4=)
             client-secret: ENC(HpjwapT8/QRAcWHifNO2gsV3n29y03WBTo7xCaBUF+EmuWGvT2qU1iDbnDwZhZCKE5iOoJBmmXA=)
-            redirect-uri: ${client.base-url}/auth
+            redirect-uri: ${client.base-url}/auth/github
             scope:
               - repo
               - read:user
           gitlab:
             client-id: ENC(jYHUs/UJYfr2UvwWJQ+yU1SBeKtOr6vswGSqA1jhguwm3Bt9bvJzh1c2din2cyZpF2c4jfnFYNeuZxDhlBzZn2LYaw2qUc2TKFflMJnistM=)
             client-secret: ENC(KBb65RExaZLmkl7S0XLwZprt29D1P8xkoGrhXtRskx1jbY308EAZL27I5UcKDwAy3obpGmhXuZJy8LqOIKzH1tgF5jW7XJuqso8Ms5WlK3w=)
-            redirect-uri: ${client.base-url}/auth
+            redirect-uri: ${client.base-url}/auth/gitlab
             scope:
               - api
               - read_api
