@@ -15,6 +15,7 @@ import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useInfo } from '../_contexts/InfoContext';
 import { API_URL } from '@/util/constants';
 import axios from 'axios';
+import { NodeHtmlMarkdown } from 'node-html-markdown';
 
 type EditorProps = {
   doc: Y.Doc;
@@ -51,6 +52,7 @@ function BlockNote({ doc, provider }: EditorProps) {
   const { editorsRef } = useEditor();
   const id = room.id.slice(5);
   const { userName, repoUrl } = useInfo();
+  const nhm = new NodeHtmlMarkdown();
 
   const uploadFile = async (file: File) => {
     const body = new FormData();
@@ -75,7 +77,9 @@ function BlockNote({ doc, provider }: EditorProps) {
   };
 
   const onChange = async () => {
-    const markdown = await editor.blocksToMarkdownLossy(editor.document);
+    // const markdown = await editor.blocksToMarkdownLossy(editor.document);
+    const html = await editor.blocksToHTMLLossy(editor.document);
+    const markdown = nhm.translate(html);
 
     const updatedMarkdowns = markdowns!.map((item) => {
       if (item.id === id) {

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 
-
 export function MarkdownView() {
   const { markdowns, setMarkdowns } = useMarkdown();
 
@@ -10,7 +9,7 @@ export function MarkdownView() {
       {markdowns &&
         markdowns.map((markdown) => (
           <div key={markdown.id} className="prose max-w-none">
-            <div className="whitespace-pre-wrap">{markdown.content}</div>
+            <div className="whitespace-pre-wrap text-base">{markdown.content}</div>
           </div>
         ))}
     </div>
