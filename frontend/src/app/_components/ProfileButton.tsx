@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import useModalClose from '../(afterLogin)/workspace/business/useModalClose';
 
 interface ProfileButtonProps {
   children: React.ReactNode;
@@ -10,14 +11,16 @@ interface ProfileButtonProps {
 
 export default function ProfileButton({ children }: ProfileButtonProps) {
   const router = useRouter();
-  const [showMenu, setShowMenu] = useState(false);
+
+  const { isVisible, modalRef, btnRef, setIsVisible } = useModalClose();
+
   const onClick = () => {
-    setShowMenu((prev) => !prev);
+    setIsVisible(!isVisible);
   };
 
   const handleWorkspaceClick = () => {
     router.push('/workspace');
-    setShowMenu(false);
+    setIsVisible(false);
   };
 
   const handleLogoutClick = () => {
@@ -27,7 +30,7 @@ export default function ProfileButton({ children }: ProfileButtonProps) {
 
   return (
     <>
-      <button className="flex flex-row items-center focus:outline-none" onClick={onClick}>
+      <button ref={modalRef} className="flex flex-row items-center focus:outline-none" onClick={onClick}>
         <div>{children}</div>
         <svg
           stroke="currentColor"
@@ -42,8 +45,9 @@ export default function ProfileButton({ children }: ProfileButtonProps) {
           <path d="M7 10l5 5 5-5z"></path>
         </svg>
       </button>
-      {showMenu && (
+      {isVisible && (
         <div
+          ref={btnRef}
           className="flex flex-col justify-center  absolute top-[72px] right-[10px] font-gray w-[165px] bg-white rounded-lg cursor-pointer "
           onClick={handleWorkspaceClick}
           style={{ boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)' }}

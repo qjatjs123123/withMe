@@ -2,9 +2,8 @@
 
 import AddModal from './AddModal';
 import { useGlobalState } from '../../_components/RepoModalProvider';
-
 export default function RepoBtn() {
-  const { isModalOpen, setModalOpen } = useGlobalState();
+  const { isVisible, modalRef, btnRef, setIsVisible } = useGlobalState();
 
   return (
     <div className="repoBtn-Wrapper">
@@ -45,7 +44,11 @@ export default function RepoBtn() {
           `}
       </style>
 
-      <button className="repoBtn flex justify-center items-center" onClick={() => setModalOpen(true)}>
+      <button
+        ref={btnRef}
+        className="repoBtn flex justify-center items-center"
+        onClick={() => setIsVisible(!isVisible)}
+      >
         <svg className="icon" width="20" height="20" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             className="icon"
@@ -55,7 +58,7 @@ export default function RepoBtn() {
         </svg>
         추가
       </button>
-      {isModalOpen && <AddModal onClose={setModalOpen} />}
+      {isVisible && <AddModal ref={modalRef} onClose={setIsVisible} />}
     </div>
   );
 }
