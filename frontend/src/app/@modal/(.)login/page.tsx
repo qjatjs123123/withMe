@@ -69,7 +69,7 @@ export default function LoginModal() {
               height={25}
               sizes="100%"
             />
-            Login with GitLab
+            Login with SSafy Git
           </button>
         </div>
       </div>
