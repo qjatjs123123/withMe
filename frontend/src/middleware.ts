@@ -11,5 +11,5 @@ export async function middleware() {
 }
 
 export const config = {
-  matcher: ['/edit', '/workspace'],
+  matcher: ['/edit', '/workspace', '/edit/:id*'],
 };
