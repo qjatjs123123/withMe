@@ -6,7 +6,7 @@ export async function middleware() {
   const userDataCookie = (await cookieStore).get('userData');
 
   if (!userDataCookie) {
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BACKEND_URL}/login`);
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/login`);
   }
 }
 
