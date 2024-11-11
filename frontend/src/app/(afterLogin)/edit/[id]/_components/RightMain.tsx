@@ -6,9 +6,19 @@ import { AIDraftProvider } from '../_contexts/AIDraftContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 
-export default function RightMain() {
+type RightMainProps = {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function RightMain({ setIsLoading }: RightMainProps) {
   const { menuItems } = useMenuItems();
-  const { markdowns, setMarkdowns } = useMarkdown();
+  const { markdowns, setMarkdowns, cnt } = useMarkdown();
+
+  useEffect(() => {
+    if (cnt >= 15) {
+      setIsLoading(false);
+    }
+  }, [cnt, setIsLoading]);
 
   useEffect(() => {
     if (!menuItems) return;

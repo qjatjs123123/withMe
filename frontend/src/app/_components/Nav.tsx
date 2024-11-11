@@ -6,7 +6,7 @@ import ProfileButton from './ProfileButton';
 import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
 
-export default async function AfterLoginNav() {
+export default async function Nav() {
   const cookieStore = cookies();
   const userDataCookie = (await cookieStore).get('userData');
   let userData = undefined;
