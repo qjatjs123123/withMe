@@ -23,7 +23,6 @@ export default function Home() {
       );
       if (response.data) {
         document.cookie = `userData=${encodeURIComponent(JSON.stringify(response.data))}; path=/;`;
-        router.push('/workspace');
       }
     } catch (error) {
       router.push('/');
