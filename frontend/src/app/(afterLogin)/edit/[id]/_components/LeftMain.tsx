@@ -7,15 +7,11 @@ export default function LeftMain() {
   const { initialItems } = useMenuItems();
 
   if (!initialItems || initialItems.length === 0) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="text-gray-400">test1...</div>
-      </div>
-    );
+    return <div></div>;
   }
 
   return (
-    <ClientSideSuspense fallback={<div>test2...</div>}>
+    <ClientSideSuspense fallback={<div></div>}>
       <div className="bg-white h-full w-full">
         {initialItems.map((item) => (
           <RoomWithEditor key={`room-${item.id}`} id={item.id} />

@@ -106,7 +106,7 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="w-24 h-24 border-8 border-gray-300 border-t-black rounded-full animate-spin mb-4 mt-4"></div>
+        <div className="w-20 h-20 border-8 border-gray-300 border-t-black rounded-full animate-spin mb-4 mt-4"></div>
       </div>
     );
   }
