@@ -4,7 +4,7 @@ import LiveAvatars from './LiveAvatars';
 import { CommitIcon } from '../_icons/CommitIcon';
 import { CommitModal } from './CommitModal';
 import { RoomProvider } from '@liveblocks/react';
-import { INITIAL_MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function Nav() {
       id={roomId}
       initialStorage={{
         initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: INITIAL_MENU_ITEMS,
+        menuItems: MENU_ITEMS,
       }}
     >
       <div className="relative">
@@ -31,7 +31,7 @@ export default function Nav() {
           }}
         >
           <div style={{ flex: '1 1 0%' }}>
-            <Image
+            {/* <Image
               className="workspace-image cursor-pointer"
               src="/Logo.png"
               alt="logo of the image"
@@ -39,7 +39,8 @@ export default function Nav() {
               height={43.05}
               sizes="100%"
               style={{ width: '200px', height: '100%' }}
-            />
+            /> */}
+            <span style={{ fontFamily: 'samsungsharpsans-bold' }}>WithME.md</span>
           </div>
           <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
           <div style={{ flex: '1 1 0%' }}>

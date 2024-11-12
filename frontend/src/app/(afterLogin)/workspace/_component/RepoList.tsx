@@ -1,23 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RepoCheck from './RepoCheck';
 import { useUserRepoQuery } from '@/stores/server/getUserRepoQuery';
 import { useGlobalState } from '../../_components/RepoModalProvider';
 
 interface RepoListProps {
   searchText: string;
+  setSelectedRepo;
+  selectedRepo;
 }
 
-const RepoList = ({ searchText }: RepoListProps) => {
-  const { data } = useUserRepoQuery();
+const RepoList = ({ searchText, setSelectedRepo, selectedRepo }: RepoListProps) => {
+  const { data } = useUserRepoQuery(null);
   const repos = data?.data ?? [];
-  const [selectedRepo, setSelectedRepo] = useState<number | null>(null);
   const { setCurRepo } = useGlobalState();
 
   const handleClick = (index: number, repo) => {
+    if (index === selectedRepo) setCurRepo(null);
+    else setCurRepo(repo);
     setSelectedRepo(index === selectedRepo ? null : index);
-    setCurRepo(repo);
   };
 
   // 검색 필터링: name에 searchText가 포함된 항목만 보여줌

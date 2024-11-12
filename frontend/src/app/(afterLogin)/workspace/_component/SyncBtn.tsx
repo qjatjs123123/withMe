@@ -4,13 +4,14 @@ import { useUserSyncQuery } from '@/stores/server/getUserSyncQuery';
 import { delaySetApiInfo } from '@/util/snackBarFunc';
 import { useSnackBarState } from '../../_components/SnackBarProvider';
 import useErrorHandler from '../business/useErrorHandler';
+import { useUserRepoQuery } from '@/stores/server/getUserRepoQuery';
 
 export default function SyncBtn() {
   const { refetch } = useUserSyncQuery();
   const { handlerRefetch } = useErrorHandler();
-
+  const { refetch: repoRefetch } = useUserRepoQuery(null);
   const handleClick = async () => {
-    handlerRefetch(refetch());
+    await handlerRefetch(refetch, repoRefetch);
   };
 
   return (

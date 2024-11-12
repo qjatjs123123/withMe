@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { Markdown } from '../_types/Markdown';
 import axios from '@/util/axiosConfigClient';
 import { API_URL } from '@/util/constants';
+import { useParams } from 'next/navigation';
 
 type MarkdownContextType = {
   markdowns: Markdown[] | null;
@@ -16,6 +17,7 @@ const MarkdownContext = createContext<MarkdownContextType | undefined>(undefined
 
 export function MarkdownProvider({ children }: { children: React.ReactNode }) {
   const [markdowns, setMarkdowns] = useState<Markdown[] | null>([]);
+  const params = useParams();
 
   // 마크다운 내용을 합치는 함수
   const getAllMarkdowns = useCallback(() => {
@@ -29,7 +31,7 @@ export function MarkdownProvider({ children }: { children: React.ReactNode }) {
       const combinedContent = getAllMarkdowns();
       try {
         await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.SAVE_README}`, {
-          workspace_id: 95,
+          workspace_id: params.id,
           readme_content: combinedContent,
         });
       } catch (error) {

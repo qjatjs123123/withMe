@@ -3,24 +3,43 @@ import { useGlobalState } from '../../_components/RepoModalProvider';
 import { API_URL, MESSAGE } from '@/util/constants';
 import { useQueryClient } from '@tanstack/react-query';
 import useErrorHandler from '../business/useErrorHandler';
+import { useUserRepoQuery } from '@/stores/server/getUserRepoQuery';
 
 export default function CreateBtn({ url }) {
-  const { curRepo } = useGlobalState();
+  const { curRepo, setCurRepo } = useGlobalState();
   const queryClient = useQueryClient();
-  const { setModalOpen } = useGlobalState();
-  const { handlerAxios } = useErrorHandler();
+  const { setIsVisible } = useGlobalState();
+  const { handlerAxios, handlerMessage } = useErrorHandler();
+  const { refetch: repoRefetch } = useUserRepoQuery(null);
+
+  const invalidCheck = async () => {
+    const repo = curRepo.current;
+
+    if (!repo || !repo.thumbnail) {
+      await handlerMessage('제대로 선택해주세요');
+      return false;
+    }
+
+    return true;
+  };
 
   const handleCreate = async () => {
-    setModalOpen(false);
+    if (!(await invalidCheck())) return;
+
     await handlerAxios(
-      async () => await axios.post(`${API_URL.CREATE_WORKSPACE}`, { workspace_id: curRepo.current.id }),
-      () => {
+      async () => {
+        setIsVisible(false);
+        await axios.post(`${API_URL.CREATE_WORKSPACE}`, { workspace_id: curRepo.current.id });
+      },
+      async () => {
         queryClient.invalidateQueries({ queryKey: ['workspace'] });
-        queryClient.invalidateQueries({ queryKey: ['userReopKey'] });
+        await repoRefetch();
       },
       MESSAGE.REPO_CREATE,
       MESSAGE.REPO_SUCCESS,
     );
+
+    // setCurRepo(null);
   };
 
   return (

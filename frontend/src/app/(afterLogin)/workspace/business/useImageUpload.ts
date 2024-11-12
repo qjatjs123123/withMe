@@ -1,22 +1,35 @@
 import { useState } from 'react';
 import axios from '@/util/axiosConfigClient';
 import { API_URL } from '@/util/constants';
+import { useGlobalState } from '../../_components/RepoModalProvider';
+import useErrorHandler from './useErrorHandler';
 
-const useImageUpload = (repoUrl) => {
+const useImageUpload = (repoUrl, curRepo) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const { handlerMessage } = useErrorHandler();
+
+  const invalidCheck = async () => {
+    if (!curRepo.current || !curRepo.current.id) {
+      await handlerMessage('제대로 선택해주세요');
+      return false;
+    }
+    return true;
+  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!(await invalidCheck())) return;
     const file = e.target.files?.[0];
     if (file) {
       setSelectedImage(file);
-      return await handleUpload(file);
+      const url = await handleUpload(file);
+      curRepo.current.thumbnail = url;
     }
     return null;
   };
 
   const handleUpload = async (file) => {
     if (!file) {
-      alert('업로드할 이미지를 선택해주세요.');
+      await handlerMessage('제대로 선택해주세요');
       return;
     }
 
@@ -31,7 +44,6 @@ const useImageUpload = (repoUrl) => {
         },
       });
 
-      console.log('이미지 업로드 성공:', response.data);
       return response.data; // 성공 시 업로드 결과 반환
     } catch (err) {
       alert('이미지 업로드 실패');

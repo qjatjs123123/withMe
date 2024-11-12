@@ -19,6 +19,7 @@ export default function EditPage() {
   const [leftSize, setLeftSize] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
+  const [connected, setConnected] = useState<Set<string>>(new Set());
   const mainContainerRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseDown = () => setIsDragging(true);
@@ -80,8 +81,17 @@ export default function EditPage() {
                 <div className="flex flex-col bg-white h-full">
                   <Nav />
 
+                  {connected.size < 10 && (
+                    <div
+                      className="fixed bottom-0 flex w-full bg-gray-700 opacity-70 justify-center items-center z-[100]"
+                      style={{ height: `calc(100vh - 72px)` }}
+                    >
+                      <div className="w-20 h-20 border-8 border-gray-300 border-t-black rounded-full animate-spin"></div>
+                    </div>
+                  )}
+
                   <div className="flex h-full">
-                    <div className="h-full fixed z-[100]">
+                    <div className="h-full fixed z-[50]">
                       <LeftBar />
                     </div>
 
@@ -95,7 +105,7 @@ export default function EditPage() {
                           style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
                           className="h-full w-full overflow-y-auto"
                         >
-                          <LeftMain />
+                          <LeftMain connected={connected} setConnected={setConnected} />
                         </div>
 
                         <div

@@ -1,12 +1,21 @@
-'use client';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import Main from '../_components/Main';
+import LoginModal from '../_components/LoginModal';
+import Nav from '../_components/Nav';
 
-import { useEffect } from 'react';
+export default async function Login() {
+  const cookieStore = cookies();
+  const userDataCookie = (await cookieStore).get('userData');
+  if (userDataCookie) {
+    redirect(`${process.env.NEXT_PUBLIC_BACKEND_URL}/workspace`);
+  }
 
-export default function Login() {
-  useEffect(() => {
-    // window 객체를 사용하여 페이지 리디렉션
-    window.location.href = '/';
-  }, []);
-
-  return <></>; // 컴포넌트는 아무것도 렌더링하지 않음
+  return (
+    <>
+      <Nav />
+      <Main />
+      <LoginModal />
+    </>
+  ); // 컴포넌트는 아무것도 렌더링하지 않음
 }

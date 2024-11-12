@@ -24,16 +24,17 @@ interface WorkspaceItem {
   }
   
 
-export function useUserRepoQuery() {
+  export function useUserRepoQuery(enabled) { 
+    const isEnabled = enabled ?? true; 
     return useQuery<ApiResponse, Error>({
-      queryKey: [`userReopKey`],
+      queryKey: ['userRepoKey'],
       queryFn: async () => {
         const response = await axios.get<ApiResponse>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.WORKSPACE_X}`,
         );
-        return response.data; // 응답 데이터 반환
+        return response.data;
       },
       staleTime: 100000,
+      enabled: isEnabled,  
     });
   }
-  

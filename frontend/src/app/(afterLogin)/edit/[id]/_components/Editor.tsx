@@ -15,16 +15,32 @@ import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useInfo } from '../_contexts/InfoContext';
 import { API_URL } from '@/util/constants';
 import axios from 'axios';
+import { NodeHtmlMarkdown } from 'node-html-markdown';
+import { useStatus } from '@liveblocks/react/suspense';
 
 type EditorProps = {
   doc: Y.Doc;
   provider: LiveblocksYjsProvider;
 };
 
-export function Editor() {
+interface ConnectedProps {
+  connected: Set<string>;
+  setConnected: React.Dispatch<React.SetStateAction<Set<string>>>;
+}
+
+export function Editor({ connected, setConnected }: ConnectedProps) {
   const room = useRoom();
   const [doc, setDoc] = useState<Y.Doc>();
   const [provider, setProvider] = useState<LiveblocksYjsProvider>();
+  const status = useStatus();
+
+  useEffect(() => {
+    if (status === 'connected') {
+      const roomId = room.id.slice(5); // room.id에서 5번째 이후의 문자열
+      setConnected((prevConnected) => new Set(prevConnected).add(roomId));
+      // console.log('Connected Room ID:', roomId);
+    }
+  }, [status, room.id, setConnected]);
 
   useEffect(() => {
     const yDoc = new Y.Doc();
@@ -51,6 +67,7 @@ function BlockNote({ doc, provider }: EditorProps) {
   const { editorsRef } = useEditor();
   const id = room.id.slice(5);
   const { userName, repoUrl } = useInfo();
+  const nhm = new NodeHtmlMarkdown();
 
   const uploadFile = async (file: File) => {
     const body = new FormData();
@@ -75,7 +92,9 @@ function BlockNote({ doc, provider }: EditorProps) {
   };
 
   const onChange = async () => {
-    const markdown = await editor.blocksToMarkdownLossy(editor.document);
+    // const markdown = await editor.blocksToMarkdownLossy(editor.document);
+    const html = await editor.blocksToHTMLLossy(editor.document);
+    const markdown = nhm.translate(html);
 
     const updatedMarkdowns = markdowns!.map((item) => {
       if (item.id === id) {

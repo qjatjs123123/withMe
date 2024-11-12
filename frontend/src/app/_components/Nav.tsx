@@ -6,7 +6,7 @@ import ProfileButton from './ProfileButton';
 import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
 
-export default async function AfterLoginNav() {
+export default async function Nav() {
   const cookieStore = cookies();
   const userDataCookie = (await cookieStore).get('userData');
   let userData = undefined;
@@ -31,8 +31,8 @@ export default async function AfterLoginNav() {
         }}
       >
         <div style={{ flex: '1 1 0%' }}>
-          <Link href="/">
-            <Image
+          <Link href={isLogin ? '/workspace' : '/'}>
+            {/* <Image
               className="workspace-image cursor-pointer"
               src="/Logo.png"
               alt="logo of the image"
@@ -40,7 +40,10 @@ export default async function AfterLoginNav() {
               height={43}
               sizes="100%"
               style={{ width: '200px', height: '100%' }}
-            />
+            /> */}
+            <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+              With<span className="text-[#49DCB0]">M</span>E.md
+            </span>
           </Link>
         </div>
         <div style={{ flex: '2 1 0%', marginLeft: '10px' }}>

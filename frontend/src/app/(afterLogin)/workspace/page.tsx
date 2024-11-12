@@ -34,6 +34,7 @@ export async function getPostWorkSpace({ pageParam = { page: 0, cursor: null } }
       data: response.data,
     };
   } catch (error) {
+    console.log(error);
     throw new Error('Failed to fetch data: ' + error);
   }
 }
