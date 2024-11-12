@@ -14,7 +14,7 @@ export default function CreateImage() {
       <div
         className={`flex justify-center items-center flex-col h-[250px] w-full relative ${selectedImage ? 'bg-white' : 'bg-[#E9ECEF]'}`}
       >
-        {curRepo.current.thumbnail ? (
+        {curRepo && curRepo.current?.thumbnail ? (
           <ExistingRepoThumbnail thumbnail={curRepo.current.thumbnail} />
         ) : selectedImage ? (
           <ThumbnailPreview image={selectedImage} />
