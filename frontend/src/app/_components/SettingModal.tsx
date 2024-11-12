@@ -11,7 +11,7 @@ import useErrorHandler from '../(afterLogin)/workspace/business/useErrorHandler'
 export default function SettingModal({ isVisible, changeState, ref }) {
   const { curWorkspace } = useWorkspaceState();
   const queryClient = useQueryClient();
-  const { handleImageChange } = useImageUpload(curWorkspace.current.repoUrl);
+  const { handleImageChange } = useImageUpload(curWorkspace.current.repoUrl, curWorkspace);
   const { handlerAxios } = useErrorHandler();
 
   const deleteWorkspaceAPI = async (e) => {
