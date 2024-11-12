@@ -23,7 +23,7 @@
 
 body {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif, 'samsungsharpsans-bold';
   overflow-y: scroll;
   background-color: #f7f9fa !important;
 }
@@ -193,4 +193,9 @@ body {
 /* 마크다운 바디에서는 모든 css revert */
 .markdown-body * {
   all: revert;
+}
+
+@font-face {
+  font-family: 'samsungsharpsans-bold';
+  src: url('/fonts/samsungsharpsans-bold.otf') format('opentype');
 }

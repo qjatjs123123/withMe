@@ -31,7 +31,7 @@ export default function Nav() {
           }}
         >
           <div style={{ flex: '1 1 0%' }}>
-            <Image
+            {/* <Image
               className="workspace-image cursor-pointer"
               src="/Logo.png"
               alt="logo of the image"
@@ -39,7 +39,8 @@ export default function Nav() {
               height={43.05}
               sizes="100%"
               style={{ width: '200px', height: '100%' }}
-            />
+            /> */}
+            <span style={{ fontFamily: 'samsungsharpsans-bold' }}>WithME.md</span>
           </div>
           <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
           <div style={{ flex: '1 1 0%' }}>
