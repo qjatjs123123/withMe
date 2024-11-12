@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateProject from './CreateProject';
 import CreateImage from './CreateImage';
+import { useGlobalState } from '../../_components/RepoModalProvider';
 
 interface AddModalProps {
   onClose: (isClosed: boolean) => void;
@@ -10,11 +11,17 @@ interface AddModalProps {
 
 const AddModal: React.FC<AddModalProps> = ({ onClose, ref }) => {
   const [isCreateImage, setIsCreateImage] = useState(false);
-  const [selectedRepo, setSelectedRepo] = useState<number | null>(null);
 
+  const { setCurRepo } = useGlobalState();
   const handleNextClick = () => {
     setIsCreateImage(true);
   };
+
+  useEffect(() => {
+    return () => {
+      setCurRepo(null);
+    };
+  }, []);
 
   const renderContent = () => {
     if (isCreateImage) {
