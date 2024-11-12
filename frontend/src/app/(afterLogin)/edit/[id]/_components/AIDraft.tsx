@@ -36,10 +36,6 @@ export function AIDraft() {
     }
   }, [isStreaming]);
 
-  // const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   setPromptValue(event.target.value);
-  // };
-
   const handleSubmit = () => {
     startStreamingResponse();
   };
@@ -60,7 +56,7 @@ export function AIDraft() {
           Authorization: `Bearer ${userData.access_token}`,
         },
         body: JSON.stringify({
-          workspace_id: workspaceId, // 수정 예정: 현재 선택된 레포명
+          workspace_id: workspaceId,
           section_name: activeLabel,
         }),
       });
@@ -109,7 +105,7 @@ export function AIDraft() {
                     return;
                   }
 
-                  await new Promise((resolve) => setTimeout(resolve, 20)); // 30ms 딜레이
+                  await new Promise((resolve) => setTimeout(resolve, 20)); // 20ms 딜레이
                   setAccumulatedContent((prevContent) => prevContent + char);
                 }
               }
@@ -129,28 +125,12 @@ export function AIDraft() {
     }
   };
 
-  const stopStreamingResponse = () => {
-    if (reader) {
-      reader.cancel();
-      setReader(null);
-    }
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (isStreaming) {
-      event.preventDefault();
-    } else if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      handleSubmit();
-    }
-  };
-
   return (
     <div className="flex flex-col w-full h-full p-5 rounded-xl bg-gray-50">
       <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
       <div className="flex-grow rounded-lg p-4 overflow-auto">
         {messages.map((message, idx) => (
-          <div key={idx} className={`ml-2 mb-4 flex p-3 justify-center rounded-lg max-w-[750px] bg-white`}>
+          <div key={idx} className={`ml-2 mb-4 flex p-3 justify-center rounded-lg max-w-[750px] bg-white relative`}>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkBreaks]}
               rehypePlugins={[rehypeRaw]}
@@ -176,18 +156,16 @@ export function AIDraft() {
       </div>
       <div className="relative">
         <button
-          onClick={isStreaming ? stopStreamingResponse : handleSubmit}
-          className="absolute bottom-[610px] right-3 pb-2 rounded-full "
+          onClick={handleSubmit}
+          className={`absolute bottom-[610px] right-3 pb-2 rounded-full ${isStreaming ? 'pointer-events-none' : ''}`}
           disabled={isStreaming && !reader}
         >
           {isStreaming ? (
-            // <FaCircleStop size={32} />
-            <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+            <div className="bg-[#f1f0f0] text-gray-500 w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
               <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
-              <span>AI 초안 생성하기</span>
+              <span>AI 생성 생성하기</span>
             </div>
           ) : (
-            // <FaArrowCircleUp size={32} />
             <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
               <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
               <span>AI 초안 생성하기</span>
