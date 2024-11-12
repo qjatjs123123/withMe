@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getCookieValue } from '@/util/axiosConfigClient';
-import { FaArrowCircleUp } from 'react-icons/fa';
-import { FaCircleStop } from 'react-icons/fa6';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useAIDraft } from '../_contexts/AIDraftContext';
@@ -11,17 +9,20 @@ import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import 'github-markdown-css';
 import ClipBoardButton from './ClipBoardButton';
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
 
 export function AIDraft() {
   const { activeId } = useActiveId();
   const { menuItems } = useMenuItems();
   const { messages, addMessage } = useAIDraft();
   const [activeLabel, setActiveLabel] = useState<string>();
-  const [promptValue, setPromptValue] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [accumulatedContent, setAccumulatedContent] = useState<string>('');
   const [reader, setReader] = useState<ReadableStreamDefaultReader | null>(null);
   const [cancelDelay, setCancelDelay] = useState(false);
+  const params = useParams();
+  const workspaceId = params.id;
 
   useEffect(() => {
     const activeMenuItem = menuItems.find((item) => item.id === activeId);
@@ -30,20 +31,16 @@ export function AIDraft() {
 
   useEffect(() => {
     if (accumulatedContent) {
-      addMessage({ text: accumulatedContent, isUser: false });
+      addMessage({ text: accumulatedContent });
       setAccumulatedContent(''); // 메시지 추가 후 초기화
     }
   }, [isStreaming]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPromptValue(event.target.value);
-  };
+  // const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   setPromptValue(event.target.value);
+  // };
 
   const handleSubmit = () => {
-    if (!promptValue) return;
-
-    addMessage({ text: promptValue, isUser: true });
-    setPromptValue('');
     startStreamingResponse();
   };
 
@@ -63,9 +60,8 @@ export function AIDraft() {
           Authorization: `Bearer ${userData.access_token}`,
         },
         body: JSON.stringify({
-          workspace_id: 95, // 수정 예정: 현재 선택된 레포명
+          workspace_id: workspaceId, // 수정 예정: 현재 선택된 레포명
           section_name: activeLabel,
-          user_prompt: promptValue,
         }),
       });
 
@@ -154,42 +150,24 @@ export function AIDraft() {
       <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
       <div className="flex-grow rounded-lg p-4 overflow-auto">
         {messages.map((message, idx) => (
-          <div key={idx} className={`mb-2 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`p-3 rounded-lg max-w-[80%]`}
-              style={{ backgroundColor: message.isUser ? '#e5e7eb' : 'white' }}
+          <div key={idx} className={`ml-2 mb-4 flex p-3 justify-center rounded-lg max-w-[750px] bg-white`}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw]}
+              className="markdown-body flex flex-col justify-start items-start text-left w-full"
             >
-              {message.isUser ? (
-                // 사용자 메시지: 일반 텍스트와 줄바꿈 처리
-                message.text.split('\n').map((line, lineIdx) => (
-                  <React.Fragment key={lineIdx}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))
-              ) : (
-                // 사용자 외 메시지: Markdown 플러그인 적용
-                <div className="relative">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm, remarkBreaks]}
-                    rehypePlugins={[rehypeRaw]}
-                    className="markdown-body"
-                  >
-                    {message.text}
-                  </ReactMarkdown>
-                  <ClipBoardButton message={message.text} />
-                </div>
-              )}
-            </div>
+              {message.text}
+            </ReactMarkdown>
+            <ClipBoardButton message={message.text} />
           </div>
         ))}
 
         {accumulatedContent && (
-          <div className="mb-2 flex p-3 justify-start rounded-lg bg-white max-w-[80%] markdown-body">
+          <div className="ml-2 mb-4 flex p-3 justify-center rounded-lg  max-w-[750px] bg-white">
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkBreaks]}
               rehypePlugins={[rehypeRaw]}
-              className="markdown-body"
+              className="markdown-body flex flex-col justify-start items-start text-left w-full"
             >
               {accumulatedContent}
             </ReactMarkdown>
@@ -197,19 +175,24 @@ export function AIDraft() {
         )}
       </div>
       <div className="relative">
-        <textarea
-          value={promptValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          placeholder="메시지 ChatGPT"
-          className="w-full p-3 bg-[#F1F1F1] rounded-lg h-24 resize-none pr-20 focus:outline-none focus:border-none"
-        />
         <button
           onClick={isStreaming ? stopStreamingResponse : handleSubmit}
-          className="absolute bottom-2 right-2 pb-2 rounded-full "
+          className="absolute bottom-[610px] right-3 pb-2 rounded-full "
           disabled={isStreaming && !reader}
         >
-          {isStreaming ? <FaCircleStop size={32} /> : <FaArrowCircleUp size={32} />}
+          {isStreaming ? (
+            // <FaCircleStop size={32} />
+            <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+              <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
+              <span>AI 초안 생성하기</span>
+            </div>
+          ) : (
+            // <FaArrowCircleUp size={32} />
+            <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+              <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
+              <span>AI 초안 생성하기</span>
+            </div>
+          )}
         </button>
       </div>
     </div>
