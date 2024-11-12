@@ -1,4 +1,5 @@
 import { useGlobalState } from '../../_components/RepoModalProvider';
+import useErrorHandler from '../business/useErrorHandler';
 import RepoList from './RepoList';
 import { useState } from 'react';
 
@@ -8,14 +9,22 @@ interface CreateProjectProps {
 
 export default function CreateProject({ onNextClick }: CreateProjectProps) {
   const [searchText, setSearchText] = useState('');
-
+  const { handlerMessage } = useErrorHandler();
   const [selectedRepo, setSelectedRepo] = useState<number | null>(null);
-  const { setCurRepo } = useGlobalState();
+  const { setCurRepo, curRepo } = useGlobalState();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
     setSelectedRepo(null);
     setCurRepo(null);
+  };
+
+  const handlerNextClick = async () => {
+    if (!curRepo.current) {
+      await handlerMessage('레포 선택해주세요');
+      return;
+    }
+    onNextClick(true);
   };
 
   return (
@@ -29,7 +38,7 @@ export default function CreateProject({ onNextClick }: CreateProjectProps) {
       />
       <RepoList searchText={searchText} selectedRepo={selectedRepo} setSelectedRepo={setSelectedRepo} />
       <div className="w-full flex justify-center">
-        <button className="create-button" onClick={() => onNextClick(true)}>
+        <button className="create-button" onClick={handlerNextClick}>
           Next
         </button>
       </div>
