@@ -126,7 +126,7 @@ export function AIDraft() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full p-5 rounded-xl bg-gray-50">
+    <div className="flex flex-col w-full h-full p-5 rounded-xl bg-gray-50 relative">
       <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
       <div className="flex-grow rounded-lg p-4 overflow-auto">
         {messages.map((message, idx) => (
@@ -154,25 +154,23 @@ export function AIDraft() {
           </div>
         )}
       </div>
-      <div className="relative">
-        <button
-          onClick={handleSubmit}
-          className={`absolute bottom-[610px] right-3 pb-2 rounded-full ${isStreaming ? 'pointer-events-none' : ''}`}
-          disabled={isStreaming && !reader}
-        >
-          {isStreaming ? (
-            <div className="bg-[#f1f0f0] text-gray-500 w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
-              <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
-              <span>AI 생성 생성하기</span>
-            </div>
-          ) : (
-            <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
-              <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
-              <span>AI 초안 생성하기</span>
-            </div>
-          )}
-        </button>
-      </div>
+      <button
+        onClick={handleSubmit}
+        className={`absolute top-4 right-3 pb-2 rounded-full ${isStreaming ? 'pointer-events-none' : ''}`}
+        disabled={isStreaming && !reader}
+      >
+        {isStreaming ? (
+          <div className="bg-[#f1f0f0] text-gray-500 w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+            <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
+            <span>AI 초안 생성하기</span>
+          </div>
+        ) : (
+          <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+            <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
+            <span>AI 초안 생성하기</span>
+          </div>
+        )}
+      </button>
     </div>
   );
 }
