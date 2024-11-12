@@ -30,8 +30,6 @@ export function AIDraft() {
 
   useEffect(() => {
     if (accumulatedContent) {
-      console.log(accumulatedContent);
-
       addMessage({ text: accumulatedContent, isUser: false });
       setAccumulatedContent(''); // 메시지 추가 후 초기화
     }
@@ -107,7 +105,6 @@ export function AIDraft() {
               // content가 존재하는 경우에만 처리
               if (jsonData.choices && jsonData.choices[0].delta.content) {
                 const content = jsonData.choices[0].delta.content;
-                console.log('Received content:', content);
 
                 for (const char of content) {
                   if (cancelDelay) {
