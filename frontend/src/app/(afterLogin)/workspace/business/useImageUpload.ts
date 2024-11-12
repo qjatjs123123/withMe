@@ -31,7 +31,6 @@ const useImageUpload = (repoUrl) => {
         },
       });
 
-      console.log('이미지 업로드 성공:', response.data);
       return response.data; // 성공 시 업로드 결과 반환
     } catch (err) {
       alert('이미지 업로드 실패');

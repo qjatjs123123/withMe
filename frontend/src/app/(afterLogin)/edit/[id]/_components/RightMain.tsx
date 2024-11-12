@@ -15,7 +15,7 @@ export default function RightMain({ setIsLoading }: RightMainProps) {
   const { markdowns, setMarkdowns, cnt } = useMarkdown();
 
   useEffect(() => {
-    if (cnt >= 15) {
+    if (cnt >= 14) {
       setIsLoading(false);
     }
   }, [cnt, setIsLoading]);
