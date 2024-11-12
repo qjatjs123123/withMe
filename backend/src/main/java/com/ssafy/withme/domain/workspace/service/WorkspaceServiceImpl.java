@@ -210,7 +210,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     public WorkspaceSimpleInfoResponse getWorkspaceSimpleInfo(Long workspaceId) {
-        return WorkspaceSimpleInfoResponse.from(workspaceRepository.findById(workspaceId)
+        return WorkspaceSimpleInfoResponse.from(workspaceJpaRepository.findById(workspaceId)
                 .orElseThrow(()->new BusinessException(WORKSPACE_NOT_FOUND)));
     }
 }
