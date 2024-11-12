@@ -17,9 +17,9 @@ const RepoList = ({ searchText, setSelectedRepo, selectedRepo }: RepoListProps) 
   const { setCurRepo } = useGlobalState();
 
   const handleClick = (index: number, repo) => {
-    setSelectedRepo(index === selectedRepo ? null : index);
     if (index === selectedRepo) setCurRepo(null);
     else setCurRepo(repo);
+    setSelectedRepo(index === selectedRepo ? null : index);
   };
 
   // 검색 필터링: name에 searchText가 포함된 항목만 보여줌
