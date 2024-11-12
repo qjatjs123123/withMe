@@ -6,6 +6,7 @@ import com.ssafy.withme.domain.repository.entity.Repo;
 import com.ssafy.withme.domain.repository.repository.RepoRepository;
 import com.ssafy.withme.domain.workspace.dto.Response.IntegratedWorkspaceResponse;
 import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceInfoResponse;
+import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceSimpleInfoResponse;
 import com.ssafy.withme.domain.workspace.entity.Workspace;
 import com.ssafy.withme.domain.workspace.entity.WorkspaceDocument;
 import com.ssafy.withme.domain.workspace.repository.elasticsearch.WorkspaceElasticsearchRepository;
@@ -205,5 +206,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         }catch (IOException exception){
             throw new BusinessException(ErrorCode.IMAGE_UPLOAD_FAILED);
         }
+    }
+
+    @Override
+    public WorkspaceSimpleInfoResponse getWorkspaceSimpleInfo(Long workspaceId) {
+        return WorkspaceSimpleInfoResponse.from(workspaceRepository.findById(workspaceId)
+                .orElseThrow(()->new BusinessException(WORKSPACE_NOT_FOUND)));
     }
 }

@@ -3,6 +3,7 @@ package com.ssafy.withme.domain.workspace.controller;
 import com.ssafy.withme.domain.workspace.dto.Request.WorkspaceIdRequest;
 import com.ssafy.withme.domain.workspace.dto.Response.IntegratedWorkspaceResponse;
 import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceInfoResponse;
+import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceSimpleInfoResponse;
 import com.ssafy.withme.domain.workspace.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +58,11 @@ public class WorkspaceController {
     @PostMapping("/info")
     public WorkspaceInfoResponse getWorkspaceInfo(@RequestBody WorkspaceIdRequest workspaceIdRequest) {
         return workspaceService.getWorkspaceInfo(workspaceIdRequest.workspaceId());
+    }
+
+    @PostMapping("/simple")
+    public WorkspaceSimpleInfoResponse getWorkspaceSimpleInfo(@RequestBody WorkspaceIdRequest workspaceIdRequest) {
+        return workspaceService.getWorkspaceSimpleInfo(workspaceIdRequest.workspaceId());
     }
 
     @PostMapping(path = "/thumbnail", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
