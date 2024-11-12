@@ -6,17 +6,18 @@ import { useParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 
 export const INITIAL_MENU_ITEMS = [
-  { id: uuidv4(), label: 'Dashboard' },
-  { id: uuidv4(), label: 'Projects' },
-  { id: uuidv4(), label: 'Tasks' },
-  { id: uuidv4(), label: 'Messages' },
-  { id: uuidv4(), label: 'Settings' },
-  { id: uuidv4(), label: 'Dashboard' },
-  { id: uuidv4(), label: 'Projects' },
-  { id: uuidv4(), label: 'Tasks' },
-  { id: uuidv4(), label: 'Messages' },
-  { id: uuidv4(), label: 'Settings' },
+  { id: uuidv4(), label: '헤더' },
+  { id: uuidv4(), label: '프로젝트 소개' },
+  { id: uuidv4(), label: '기획 배경' },
+  { id: uuidv4(), label: '주요 기능' },
+  { id: uuidv4(), label: '아키텍쳐' },
+  { id: uuidv4(), label: '' },
+  { id: uuidv4(), label: '' },
+  { id: uuidv4(), label: '' },
+  { id: uuidv4(), label: '' },
+  { id: uuidv4(), label: '' },
 ];
+export const MENU_ITEMS = INITIAL_MENU_ITEMS.slice(0, 5);
 
 type InfoContextType = {
   repoName: string | null;
