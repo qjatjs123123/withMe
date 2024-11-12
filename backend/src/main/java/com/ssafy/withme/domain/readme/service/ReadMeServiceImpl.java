@@ -67,7 +67,9 @@ public class ReadMeServiceImpl implements ReadMeService {
                 .map(workspace -> new SearchReadMeResponseDTO(
                         workspace.getId(),
                         workspace.getName(),
-                        workspace.getReadmeContent()
+                        workspaceJpaRepository.findById(workspace.getId())
+                                .map(Workspace::getThumbnail)
+                                .orElse(null)
                 ))
                 .toList();
     }
