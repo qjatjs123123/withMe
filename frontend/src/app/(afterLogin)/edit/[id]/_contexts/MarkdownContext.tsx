@@ -11,8 +11,6 @@ type MarkdownContextType = {
   setMarkdowns: (items: Markdown[] | null) => void;
   saveMarkdowns: () => Promise<void>;
   getAllMarkdowns: () => string;
-  cnt: number;
-  setCnt: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const MarkdownContext = createContext<MarkdownContextType | undefined>(undefined);
@@ -20,7 +18,6 @@ const MarkdownContext = createContext<MarkdownContextType | undefined>(undefined
 export function MarkdownProvider({ children }: { children: React.ReactNode }) {
   const [markdowns, setMarkdowns] = useState<Markdown[] | null>([]);
   const params = useParams();
-  const [cnt, setCnt] = useState(0);
 
   // 마크다운 내용을 합치는 함수
   const getAllMarkdowns = useCallback(() => {
@@ -63,8 +60,6 @@ export function MarkdownProvider({ children }: { children: React.ReactNode }) {
         setMarkdowns,
         saveMarkdowns,
         getAllMarkdowns,
-        cnt, // cnt 상태 추가
-        setCnt, // cnt 증가를 위한 함수 추가
       }}
     >
       {children}
