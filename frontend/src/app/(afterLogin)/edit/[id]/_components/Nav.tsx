@@ -4,7 +4,7 @@ import LiveAvatars from './LiveAvatars';
 import { CommitIcon } from '../_icons/CommitIcon';
 import { CommitModal } from './CommitModal';
 import { RoomProvider } from '@liveblocks/react';
-import { INITIAL_MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +16,7 @@ export default function Nav() {
       id={roomId}
       initialStorage={{
         initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: INITIAL_MENU_ITEMS,
+        menuItems: MENU_ITEMS,
       }}
     >
       <div className="relative">

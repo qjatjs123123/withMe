@@ -9,7 +9,7 @@ import { DeleteIcon } from '../_icons/DeleteIcon';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
-import { INITIAL_MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
 
@@ -54,7 +54,7 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
 
       const newTab: MenuItem = {
         id: availableId,
-        label: '',
+        label: '새로운 탭',
       };
 
       const updatedMenuItems = [...menuItems, newTab];
@@ -275,7 +275,7 @@ export function LeftBar() {
       // id="sidebar-room-2"
       initialStorage={{
         initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: INITIAL_MENU_ITEMS,
+        menuItems: MENU_ITEMS,
       }}
     >
       <ClientSideSuspense fallback={<div></div>}>
