@@ -25,7 +25,6 @@ body {
   color: var(--foreground);
   /* font-family: Arial, Helvetica, sans-serif, 'samsungsharpsans-bold'; */
   overflow-y: scroll;
-  background-color: #f7f9fa !important;
 }
 
 .responsive_workspaceheader {
@@ -41,6 +40,48 @@ body {
   /* 768px 이상에서 가로 정렬 */
   .responsive_workspaceheader {
     flex-direction: row;
+  }
+}
+h1 {
+  padding: 0;
+  margin: 0;
+}
+.responsive_vtext {
+  font-size: clamp(30px, 3vw, 48px);
+}
+@media (max-width: 748px) {
+  .header-container {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+.responsive_text {
+  font-size: 36px;
+  width: 50%;
+  @media screen and (max-width: 1440px) {
+  }
+
+  @media screen and (max-width: 1056px) {
+    font-size: 26px;
+  }
+  @media screen and (max-width: 786px) {
+    width: 80%;
+    font-size: 18px;
+  }
+}
+
+.responsive_text {
+  font-size: 36px;
+  width: 50%;
+  @media screen and (max-width: 1440px) {
+  }
+
+  @media screen and (max-width: 1056px) {
+    font-size: 26px;
+  }
+  @media screen and (max-width: 786px) {
+    width: 80%;
+    font-size: 18px;
   }
 }
 
@@ -183,7 +224,6 @@ body {
 
 .container-wrapper {
   height: 100vh;
-  background-color: #f7f9fa;
 }
 
 .container-block {
@@ -221,4 +261,25 @@ body:lang(en) {
 /* HTML 요소에서 lang 속성을 활용해 한글에 다른 폰트 적용 */
 body:lang(ko) {
   font-family: 'SamsungOneKorean-700', 'SamsungSharpSans-Bold', sans-serif;
+}
+
+.cursor-pointer-nav {
+  position: relative;
+  cursor: pointer;
+}
+
+.cursor-pointer-nav::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background-color: black;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.cursor-pointer-nav:hover::before {
+  width: 100%;
 }

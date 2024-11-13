@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function LoginBtn() {
   return (
     <div className="flex items-center h-full justify-end">
-      <Link href="/login" className="login-button">
+      <Link href="/login">
         <svg
           width="25px"
           height="25px"

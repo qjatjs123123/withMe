@@ -6,6 +6,7 @@ import ProfileButton from './ProfileButton';
 import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
 import SearchBtn from './SearchBtn';
+import NavList from './NavList';
 
 export default async function Nav() {
   const cookieStore = cookies();
@@ -28,28 +29,21 @@ export default async function Nav() {
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          zIndex: '5',
+          zIndex: '15',
           height: '90px',
         }}
       >
-        <div style={{ flex: '1 1 0%' }}>
+        <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
           <Link href={isLogin ? '/workspace' : '/'}>
-            {/* <Image
-              className="workspace-image cursor-pointer"
-              src="/Logo.png"
-              alt="logo of the image"
-              width={200}
-              height={43}
-              sizes="100%"
-              style={{ width: '200px', height: '100%' }}
-            /> */}
             <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
               WithMe
             </span>
           </Link>
+
+          <NavList />
         </div>
-        <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
-        <div className="flex items-center justify-end gap-3" style={{ flex: '1 1 0%' }}>
+        <div style={{ marginLeft: '10px' }}></div>
+        <div className="flex items-center justify-end " style={{ flex: '1 1 0%', gap: '26px' }}>
           <SearchBtn />
           {isLogin ? (
             <>

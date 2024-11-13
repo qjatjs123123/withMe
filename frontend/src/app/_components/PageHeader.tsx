@@ -6,23 +6,24 @@ interface PageHeaderProps {
 export default function PageHeader({ title, content }: PageHeaderProps) {
   return (
     <>
-      <h1
+      <div
+        className="responsive_vtext"
         style={{
-          fontSize: '48px', // text-[40px]
           fontFamily: 'SamsungSharpSansRegular',
+          lineHeight: '2',
         }}
       >
         {title}
-      </h1>
-      <h1
+      </div>
+      <div
+        className="responsive_vtext"
         style={{
-          fontSize: '48px', // text-[40px]
           fontFamily: 'SamsungOneKorean-700',
           fontWeight: 'bold',
         }}
       >
         {content}
-      </h1>
+      </div>
     </>
   );
 }

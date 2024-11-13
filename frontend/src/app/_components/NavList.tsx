@@ -1,0 +1,21 @@
+'use client'; // 이 컴포넌트는 클라이언트 사이드에서만 실행되도록 설정
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+export default function NavList() {
+  const pathname = usePathname();
+
+  const getLinkClassName = (path: string) => {
+    return pathname === path ? 'border-b-2 border-black' : 'cursor-pointer-nav';
+  };
+
+  return (
+    <div className="flex flex-row text-[20px] items-center gap-[50px]">
+      <div className={getLinkClassName('/explore')}>EXPLORE</div>
+      <Link href={'/'}>
+        <div className={getLinkClassName('/')}>ABOUT US</div>
+      </Link>
+    </div>
+  );
+}
