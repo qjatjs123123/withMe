@@ -153,7 +153,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             if (!existingRepoUrls.contains(refinedRepoUrl)) {
                 Workspace newWorkspace = workspaceJpaRepository.findByRepoUrl(refinedRepoUrl);
                 if(newWorkspace == null) {
-                    newWorkspace = new Workspace(refinedRepo.name(), refinedRepoUrl, null);
+                    newWorkspace = new Workspace(refinedRepo.name(), refinedRepo.owner(), refinedRepoUrl, null);
                 }
                 Repo newRepo = new Repo(
                         memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(INVALID_ID_TOKEN)),

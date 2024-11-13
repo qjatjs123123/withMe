@@ -23,6 +23,9 @@ public class Workspace extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String owner;
+
     @Column(length = 2083)
     private String thumbnail;
 
@@ -45,8 +48,9 @@ public class Workspace extends BaseTimeEntity {
     private Long roomId;
 
     @Builder
-    public Workspace(String name, String repoUrl, String thumbnail) {
+    public Workspace(String name, String owner, String repoUrl, String thumbnail) {
         this.name = name;
+        this.owner = owner;
         this.repoUrl = repoUrl;
         this.thumbnail = thumbnail;
     }
