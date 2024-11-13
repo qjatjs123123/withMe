@@ -178,16 +178,12 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
             handleDrop({ draggedItem, targetItem: item });
           }}
           className={`
-            w-full px-4 py-3 rounded-lg
+            w-full px-4 py-2 rounded-lg
             transition-colors duration-200
-            text-xl font-bold
+            text-md font-semibold
             group
             ${editingId !== item.id ? 'cursor-grab active:cursor-grabbing' : ''}
-            ${
-              activeId === item.id
-                ? 'bg-white bg-opacity-10 text-white'
-                : 'text-gray-400 hover:bg-white hover:bg-opacity-5 hover:text-gray-200'
-            }
+            ${activeId === item.id ? 'bg-gray-200 bg-opacity-70 ' : ' hover:bg-gray-200 hover:bg-opacity-70'}
             flex items-center justify-between
           `}
           onClick={() => handleItemClick(item.id)}
@@ -229,11 +225,12 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
           onClick={() => addNewTab()}
           className="w-full px-4 py-3 rounded-lg
             transition-all duration-200
-            text-sm font-medium
-            border border-dashed border-gray-600
-            text-gray-300 hover:text-white
-            hover:bg-white hover:bg-opacity-5
+            text-sm font-semibold
+            border-[1.5px] border-dashed border-gray-600
+            
+            hover:bg-gray-700
             hover:border-gray-400
+            hover:text-white
             flex items-center justify-center gap-2"
         >
           <span className="text-lg">+</span>
@@ -271,7 +268,7 @@ export function LeftBar() {
       >
         {() => (
           <div
-            className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
+            className={`bg-white w-60 border-r-2 h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
           >
             <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />
           </div>
