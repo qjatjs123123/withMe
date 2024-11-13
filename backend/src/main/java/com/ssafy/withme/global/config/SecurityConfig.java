@@ -69,7 +69,7 @@ public class SecurityConfig {
                 .formLogin(FormLoginConfigurer::disable)
                 //시큐리티를 적용/미적용할 url 지정. 로그인(토큰 재발급) 할 때만 미적용
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/oauth2/token").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/oauth2/token", "/api/workspace/simple").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/readme/{workspace_id:[0-9]+}", "/api/readme/search").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
