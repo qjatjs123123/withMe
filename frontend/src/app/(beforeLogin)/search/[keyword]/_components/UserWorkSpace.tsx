@@ -29,7 +29,7 @@ const UserWorkSpace: React.FC<TransformedWorkspace> = ({ id, name, thumbnail }) 
       />
       <div className="workspace-item absolute flex flex-row rounded-t-[16px]">
         <div className="flex-1 flex justify-center items-center">
-          <ViewIcon src={`/readme/${id}`} />
+          <ViewIcon src={`/readme/${encodeURIComponent(id)}`} />
         </div>
       </div>
       <div

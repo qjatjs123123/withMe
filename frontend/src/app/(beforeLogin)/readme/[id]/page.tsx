@@ -1,6 +1,6 @@
 // app/readme/[workspace_id]/page.tsx
 import ReadMeBtn from '@/app/_components/ReadMeBtn';
-import axios from 'axios';
+import axios from '@/util/axiosConfig';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation'; // 404 페이지로 리디렉션을 위한 함수
 import ReactMarkdown from 'react-markdown';
@@ -18,11 +18,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
   let workSpace_data = null;
   try {
-    const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
-      workspace_id: id,
-    });
+    let response1 = null;
+    if (Number(id)) {
+      response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
+        workspace_id: id,
+      });
 
-    workSpace_data = response1.data.data;
+      workSpace_data = response1.data.data;
+    }
   } catch (error) {
     console.error('Error fetching data:', error);
     return { title: '페이지를 찾을 수 없습니다' }; // 오류 시 기본 메타데이터 반환
@@ -52,12 +55,14 @@ export default async function ReadMe({ params }: Params) {
   let data = null;
 
   try {
-    console.log(id, `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`);
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
-      workspace_id: id,
-    });
+    let response = null;
+    if (Number(id)) {
+      response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
+        workspace_id: id,
+      });
 
-    data = response.data;
+      data = response.data;
+    }
   } catch (error) {
     console.error('Error fetching data:', error);
     return;
@@ -1586,7 +1591,7 @@ body {
           `}
         </style>
         <ReactMarkdown key={1} remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw]}>
-          {data.data?.readme_content}
+          {data?.data?.readmeContent}
         </ReactMarkdown>
       </div>
     </div>
