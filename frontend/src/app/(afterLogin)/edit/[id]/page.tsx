@@ -12,14 +12,14 @@ import { MarkdownProvider } from './_contexts/MarkdownContext';
 import RightMain from './_components/RightMain';
 import LeftMain from './_components/LeftMain';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
+import { ConnectionProvider } from './_contexts/ConnectionContext';
 
-const LEFT_SIDEBAR_WIDTH = 0;
+const LEFT_SIDEBAR_WIDTH = 240;
 
 export default function EditPage() {
   const [leftSize, setLeftSize] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
-  const [connected, setConnected] = useState<Set<string>>(new Set());
   const mainContainerRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseDown = () => setIsDragging(true);
@@ -28,7 +28,7 @@ export default function EditPage() {
     if (isDragging && mainContainerRef.current) {
       const containerWidth = mainContainerRef.current.offsetWidth;
       if (isVertical) {
-        const adjustedY = e.clientY - 72; // 72px은 Nav 높이로 가정
+        const adjustedY = e.clientY - 72;
         const newLeftHeight = (adjustedY / (window.innerHeight - 72)) * 100;
         if (newLeftHeight > 0 && newLeftHeight < 100) {
           setLeftSize(newLeftHeight);
@@ -80,54 +80,46 @@ export default function EditPage() {
               <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
                 <div className="flex flex-col bg-white h-full">
                   <Nav />
-
-                  {connected.size < 10 && (
-                    <div
-                      className="fixed bottom-0 flex w-full bg-gray-700 opacity-70 justify-center items-center z-[100]"
-                      style={{ height: `calc(100vh - 72px)` }}
-                    >
-                      <div className="w-20 h-20 border-8 border-gray-300 border-t-black rounded-full animate-spin"></div>
-                    </div>
-                  )}
-
                   <div className="flex h-full">
-                    <div className="h-full fixed z-[50]">
+                    <div className="h-full">
                       <LeftBar />
                     </div>
 
-                    <div
-                      className="flex-1"
-                      ref={mainContainerRef}
-                      style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
-                    >
-                      <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 72px)` }}>
-                        <div
-                          style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
-                          className="h-full w-full overflow-y-auto"
-                        >
-                          <LeftMain connected={connected} setConnected={setConnected} />
-                        </div>
+                    <ConnectionProvider>
+                      <div
+                        className="flex-1"
+                        ref={mainContainerRef}
+                        style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
+                      >
+                        <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 72px)` }}>
+                          <div
+                            style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
+                            className="h-full w-full overflow-y-auto"
+                          >
+                            <LeftMain />
+                          </div>
 
-                        <div
-                          className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
-                          style={{
-                            width: isVertical ? '100%' : '6px',
-                            height: isVertical ? '6px' : '100%',
-                            cursor: isVertical ? 'row-resize' : 'col-resize',
-                          }}
-                          onMouseDown={handleMouseDown}
-                        >
-                          <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
-                        </div>
+                          <div
+                            className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
+                            style={{
+                              width: isVertical ? '100%' : '6px',
+                              height: isVertical ? '6px' : '100%',
+                              cursor: isVertical ? 'row-resize' : 'col-resize',
+                            }}
+                            onMouseDown={handleMouseDown}
+                          >
+                            <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
+                          </div>
 
-                        <div
-                          style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
-                          className="h-full overflow-y-auto"
-                        >
-                          <RightMain />
+                          <div
+                            style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
+                            className="h-full overflow-y-auto"
+                          >
+                            <RightMain />
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </ConnectionProvider>
                   </div>
                 </div>
               </LiveblocksProvider>
