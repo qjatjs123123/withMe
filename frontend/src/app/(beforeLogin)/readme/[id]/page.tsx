@@ -1,8 +1,7 @@
 // app/readme/[workspace_id]/page.tsx
 import ReadMeBtn from '@/app/_components/ReadMeBtn';
-import axios from '@/util/axiosConfig';
+import axios from 'axios';
 import { Metadata } from 'next';
-import Head from 'next/head';
 import { notFound } from 'next/navigation'; // 404 페이지로 리디렉션을 위한 함수
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -19,7 +18,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
   let workSpace_data = null;
   try {
-    const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/info`, {
+    const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
       workspace_id: id,
     });
 
@@ -37,7 +36,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       title: workSpace_data.name || '기본 제목',
       description: workSpace_data.readmeContent || '기본 설명',
       images: [workSpace_data.thumbnail || '기본 이미지 URL'],
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/${id}`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/readme/${id}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -53,11 +52,15 @@ export default async function ReadMe({ params }: Params) {
   let data = null;
 
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/${id}`);
+    console.log(id, `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
+      workspace_id: id,
+    });
+
     data = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
-    notFound();
+    return;
   }
 
   return (
