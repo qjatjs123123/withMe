@@ -40,7 +40,7 @@ export default function ProfileButton({ children }: ProfileButtonProps) {
           height="2em"
           width="2em"
           xmlns="http://www.w3.org/2000/svg"
-          style={{ color: 'white' }}
+          style={{ color: 'black' }}
         >
           <path d="M7 10l5 5 5-5z"></path>
         </svg>

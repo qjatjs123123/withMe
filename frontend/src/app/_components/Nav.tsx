@@ -5,6 +5,7 @@ import UserProfile from './UserProfile';
 import ProfileButton from './ProfileButton';
 import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
+import SearchBtn from './SearchBtn';
 
 export default async function Nav() {
   const cookieStore = cookies();
@@ -21,13 +22,14 @@ export default async function Nav() {
       <nav
         style={{
           position: 'fixed',
-          backgroundColor: '#020623', // bg-[#020623]
+          backgroundColor: 'white', // bg-[#020623]
           width: '100%',
-          padding: '12px', // p-[12px]
+          padding: '0px 50px', // p-[12px]
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
           zIndex: '5',
+          height: '90px',
         }}
       >
         <div style={{ flex: '1 1 0%' }}>
@@ -41,15 +43,14 @@ export default async function Nav() {
               sizes="100%"
               style={{ width: '200px', height: '100%' }}
             /> */}
-            <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
-              With<span className="text-[#49DCB0]">M</span>E.md
+            <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+              WithMe
             </span>
           </Link>
         </div>
-        <div style={{ flex: '2 1 0%', marginLeft: '10px' }}>
-          <SearchBar />
-        </div>
-        <div className="flex justify-end" style={{ flex: '1 1 0%' }}>
+        <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
+        <div className="flex items-center justify-end gap-3" style={{ flex: '1 1 0%' }}>
+          <SearchBtn />
           {isLogin ? (
             <>
               <ProfileButton>
@@ -109,9 +110,7 @@ export default async function Nav() {
   size-adjust: 107.19%;
 }
 
-.geistsans_9fc57718-module__5N2VMq__className {
-  font-family: geistSans, geistSans Fallback;
-}
+
 
 .geistsans_9fc57718-module__5N2VMq__variable {
   --font-geist-sans: "geistSans", "geistSans Fallback";
@@ -295,8 +294,6 @@ html, :host {
   -webkit-text-size-adjust: 100%;
   -moz-tab-size: 4;
   tab-size: 4;
-  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-feature-settings: normal;
   font-variation-settings: normal;
   -webkit-tap-highlight-color: transparent;
 }
@@ -751,11 +748,6 @@ img, video {
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
 
 .responsive_mainResponsive {
   width: 1728px;
@@ -860,17 +852,14 @@ body {
 .login-button {
   height: 35px;
   border: 1px solid white;
-  color: white;
+  color: black;
   background-color: transparent;
   border-radius: 30px;
   padding: 4px 16px; /* px-4, py-1 */
   transition: background-color 300ms, color 300ms;
 }
 
-.login-button:hover {
-  background-color: white;
-  color: black;
-}
+
 
 .justify-between {
   justify-content: space-between;

@@ -1,27 +1,23 @@
+import { color } from 'framer-motion';
 import Link from 'next/link';
 
 export default function LoginBtn() {
   return (
     <div className="flex items-center h-full justify-end">
       <Link href="/login" className="login-button">
-        로그인
-      </Link>
-      <style>{`
-        .login-button {
-          height: 35px;
-          border: 1px solid white;
-          color: white;
-          background-color: transparent;
-          border-radius: 30px;
-          padding: 4px 16px; /* px-4, py-1 */
-          transition: background-color 300ms, color 300ms;
-        }
+        <svg
+          width="25px"
+          height="25px"
+          style={{ color: 'black' }}
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title />
 
-        .login-button:hover {
-          background-color: white;
-          color: black;
-        }
-      `}</style>
+          <path d="M16,16A7,7,0,1,0,9,9,7,7,0,0,0,16,16ZM16,4a5,5,0,1,1-5,5A5,5,0,0,1,16,4Z" />
+          <path d="M17,18H15A11,11,0,0,0,4,29a1,1,0,0,0,1,1H27a1,1,0,0,0,1-1A11,11,0,0,0,17,18ZM6.06,28A9,9,0,0,1,15,20h2a9,9,0,0,1,8.94,8Z" />
+        </svg>
+      </Link>
     </div>
   );
 }

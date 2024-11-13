@@ -1,6 +1,6 @@
 export const PAGE_HEADER = {
-  workspace: '나의 작업공간',
-  search: '검색 결과',
+  workspace: 'My WorkSpace',
+  search: 'Search Result for',
 };
 
 export const API_URL = {
