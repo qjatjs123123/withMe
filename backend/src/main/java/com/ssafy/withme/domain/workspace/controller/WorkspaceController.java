@@ -69,4 +69,9 @@ public class WorkspaceController {
     public String uploadThumbnail(@RequestParam MultipartFile image, @RequestParam String repository_url) {
         return workspaceService.uploadThumbnail(image, repository_url);
     }
+
+    @PostMapping(path = "/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String uploadImage(@RequestParam MultipartFile image) {
+        return workspaceService.uploadImage(image);
+    }
 }

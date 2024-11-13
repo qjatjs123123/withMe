@@ -27,5 +27,7 @@ public interface WorkspaceService {
 
     String uploadThumbnail(MultipartFile file, String repositoryUrl);
 
+    String uploadImage(MultipartFile file);
+
     WorkspaceSimpleInfoResponse getWorkspaceSimpleInfo(Long aLong);
 }
