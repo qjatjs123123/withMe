@@ -5,10 +5,13 @@ import { MarkdownPreview } from './MarkdownPreview';
 import { AIDraftProvider } from '../_contexts/AIDraftContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useMarkdown } from '../_contexts/MarkdownContext';
+import { useConnection } from '../_contexts/ConnectionContext';
+import Gauge from './Gauge';
 
 export default function RightMain() {
   const { menuItems } = useMenuItems();
   const { markdowns, setMarkdowns } = useMarkdown();
+  const connection = useConnection();
 
   useEffect(() => {
     if (!menuItems) return;
@@ -39,28 +42,36 @@ export default function RightMain() {
   };
 
   return (
-    <div className="flex flex-col h-full items-center bg-white">
-      <div className="flex items-center justify-center my-5 w-[300px] h-[40px] bg-[#495365] text-white rounded-[90px]">
+    <div
+      className="flex flex-col h-full justify-start items-center bg-white"
+      style={{ fontFamily: 'samsungsharpsans-bold' }}
+    >
+      <div className="flex items-center justify-center  w-[300px] h-[40px] text-black rounded-[90px]">
         <button
           onClick={() => handleViewChange('preview')}
-          className={`px-5 mx-1 border-none cursor-pointer rounded-[90px] h-[30px] ${activeView === 'preview' ? 'bg-[#49DCB0] text-black' : 'bg-[#3D424A] text-white'}`}
+          className={`mx-4 my-2 cursor-pointer h-[30px] hover:border-b-2 hover:border-black ${activeView === 'preview' ? 'border-b-2 border-black' : ''}`}
         >
           Preview
         </button>
         <button
           onClick={() => handleViewChange('markdown')}
-          className={`px-5 mx-1  border-none cursor-pointer rounded-[90px] h-[30px] ${activeView === 'markdown' ? 'bg-[#49DCB0] text-black' : 'bg-[#3D424A] text-white'}`}
+          className={`mx-4 my-2 cursor-pointer h-[30px] hover:border-b-2 hover:border-black ${activeView === 'markdown' ? 'border-b-2 border-black' : ''}`}
         >
           MarkDown
         </button>
         <button
           onClick={() => handleViewChange('ai')}
-          className={`px-5 mx-1  border-none cursor-pointer rounded-[90px] h-[30px] ${activeView === 'ai' ? 'bg-[#49DCB0] text-black' : 'bg-[#3D424A] text-white'}`}
+          className={`mx-4 my-2 cursor-pointer h-[30px] hover:border-b-2 hover:border-black ${activeView === 'ai' ? 'border-b-2 border-black' : ''}`}
         >
           AI
         </button>
       </div>
-      <div className="mt-5 text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
+
+      <div className="w-[200px]">
+        <Gauge connection={connection} />
+      </div>
+
+      <div className="text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
         <AIDraftProvider>
           {activeView === 'preview' && <MarkdownPreview />}
           {activeView === 'markdown' && <MarkdownView />}
