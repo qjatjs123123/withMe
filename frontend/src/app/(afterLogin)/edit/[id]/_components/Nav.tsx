@@ -5,6 +5,7 @@ import { CommitIcon } from '../_icons/CommitIcon';
 import { CommitModal } from './CommitModal';
 import { RoomProvider } from '@liveblocks/react';
 import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import Link from 'next/link';
 
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,16 +32,11 @@ export default function Nav() {
           }}
         >
           <div style={{ flex: '1 1 0%' }}>
-            {/* <Image
-              className="workspace-image cursor-pointer"
-              src="/Logo.png"
-              alt="logo of the image"
-              width={200}
-              height={43.05}
-              sizes="100%"
-              style={{ width: '200px', height: '100%' }}
-            /> */}
-            <span style={{ fontFamily: 'samsungsharpsans-bold' }}>WithME.md</span>
+            <Link href={'/workspace'}>
+              <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                With<span className="text-[#49DCB0]">M</span>E.md
+              </span>
+            </Link>
           </div>
           <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
           <div style={{ flex: '1 1 0%' }}>

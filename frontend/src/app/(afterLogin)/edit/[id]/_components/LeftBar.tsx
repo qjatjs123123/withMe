@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useStorage, useMutation } from '@liveblocks/react/suspense';
 import { ClientSideSuspense } from '@liveblocks/react/suspense';
 import { MenuItem } from '../_types/MenuItem';
@@ -12,6 +12,7 @@ import { useEditor } from '../_contexts/EditorContext';
 import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
+import { Loading } from './Loading';
 
 function LeftBarContent({ toggleSidebar, isOpen }) {
   const { activeId, setActiveId } = useActiveId();
@@ -244,44 +245,32 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
 }
 
 export function LeftBar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { roomId } = useInfo();
-  // Toggle function to open and close the sidebar
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
-  const leftBarRef = useRef(null);
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // leftBarRef.current가 정의되어 있고, 클릭 이벤트 대상이 leftBarRef 내에 없는 경우
-      if (leftBarRef.current && !leftBarRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    // 마운트 시 이벤트 리스너 추가
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // 언마운트 시 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
     <RoomProvider
       id={roomId}
-      // id="sidebar-room-2"
       initialStorage={{
         initialMenuItems: INITIAL_MENU_ITEMS,
         menuItems: MENU_ITEMS,
       }}
     >
-      <ClientSideSuspense fallback={<div></div>}>
+      <ClientSideSuspense
+        fallback={
+          <div
+            className="fixed bottom-0 flex w-full bg-white justify-center items-center z-[100]"
+            style={{ height: `calc(100vh - 72px)` }}
+          >
+            <Loading />
+          </div>
+        }
+      >
         {() => (
           <div
-            ref={leftBarRef}
             className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
           >
             <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />

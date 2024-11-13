@@ -17,30 +17,28 @@ import { API_URL } from '@/util/constants';
 import axios from 'axios';
 import { NodeHtmlMarkdown } from 'node-html-markdown';
 import { useStatus } from '@liveblocks/react/suspense';
+import { Loading } from './Loading';
+import { useConnection } from '../_contexts/ConnectionContext';
 
 type EditorProps = {
   doc: Y.Doc;
   provider: LiveblocksYjsProvider;
 };
 
-interface ConnectedProps {
-  connected: Set<string>;
-  setConnected: React.Dispatch<React.SetStateAction<Set<string>>>;
-}
-
-export function Editor({ connected, setConnected }: ConnectedProps) {
+export function Editor() {
   const room = useRoom();
   const [doc, setDoc] = useState<Y.Doc>();
   const [provider, setProvider] = useState<LiveblocksYjsProvider>();
   const status = useStatus();
+  const connection = useConnection();
 
   useEffect(() => {
-    if (status === 'connected') {
-      const roomId = room.id.slice(5); // room.id에서 5번째 이후의 문자열
-      setConnected((prevConnected) => new Set(prevConnected).add(roomId));
-      // console.log('Connected Room ID:', roomId);
+    if (status === 'connected' && !connection.isRoomConnected(room.id)) {
+      connection.rooms.add(room.id);
+      console.log(room.id);
+      console.log(connection.rooms);
     }
-  }, [status, room.id, setConnected]);
+  }, [status, room.id, connection]);
 
   useEffect(() => {
     const yDoc = new Y.Doc();
@@ -68,6 +66,7 @@ function BlockNote({ doc, provider }: EditorProps) {
   const id = room.id.slice(5);
   const { userName, repoUrl } = useInfo();
   const nhm = new NodeHtmlMarkdown();
+  const status = useStatus();
 
   const uploadFile = async (file: File) => {
     const body = new FormData();
@@ -133,8 +132,14 @@ function BlockNote({ doc, provider }: EditorProps) {
   const { activeId } = useActiveId();
 
   return (
-    <div>
-      <BlockNoteView editor={editor} onChange={onChange} editable={activeId === id} />
+    <div className="h-full">
+      {status === 'connected' ? (
+        <BlockNoteView editor={editor} onChange={onChange} editable={activeId === id} />
+      ) : (
+        <div className="flex h-full justify-center items-center">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 }

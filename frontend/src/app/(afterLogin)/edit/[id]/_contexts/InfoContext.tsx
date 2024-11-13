@@ -4,6 +4,8 @@ import { API_URL } from '@/util/constants';
 import { jwtDecode } from 'jwt-decode';
 import { useParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import { Loading } from '../_components/Loading';
+import { CommitIcon } from '../_icons/CommitIcon';
 
 export const INITIAL_MENU_ITEMS = [
   { id: uuidv4(), label: '헤더' },
@@ -106,9 +108,42 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="w-20 h-20 border-8 border-gray-300 border-t-black rounded-full animate-spin mb-4 mt-4"></div>
-      </div>
+      <>
+        <div className="relative h-[72px]">
+          <nav
+            style={{
+              backgroundColor: '#020623',
+              width: '100%',
+              height: '72px',
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ flex: '1 1 0%' }}>
+              {/* <Link href={'/workspace'}> */}
+              <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                With<span className="text-[#49DCB0]">M</span>E.md
+              </span>
+              {/* </Link> */}
+            </div>
+            <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
+            <div style={{ flex: '1 1 0%' }}>
+              <div className="flex justify-end items-center">
+                <div className="mr-4">{/* <LiveAvatars /> */}</div>
+                <div className="flex items-center">
+                  <CommitIcon />
+                  <span className="text-white ml-1.5 font-bold text-lg">Commit</span>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div className="w-full flex justify-center items-center" style={{ height: `calc(100vh - 72px)` }}>
+          <Loading />
+        </div>
+      </>
     );
   }
 
