@@ -32,15 +32,6 @@ export default async function Nav() {
       >
         <div style={{ flex: '1 1 0%' }}>
           <Link href={isLogin ? '/workspace' : '/'}>
-            {/* <Image
-              className="workspace-image cursor-pointer"
-              src="/Logo.png"
-              alt="logo of the image"
-              width={200}
-              height={43}
-              sizes="100%"
-              style={{ width: '200px', height: '100%' }}
-            /> */}
             <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
               With<span className="text-[#49DCB0]">M</span>E.md
             </span>
