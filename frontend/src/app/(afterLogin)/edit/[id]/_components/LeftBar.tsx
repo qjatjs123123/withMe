@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useStorage, useMutation } from '@liveblocks/react/suspense';
 import { ClientSideSuspense } from '@liveblocks/react/suspense';
 import { MenuItem } from '../_types/MenuItem';
@@ -251,22 +251,6 @@ export function LeftBar() {
     setIsOpen(!isOpen);
   };
 
-  const leftBarRef = useRef(null);
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (leftBarRef.current && !leftBarRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // 언마운트 시 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
     <RoomProvider
       id={roomId}
@@ -275,10 +259,18 @@ export function LeftBar() {
         menuItems: MENU_ITEMS,
       }}
     >
-      <ClientSideSuspense fallback={<Loading />}>
+      <ClientSideSuspense
+        fallback={
+          <div
+            className="fixed bottom-0 flex w-full bg-white justify-center items-center z-[100]"
+            style={{ height: `calc(100vh - 72px)` }}
+          >
+            <Loading />
+          </div>
+        }
+      >
         {() => (
           <div
-            ref={leftBarRef}
             className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
           >
             <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />

@@ -14,13 +14,12 @@ import LeftMain from './_components/LeftMain';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { ConnectionProvider } from './_contexts/ConnectionContext';
 
-const LEFT_SIDEBAR_WIDTH = 0;
+const LEFT_SIDEBAR_WIDTH = 240;
 
 export default function EditPage() {
   const [leftSize, setLeftSize] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
-  const [connected, setConnected] = useState<Set<string>>(new Set());
   const mainContainerRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseDown = () => setIsDragging(true);
@@ -29,7 +28,7 @@ export default function EditPage() {
     if (isDragging && mainContainerRef.current) {
       const containerWidth = mainContainerRef.current.offsetWidth;
       if (isVertical) {
-        const adjustedY = e.clientY - 72; // 72px은 Nav 높이로 가정
+        const adjustedY = e.clientY - 72;
         const newLeftHeight = (adjustedY / (window.innerHeight - 72)) * 100;
         if (newLeftHeight > 0 && newLeftHeight < 100) {
           setLeftSize(newLeftHeight);
@@ -82,7 +81,7 @@ export default function EditPage() {
                 <div className="flex flex-col bg-white h-full">
                   <Nav />
                   <div className="flex h-full">
-                    <div className="h-full fixed z-[50]">
+                    <div className="h-full">
                       <LeftBar />
                     </div>
 
