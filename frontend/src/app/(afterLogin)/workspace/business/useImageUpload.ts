@@ -38,7 +38,7 @@ const useImageUpload = (repoUrl, curRepo) => {
     formData.append('repository_url', repoUrl);
 
     try {
-      const response = await axios.post(`${API_URL.UPLOAD_IMAGE}`, formData, {
+      const response = await axios.post(`${API_URL.UPLOAD_THUMBNAIL}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
