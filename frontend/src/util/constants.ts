@@ -13,6 +13,7 @@ export const API_URL = {
   SAVE_README: '/api/readme',
   WORKSPACE_INFO: '/api/workspace/info',
   UPLOAD_IMAGE: '/api/workspace/image',
+  UPLOAD_THUMBNAIL: '/api/workspace/thumbnail',
 };
 
 export const DELAY_TIME_START = 500;
