@@ -1,14 +1,28 @@
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 export default function SearchBar() {
+  const [keyword, setKeyword] = useState('');
+  const router = useRouter();
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && keyword.trim() !== '') {
+      router.push(`/search/${encodeURIComponent(keyword)}`);
+      setKeyword('');
+    }
+  };
+
   return (
     <div
       style={{
         display: 'flex',
         alignItems: 'center',
         backgroundColor: 'white',
-        border: '1px solid #D1D5DB', // border-gray-300
-        borderRadius: '30px', // rounded-[30px]
-        padding: '8px 16px', // px-4 py-2
-        gap: '8px', // gap-2
+        border: '1px solid #D1D5DB',
+        borderRadius: '30px',
+        padding: '8px 16px',
+        gap: '8px',
       }}
     >
       <svg
@@ -26,6 +40,9 @@ export default function SearchBar() {
       </svg>
       <input
         type="text"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        onKeyDown={handleKeyDown}
         style={{
           width: '100%', // w-full
           backgroundColor: 'transparent',
