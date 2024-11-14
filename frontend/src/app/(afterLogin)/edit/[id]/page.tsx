@@ -28,8 +28,8 @@ export default function EditPage() {
     if (isDragging && mainContainerRef.current) {
       const containerWidth = mainContainerRef.current.offsetWidth;
       if (isVertical) {
-        const adjustedY = e.clientY - 72;
-        const newLeftHeight = (adjustedY / (window.innerHeight - 72)) * 100;
+        const adjustedY = e.clientY - 90;
+        const newLeftHeight = (adjustedY / (window.innerHeight - 90)) * 100;
         if (newLeftHeight > 0 && newLeftHeight < 100) {
           setLeftSize(newLeftHeight);
         }
@@ -81,7 +81,7 @@ export default function EditPage() {
                 <div className="flex flex-col bg-white h-full">
                   <Nav />
                   <div className="flex h-full">
-                    <div className="h-full">
+                    <div className="h-full bg-[#f9f9f9]">
                       <LeftBar />
                     </div>
 
@@ -91,7 +91,7 @@ export default function EditPage() {
                         ref={mainContainerRef}
                         style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
                       >
-                        <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 72px)` }}>
+                        <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
                           <div
                             style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
                             className="h-full w-full overflow-y-auto"

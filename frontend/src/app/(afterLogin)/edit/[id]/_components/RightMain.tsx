@@ -42,36 +42,38 @@ export default function RightMain() {
   };
 
   return (
-    <div
-      className="flex flex-col h-full justify-start items-center bg-white"
-      style={{ fontFamily: 'samsungsharpsans-bold' }}
-    >
-      <div className="flex items-center justify-center  w-[300px] h-[40px] text-black rounded-[90px]">
-        <button
-          onClick={() => handleViewChange('preview')}
-          className={`mx-4 my-2 cursor-pointer h-[30px] hover:border-b-2 hover:border-black ${activeView === 'preview' ? 'border-b-2 border-black' : ''}`}
-        >
-          Preview
-        </button>
-        <button
-          onClick={() => handleViewChange('markdown')}
-          className={`mx-4 my-2 cursor-pointer h-[30px] hover:border-b-2 hover:border-black ${activeView === 'markdown' ? 'border-b-2 border-black' : ''}`}
-        >
-          MarkDown
-        </button>
-        <button
-          onClick={() => handleViewChange('ai')}
-          className={`mx-4 my-2 cursor-pointer h-[30px] hover:border-b-2 hover:border-black ${activeView === 'ai' ? 'border-b-2 border-black' : ''}`}
-        >
-          AI
-        </button>
+    <div className="flex flex-col h-full justify-start items-center bg-white">
+      <div className="flex justify-center w-full relative" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+        <div className="flex items-center justify-center  w-[300px] h-[40px] text-black rounded-[90px]">
+          <button
+            onClick={() => handleViewChange('preview')}
+            className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'preview' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
+          >
+            Preview
+          </button>
+          <button
+            onClick={() => handleViewChange('markdown')}
+            className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'markdown' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
+          >
+            MarkDown
+          </button>
+          <button
+            onClick={() => handleViewChange('ai')}
+            className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'ai' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
+          >
+            AI
+          </button>
+        </div>
+
+        <div className="absolute top-6 right-6 flex flex-col justify-center h-full w-[200px]">
+          <Gauge connection={connection} />
+        </div>
       </div>
 
-      <div className="w-[200px]">
-        <Gauge connection={connection} />
-      </div>
-
-      <div className="text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
+      <div
+        className="text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll"
+        style={{ fontFamily: 'sans-serif' }}
+      >
         <AIDraftProvider>
           {activeView === 'preview' && <MarkdownPreview />}
           {activeView === 'markdown' && <MarkdownView />}

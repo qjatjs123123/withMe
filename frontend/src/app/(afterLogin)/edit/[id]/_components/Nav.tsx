@@ -23,18 +23,22 @@ export default function Nav() {
       <div className="relative">
         <nav
           style={{
-            backgroundColor: '#020623',
+            // position: 'fixed',
+            backgroundColor: 'white', // bg-[#020623]
             width: '100%',
-            padding: '12px',
+            padding: '0px 50px', // p-[12px]
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            zIndex: '15',
+            height: '90px',
           }}
+          className="border-b-2"
         >
           <div style={{ flex: '1 1 0%' }}>
             <Link href={'/workspace'}>
-              <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
-                With<span className="text-[#49DCB0]">M</span>E.md
+              <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                WithMe
               </span>
             </Link>
           </div>
@@ -46,7 +50,7 @@ export default function Nav() {
               </div>
               <div className="flex items-center cursor-pointer hover:opacity-75" onClick={handleToggleModal}>
                 <CommitIcon />
-                <span className="text-white ml-1.5 font-bold text-lg">Commit</span>
+                <span className=" ml-1.5 font-bold text-lg">Commit</span>
               </div>
             </div>
           </div>

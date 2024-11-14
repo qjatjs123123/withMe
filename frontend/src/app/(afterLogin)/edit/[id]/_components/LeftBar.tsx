@@ -305,17 +305,15 @@ export function LeftBar() {
       <ClientSideSuspense
         fallback={
           <div
-            className="fixed bottom-0 flex w-full bg-white justify-center items-center z-[100]"
-            style={{ height: `calc(100vh - 72px)` }}
+            className="fixed bottom-0 flex w-full justify-center bg-white items-center z-[100]"
+            style={{ height: `calc(100vh - 90px)` }}
           >
             <Loading />
           </div>
         }
       >
         {() => (
-          <div
-            className={`bg-white w-60 border-r-2 h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
-          >
+          <div className={`w-60 border-r-2 h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}>
             <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />
           </div>
         )}
