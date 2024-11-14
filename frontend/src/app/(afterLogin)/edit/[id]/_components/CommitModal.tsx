@@ -36,7 +36,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
   const checkDefaultBranch = async () => {
     try {
       let url: string;
-      let headers: HeadersInit = {
+      const headers: HeadersInit = {
         Authorization: `Bearer ${token}`,
       };
 
