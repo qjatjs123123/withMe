@@ -34,7 +34,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       style={{
         backgroundColor: workspace.thumbnail ? 'transparent' : '#CCCCCC',
       }}
-      className="w-full relative  flex flex-col  aspect-[1/0.9]"
+      className="w-full relative  flex flex-col  aspect-[1/0.9] "
     >
       <div className="w-full h-[70%] relative group">
         <Image
