@@ -1574,14 +1574,19 @@ img {
   max-width: 100% !important;
   box-sizing: border-box;
 }
-pre {
+.markdown-body pre {
   white-space: pre-wrap !important; /* 줄바꿈 허용 */
   word-break: break-word !important; /* 단어 단위로 줄바꿈 */
-  overflow-x: auto !important;/* 가로 스크롤 허용 */
+  overflow-x: auto !important; /* 가로 스크롤 허용 */
   max-width: 100% !important; /* 부모 요소 너비 초과 방지 */
   box-sizing: border-box;
 }
-     
+.markdown-body pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 100%;
+  display: block;
+}  
           `}
         </style>
         <ReadMeBtn />
