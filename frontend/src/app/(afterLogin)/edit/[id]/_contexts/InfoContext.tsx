@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { Loading } from '../_components/Loading';
 import { CommitIcon } from '../_icons/CommitIcon';
+import ErrorModal from '../_components/ErrorModal';
 
 export const INITIAL_MENU_ITEMS = [
   { id: uuidv4(), label: '헤더' },
@@ -70,7 +71,8 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   const [roomId, setRoomId] = useState<string>('');
   const [userName, setUserName] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [ownerName, setOwnerName] = useState<string | null>(null); // 추가된 부분
+  const [ownerName, setOwnerName] = useState<string | null>(null);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -101,8 +103,9 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
 
         setIsLoading(false);
       } catch (error) {
-        console.error('Error initializing data:', error);
-        // 에러 발생시 기본 roomId 설정
+        if (error.response && error.response.status === 400) {
+          setIsError(true);
+        }
         setRoomId('WITHME_ROOM_ID_1515151515');
         setIsLoading(false);
       }
@@ -110,6 +113,8 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
 
     initializeData();
   }, [workspaceId]);
+
+  if (isError) return <ErrorModal />;
 
   if (isLoading) {
     return (
