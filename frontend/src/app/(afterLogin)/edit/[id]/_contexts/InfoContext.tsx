@@ -114,10 +114,10 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <>
-        <div className="relative h-[90px]">
+        <div className="relative">
           <nav
             style={{
-              position: 'fixed',
+              // position: 'fixed',
               backgroundColor: 'white', // bg-[#020623]
               width: '100%',
               padding: '0px 50px', // p-[12px]
@@ -129,9 +129,12 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
             }}
             className="border-b-2"
           >
-            <div style={{ flex: '1 1 0%' }}>
+            <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
               <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
                 WithMe
+              </span>
+              <span className="cursor-pointer-nav text-[20px]" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                Workspace
               </span>
             </div>
             <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>

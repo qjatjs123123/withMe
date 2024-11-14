@@ -35,10 +35,15 @@ export default function Nav() {
           }}
           className="border-b-2"
         >
-          <div style={{ flex: '1 1 0%' }}>
-            <Link href={'/workspace'}>
+          <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
+            <Link href={'/'}>
               <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
                 WithMe
+              </span>
+            </Link>
+            <Link href={'/workspace'}>
+              <span className="cursor-pointer-nav pb-1 text-[20px]" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                Workspace
               </span>
             </Link>
           </div>
