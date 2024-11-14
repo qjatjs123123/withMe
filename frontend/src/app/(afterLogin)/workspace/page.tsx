@@ -49,7 +49,7 @@ export default async function Home() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <div className="responsive_mainResponsive">
+    <div className="responsive_container">
       <HydrationBoundary state={dehydratedState}>
         <main className="w-full ">
           <SnakBarContainer />
