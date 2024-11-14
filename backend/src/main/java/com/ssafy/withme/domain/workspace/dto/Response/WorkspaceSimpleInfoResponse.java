@@ -7,6 +7,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 public record WorkspaceSimpleInfoResponse(
+        Long id,
         String name,
         String owner,
         String thumbnail,
@@ -21,6 +22,7 @@ public record WorkspaceSimpleInfoResponse(
 
     public static WorkspaceSimpleInfoResponse from(Workspace workspace) {
         return WorkspaceSimpleInfoResponse.builder()
+                .id(workspace.getId())
                 .name(workspace.getName())
                 .owner(workspace.getOwner())
                 .thumbnail(workspace.getThumbnail())
