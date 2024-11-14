@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';

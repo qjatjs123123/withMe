@@ -49,7 +49,7 @@ export default function Main() {
               <div className="mt-2">
                 <Image
                   className="image"
-                  src="/gitLabLogo.png"
+                  src="/gitlabLogo.png"
                   alt="github logo of the image"
                   width={60}
                   height={60}
@@ -79,7 +79,7 @@ export default function Main() {
               <div className="mt-2">
                 <Image
                   className="image"
-                  src="/gitLabLogo.png"
+                  src="/gitlabLogo.png"
                   alt="github logo of the image"
                   width={60}
                   height={60}

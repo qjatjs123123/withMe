@@ -12,7 +12,8 @@ export const API_URL = {
   CREATE_WORKSPACE: '/api/workspace',
   SAVE_README: '/api/readme',
   WORKSPACE_INFO: '/api/workspace/info',
-  UPLOAD_IMAGE: '/api/workspace/thumbnail',
+  UPLOAD_IMAGE: '/api/workspace/image',
+  UPLOAD_THUMBNAIL: '/api/workspace/thumbnail',
 };
 
 export const DELAY_TIME_START = 500;

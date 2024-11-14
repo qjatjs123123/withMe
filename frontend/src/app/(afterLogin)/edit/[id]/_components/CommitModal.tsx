@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useInfo } from '../_contexts/InfoContext';
+import { getCookieValue } from '@/util/axiosConfigClient';
 
 type CommitModalProps = {
   isOpen: boolean;
@@ -14,18 +15,34 @@ interface GitHubCommitResponse {
   };
 }
 
+interface GitLabCommitResponse {
+  filename: string;
+  branch: string;
+}
+
 export function CommitModal({ isOpen, onClose }: CommitModalProps) {
-  const { userName, setUserName, repoName, setRepoName, token } = useInfo();
+  const { userName, repoName, token } = useInfo();
   const { saveMarkdowns, getAllMarkdowns } = useMarkdown();
   const [isCommitting, setIsCommitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [defaultBranch, setDefaultBranch] = useState<string>('');
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
+  const userDataCookie = getCookieValue('userData');
+  const userData = JSON.parse(userDataCookie as string);
+  const provider = userData.provider;
+
   // 레포지토리의 기본 브랜치 확인
   const checkDefaultBranch = async () => {
     try {
-      const response = await fetch(`https://api.github.com/repos/${userName}/${repoName}`, {
+      //TODO: username 대신 owner를 사용하도록 수정
+
+      const url =
+        provider === 'github'
+          ? `https://api.github.com/repos/${userName}/${repoName}`
+          : `https://lab.ssafy.com/api/v4/projects/${userName}%2F${repoName}`;
+
+      const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,10 +62,10 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
   };
 
   useEffect(() => {
-    if (isOpen && userName && repoName) {
+    if (isOpen && userName && repoName && provider) {
       checkDefaultBranch();
     }
-  }, [isOpen, userName, repoName]);
+  }, [isOpen, userName, repoName, provider]);
 
   const createCommit = async (message: string) => {
     saveMarkdowns();
@@ -57,6 +74,14 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     const contentBytes = encoder.encode(getAllMarkdowns());
     const content = Buffer.from(contentBytes).toString('base64');
 
+    if (provider === 'github') {
+      createGitHubCommit(message, content);
+    } else if (provider === 'gitlab') {
+      createGitlabCommit(message, content);
+    } else return;
+  };
+
+  const createGitHubCommit = async (message: string, content: string) => {
     try {
       // 1. 현재 파일의 SHA 가져오기
       const getFileResponse = await fetch(
@@ -101,6 +126,58 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       }
 
       const data = (await response.json()) as GitHubCommitResponse;
+      onClose();
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  };
+
+  const createGitlabCommit = async (commit_message: string, content: string) => {
+    console.log(content);
+
+    try {
+      // 1. 현재 파일의 SHA 가져오기
+      const getFileResponse = await fetch(
+        `https://lab.ssafy.com/api/v4/projects/${userName}%2F${repoName}/repository/files/README.md?ref=${defaultBranch}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log(getFileResponse);
+      // 2. 파일 유무에 따라 HTTP Method 변경
+      const method = getFileResponse.ok ? 'PUT' : 'POST';
+
+      // 3. 파일 업데이트 또는 생성
+      const response = await fetch(
+        `https://lab.ssafy.com/api/v4/projects/${userName}%2F${repoName}/repository/files/README.md`,
+        {
+          method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            branch: defaultBranch,
+            commit_message,
+            content,
+            author_name: userName,
+            author_email: `${userName}@users.noreply.lab.ssafy.com`,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('GitLab API Error:', errorData);
+        throw new Error(`Failed to create commit: ${errorData.message}`);
+      }
+
+      const data = (await response.json()) as GitLabCommitResponse;
       onClose();
       return data;
     } catch (error) {
