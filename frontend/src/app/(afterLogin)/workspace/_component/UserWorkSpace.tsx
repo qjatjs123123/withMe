@@ -58,28 +58,34 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       {!isVisible ? (
         <div style={{ width: '100%', height: '70%', backgroundColor: '#CCCCCC' }} />
       ) : (
-        <div className="w-full h-[70%] relative">
+        <div className="w-full h-[70%] relative group">
           <Image
-            className="absolute workspace-image cursor-pointer "
+            className="absolute workspace-image cursor-pointer"
             src={workspace.thumbnail}
             alt="Description of the image"
             width={0}
             height={0}
             sizes="100%"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', border: '1px solid #eeeeee' }}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              border: '1px solid #eeeeee',
+            }}
             priority
           />
+
+          {/* Hover 시 보여질 div */}
+          <div className="workspace-item !h-[100%] absolute flex flex-row opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="flex-1 flex justify-center items-center">
+              <ViewIcon src={`/readme/${curWorkspace.current.id}`} />
+            </div>
+            <div className="flex-1 flex justify-center items-center">
+              <EditIcon src={curWorkspace.current.id} />
+            </div>
+          </div>
         </div>
       )}
-
-      <div className="workspace-item absolute flex flex-row  ">
-        <div className="flex-1 flex justify-center items-center">
-          <ViewIcon src={`/readme/${curWorkspace.current.id}`} />
-        </div>
-        <div className="flex-1 flex justify-center items-center">
-          <EditIcon src={curWorkspace.current.id} />
-        </div>
-      </div>
 
       <div style={{ fontSize: '30px' }} className="flex items-end text-ellipsis1 font-bold overflow-hidden">
         {workspace.name}
