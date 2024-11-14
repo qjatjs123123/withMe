@@ -1,5 +1,5 @@
 import ReadMeBtn from '@/app/_components/ReadMeBtn';
-import axios from '@/util/axiosConfig';
+import axios from 'axios';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
@@ -17,7 +17,6 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
   let workSpace_data = null;
   if (!(id && !isNaN(Number(id)))) return;
-
   try {
     const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
       workspace_id: id,
@@ -50,6 +49,7 @@ export default async function ReadMe({ params }: Params) {
   const { id } = await params;
   let data = null;
   if (!(id && !isNaN(Number(id)))) return;
+
   try {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
       workspace_id: id,
@@ -71,10 +71,6 @@ export default async function ReadMe({ params }: Params) {
           fontWeight: 'bold',
         }}
       >
-        <ReadMeBtn />
-        <span style={{ marginLeft: '10px' }}>README</span>
-      </div>
-      <div className="markdown-body">
         <style>
           {`
             /*!*****************************************************************************************************************************************************************************************************************************************************************!*\
@@ -381,6 +377,7 @@ input:where([type='submit']) {
             border-radius: 6px;
             padding: 16px;
             margin-top: 30px;
+            display:flex;
           }
 /*
 Use the modern Firefox focus style for all focusable elements.
@@ -1484,6 +1481,7 @@ video {
 
 /* 마크다운 바디에서는 모든 css revert */
 .markdown-body * {
+overflow-w:scroll;
   all: revert;
 }
 .hover\:scale-105:hover {
@@ -1571,11 +1569,19 @@ video {
     flex-direction: row;
   }
 }
+p {
 
-
+img {
+  max-width: 100% !important;
+  height: auto;
+}
           
           `}
         </style>
+        <ReadMeBtn />
+        <span style={{ marginLeft: '10px' }}>README</span>
+      </div>
+      <div className="markdown-body">
         <ReactMarkdown key={1} remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw]}>
           {data?.data?.readmeContent}
         </ReactMarkdown>
