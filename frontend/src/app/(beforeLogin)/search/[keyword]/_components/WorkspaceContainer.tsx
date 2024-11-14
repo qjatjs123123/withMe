@@ -32,11 +32,15 @@ export default function WorkSpaceContainer({ workspaces }: WorkSpaceContainerPro
 
   return (
     <>
-      {transformedWorkspaces.map((workspace) => (
-        <WorkspaceStateProvider key={workspace.id}>
-          <UserWorkSpace key={workspace.id} id={workspace.id} name={workspace.name} thumbnail={workspace.thumbnail} />
-        </WorkspaceStateProvider>
-      ))}
+      {transformedWorkspaces.length === 0 ? (
+        <p className="font-bold text-[30px]">죄송합니다. 검색 결과가 없습니다.</p>
+      ) : (
+        transformedWorkspaces.map((workspace) => (
+          <WorkspaceStateProvider key={workspace.id}>
+            <UserWorkSpace key={workspace.id} id={workspace.id} name={workspace.name} thumbnail={workspace.thumbnail} />
+          </WorkspaceStateProvider>
+        ))
+      )}
     </>
   );
 }
