@@ -4,17 +4,33 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import 'github-markdown-css';
+import { useActiveId } from '../_contexts/ActiveIdContext';
+import { useMenuItems } from '../_contexts/MenuItemsContext';
 
 export function MarkdownPreview() {
   const { markdowns } = useMarkdown();
+  const { menuItems } = useMenuItems();
 
   return (
-    <div className="markdown-body">
-      {markdowns?.map((markdown) => (
-        <ReactMarkdown key={markdown.id} remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw]}>
-          {markdown.content}
-        </ReactMarkdown>
-      ))}
+    <div>
+      {markdowns?.map((markdown) => {
+        const label = menuItems.find((menu) => menu.id === markdown.id).label;
+        return (
+          <div key={markdown.id} className="relative mb-8">
+            <div className="markdown-body">
+              <ReactMarkdown key={markdown.id} remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw]}>
+                {markdown.content}
+              </ReactMarkdown>
+            </div>
+            <div
+              className="text-[16px] w-full flex justify-end"
+              style={{ fontFamily: 'samsungsharpsans-bold, SamsungOneKorean-700' }}
+            >
+              <div className="w-30 border-t-2 flex justify-end">{label}</div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
