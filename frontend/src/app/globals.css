@@ -23,9 +23,8 @@
 
 body {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif, 'samsungsharpsans-bold';
+  /* font-family: Arial, Helvetica, sans-serif, 'samsungsharpsans-bold'; */
   overflow-y: scroll;
-  background-color: #f7f9fa !important;
 }
 
 .responsive_workspaceheader {
@@ -41,6 +40,48 @@ body {
   /* 768px 이상에서 가로 정렬 */
   .responsive_workspaceheader {
     flex-direction: row;
+  }
+}
+h1 {
+  padding: 0;
+  margin: 0;
+}
+.responsive_vtext {
+  font-size: clamp(30px, 3vw, 48px);
+}
+@media (max-width: 748px) {
+  .header-container {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+.responsive_text {
+  font-size: 36px;
+  width: 50%;
+  @media screen and (max-width: 1440px) {
+  }
+
+  @media screen and (max-width: 1056px) {
+    font-size: 26px;
+  }
+  @media screen and (max-width: 786px) {
+    width: 80%;
+    font-size: 18px;
+  }
+}
+
+.responsive_text {
+  font-size: 36px;
+  width: 50%;
+  @media screen and (max-width: 1440px) {
+  }
+
+  @media screen and (max-width: 1056px) {
+    font-size: 26px;
+  }
+  @media screen and (max-width: 786px) {
+    width: 80%;
+    font-size: 18px;
   }
 }
 
@@ -69,25 +110,25 @@ body {
   grid-gap: 32px;
   padding: 0;
   margin: 0;
-  --card-count: 5;
+  --card-count: 4;
   --spacer: calc(var(--card-count) - 1);
-  --width: 20%;
+  --width: 25%;
 
   grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))));
 
   @media screen and (max-width: 1919px) {
-    --card-count: 4;
-    --width: 25%;
+    --card-count: 3;
+    --width: 33.33%;
   }
 
   @media screen and (max-width: 1440px) {
-    --card-count: 4;
-    --width: 25%;
+    --card-count: 3;
+    --width: 33.33%;
   }
 
   @media screen and (max-width: 1056px) {
-    --card-count: 3;
-    --width: 33.33%;
+    --card-count: 2;
+    --width: 50%;
   }
 
   @media screen and (max-width: 868px) {
@@ -169,7 +210,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
   text-align: center; /* text-center */
   display: flex; /* flex */
-  border-radius: 0.5rem; /* rounded-lg */
+
   overflow: hidden; /* overflow-hidden */
   flex-direction: column; /* flex-col */
 }
@@ -183,7 +224,6 @@ body {
 
 .container-wrapper {
   height: 100vh;
-  background-color: #f7f9fa;
 }
 
 .container-block {
@@ -198,4 +238,53 @@ body {
 @font-face {
   font-family: 'samsungsharpsans-bold';
   src: url('/fonts/samsungsharpsans-bold.otf') format('opentype');
+  unicode-range: U+0000-007F;
+}
+@font-face {
+  font-family: 'SamsungSharpSansRegular';
+  src: url('/fonts/SamsungSharpSansRegular.woff') format('opentype');
+}
+@font-face {
+  font-family: 'SamsungOne';
+  src: url('/fonts/SamsungOne.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'SamsungOneKorean-700';
+  src: url('/fonts/SamsungOneKorean-700.ttf') format('truetype');
+  unicode-range: U+AC00-D7AF;
+}
+@font-face {
+  font-family: 'SamsungOneKorean-400';
+  src: url('/fonts/SamsungOneKorean-400.ttf') format('truetype');
+  unicode-range: U+AC00-D7AF;
+}
+body:lang(en) {
+  font-family: 'samsungsharpsans-bold'; /* 기본 폰트는 Roboto로 설정 */
+}
+
+/* 한글이 포함된 부분은 Nanum Gothic 폰트로 설정 */
+/* HTML 요소에서 lang 속성을 활용해 한글에 다른 폰트 적용 */
+body:lang(ko) {
+  font-family: 'SamsungOneKorean-700', 'SamsungSharpSans-Bold', sans-serif;
+}
+
+.cursor-pointer-nav {
+  position: relative;
+  cursor: pointer;
+}
+
+.cursor-pointer-nav::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background-color: black;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.cursor-pointer-nav:hover::before {
+  width: 100%;
 }

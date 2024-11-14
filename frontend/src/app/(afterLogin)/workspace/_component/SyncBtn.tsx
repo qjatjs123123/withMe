@@ -55,7 +55,7 @@ export default function SyncBtn() {
             fill="black"
           />
         </svg>
-        동기화
+        Sync
       </button>
     </>
   );

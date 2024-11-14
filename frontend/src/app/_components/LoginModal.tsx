@@ -17,34 +17,18 @@ export default function LoginModal() {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 w-screen h-screen  p-[10px] ">
       <div className="container-login">
-        <div className="bg-[#04092F] p-[20px] flex items-center justify-center">
-          <Image
-            className=" "
-            src="/loginLogo.png"
-            alt="loginLogo of the image"
-            layout="fixed"
-            width={200} // 기본 폭
-            height={300} // 기본 높이
-            sizes="100%"
-            style={{ objectFit: 'contain' }}
-            priority
-          />
-          {/* <img
-            className="workspace-image"
-            src="/loginLogo.png"
-            alt="loginLogo of the image"
-            width={200} // 기본 폭
-            height={300} // 기본 높이
-            style={{ objectFit: 'contain' }} // 이미지의 비율을 유지하면서 영역에 맞게 표시
-          /> */}
-        </div>
-        <div className="flex flex-col justify-center items-center w-full p-[35px] relative">
+        <div className="flex flex-col  w-full p-[35px] relative">
           <div className="absolute top-4 right-4">
             <CloseBtn handleClose={handleClose} />
           </div>
-          <h1 className="font-bold text-[40px]">로그인</h1>
+          <div className="font-bold text-[40px] flex justify-start w-full border-b-2 border-black pb-[30px]">
+            <h1>로그인 하기</h1>
+          </div>
+          <div className="pt-[30px] flex justify-start w-full">
+            <span>깃허브 로그인</span>
+          </div>
           <button
-            className="rounded-3xl border border-black pl-[10px] py-1 flex gap-5 mt-[30px] w-[200px] h-[35px] items-center"
+            className="border border-gray pl-[10px]  flex gap-5 p-3 mt-[30px]items-center"
             onClick={() => sendLoginAPI(API_URL.LOGIN)}
           >
             <Image
@@ -55,10 +39,13 @@ export default function LoginModal() {
               height={25}
               sizes="100%"
             />
-            Login with Github
+            Github
           </button>
+          <div className="pt-[30px] flex justify-start w-full">
+            <span>SSAFY 깃 로그인</span>
+          </div>
           <button
-            className="rounded-3xl border border-black pl-[10px] py-1 flex gap-5 mt-[20px] w-[200px] h-[35px] items-center"
+            className=" border border-gray pl-[10px] flex gap-5 p-3  items-center"
             onClick={() => sendLoginAPI(API_URL.LOGIN_LAB)}
           >
             <Image
@@ -69,8 +56,12 @@ export default function LoginModal() {
               height={25}
               sizes="100%"
             />
-            Login with SSAFY
+            SSAFY GitLab
           </button>
+
+          <div className=" bg-[#F6F6F6] items-center justify-center mt-[30px]">
+            <span className="block pt-[15px] pb-[15px]">GitHub 계정으로 간편하게 로그인해 보세요</span>
+          </div>
         </div>
       </div>
     </div>
