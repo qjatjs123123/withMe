@@ -18,4 +18,6 @@ public interface ReadMeService {
     List<SearchReadMeResponseDTO> searchReadme(String keyword);
 
     Flux<String> makeReadMeDraft(ReadMeDraftRequest readMeDraftRequest) throws JsonProcessingException;
+
+    List<SearchReadMeResponseDTO> listReadme(Integer size);
 }

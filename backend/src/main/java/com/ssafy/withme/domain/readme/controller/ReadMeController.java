@@ -6,6 +6,8 @@ import com.ssafy.withme.domain.readme.dto.response.GetReadMeResponseDTO;
 import com.ssafy.withme.domain.readme.dto.response.SearchReadMeResponseDTO;
 import com.ssafy.withme.domain.readme.service.ReadMeService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/readme")
 public class ReadMeController {
+    private static final Logger log = LoggerFactory.getLogger(ReadMeController.class);
     private final ReadMeService readMeService;
 
     @PostMapping("")
@@ -28,8 +31,12 @@ public class ReadMeController {
         return readMeService.getReadme(workspaceId);
     }
 
+    //TODO: 페이징 처리 추가
     @GetMapping("/search")
     public List<SearchReadMeResponseDTO> getSearchReadMe(@RequestParam String keyword) {
+        if(keyword == null || keyword.isEmpty())
+            return readMeService.listReadme(30);
+
         return readMeService.searchReadme(keyword);
     }
 
