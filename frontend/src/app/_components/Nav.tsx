@@ -32,11 +32,8 @@ export default async function Nav() {
           height: '90px',
         }}
       >
-        <div
-          className="items-center"
-          style={{ width: '100%', flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}
-        >
-          <Link href={isLogin ? '/workspace' : '/'}>
+        <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
+          <Link href={isLogin ? '/' : '/'}>
             <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
               WithMe
             </span>

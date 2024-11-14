@@ -16,8 +16,8 @@ export default function NavList() {
         <div className={getLinkClassName('/explore')}>EXPLORE</div>
       </Link>
 
-      <Link href={'/'}>
-        <div className={getLinkClassName('/')}>ABOUT US</div>
+      <Link href={'/aboutus'}>
+        <div className={getLinkClassName('/aboutus')}>ABOUT US</div>
       </Link>
     </div>
   );
