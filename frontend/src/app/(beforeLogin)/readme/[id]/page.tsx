@@ -63,6 +63,7 @@ export default async function ReadMe({ params }: Params) {
   return (
     <div className="responsive_mainResponsive markdown-wrapper flex flex-col mb-[30px]">
       <div
+        className="inner"
         style={{
           borderBottom: '1px solid #d1d9e0',
           paddingBottom: '8px',
@@ -1597,6 +1598,15 @@ img {
           {data?.data?.readmeContent}
         </ReactMarkdown>
       </div>
+      <style>{`
+          .markdown-wrapper .markdown-body pre {
+  white-space: pre-wrap !important; /* 줄바꿈 허용 */
+  word-break: break-word !important; /* 단어 단위로 줄바꿈 */
+  overflow-x: auto !important; /* 가로 스크롤 허용 */
+  max-width: 100% !important; /* 부모 요소 너비 초과 방지 */
+  box-sizing: border-box;
+}
+        `}</style>
     </div>
   );
 }
