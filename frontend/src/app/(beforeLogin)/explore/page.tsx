@@ -24,8 +24,8 @@ export default async function ReadMe({ params }: Params) {
   }
 
   return (
-    <div className="responsive_mainResponsive">
-      <header className="pt-[95px] "></header>
+    <div className="responsive_container">
+      <header className="pt-[55px] "></header>
       <div className="grid_mainGrid ">
         <WorkSpaceContainer workspaces={workspaces} />
       </div>

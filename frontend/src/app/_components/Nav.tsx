@@ -21,11 +21,10 @@ export default async function Nav() {
   return (
     <>
       <nav
+        className="fixed w-full bg-white flex flex-row items-center z-15 h-[90px] px-8 md:px-[50px]"
         style={{
           position: 'fixed',
-          backgroundColor: 'white', // bg-[#020623]
-          width: '100%',
-          padding: '0px 50px', // p-[12px]
+          backgroundColor: 'white',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
@@ -33,7 +32,10 @@ export default async function Nav() {
           height: '90px',
         }}
       >
-        <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
+        <div
+          className="items-center"
+          style={{ width: '100%', flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}
+        >
           <Link href={isLogin ? '/workspace' : '/'}>
             <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
               WithMe
@@ -43,7 +45,7 @@ export default async function Nav() {
           <NavList />
         </div>
         <div style={{ marginLeft: '10px' }}></div>
-        <div className="flex items-center justify-end " style={{ flex: '1 1 0%', gap: '26px' }}>
+        <div className="flex items-center justify-end " style={{ gap: '26px' }}>
           <SearchBtn />
           {isLogin ? (
             <>
@@ -740,6 +742,105 @@ img, video {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+@media only screen and (max-width: 767.7px) {
+    .responsive_container {
+    padding-left:30px;
+    padding-right:30px;
+        min-height:100vh !important
+    }
+}
+
+@media only screen and (max-width: 767.7px) and (max-width: 767.7px) {
+    .responsive_container {
+        padding-top:12.8vw
+        padding-left:30px;
+    padding-right:30px;
+    }
+}
+
+@media only screen and (max-width: 767.7px) and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:90px;
+    padding-right:90px;
+        padding-top:96px;
+        padding-top: 7.5vw
+    }
+}
+
+@media only screen and (max-width: 767.7px) and (min-width: 1281px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:96px
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        min-height:calc(100vh - (61 * 100 / 1280 * 1vw)) !important
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) and (max-width: 767.7px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:12vw
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px;
+        padding-top: 7.03125vw
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) and (min-width: 1281px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px
+    }
+}
+
+@media only screen and (min-width: 1281px) {
+    .responsive_container {
+        min-height:calc(100vh - 61px) !impo
+        padding-left:50px;
+    padding-right:50px;
+    }
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 767.7px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:12vw
+    }
+}
+
+@media only screen and (min-width: 1281px) and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px;
+        padding-top: 7.03125vw
+    }
+}
+
+@media only screen and (min-width: 1281px) and (min-width: 1281px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px
+    }
 }
 
 
