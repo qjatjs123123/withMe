@@ -3,12 +3,7 @@ import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { RoomProvider, ClientSideSuspense } from '@liveblocks/react/suspense';
 import { Editor } from './Editor';
 
-interface LeftMainProps {
-  connected: Set<string>;
-  setConnected: React.Dispatch<React.SetStateAction<Set<string>>>;
-}
-
-export default function LeftMain({ connected, setConnected }: LeftMainProps) {
+export default function LeftMain() {
   const { initialItems } = useMenuItems();
 
   if (!initialItems || initialItems.length === 0) {
@@ -19,22 +14,14 @@ export default function LeftMain({ connected, setConnected }: LeftMainProps) {
     <ClientSideSuspense fallback={<div></div>}>
       <div className="bg-white h-full w-full">
         {initialItems.map((item) => (
-          <RoomWithEditor key={`room-${item.id}`} id={item.id} connected={connected} setConnected={setConnected} />
+          <RoomWithEditor key={`room-${item.id}`} id={item.id} />
         ))}
       </div>
     </ClientSideSuspense>
   );
 }
 
-function RoomWithEditor({
-  id,
-  connected,
-  setConnected,
-}: {
-  id: string;
-  connected: Set<string>;
-  setConnected: React.Dispatch<React.SetStateAction<Set<string>>>;
-}) {
+function RoomWithEditor({ id }: { id: string }) {
   const { activeId } = useActiveId();
   return (
     <RoomProvider
@@ -44,9 +31,11 @@ function RoomWithEditor({
         menuItems: [],
       }}
     >
-      <ClientSideSuspense fallback={<div>test3...</div>}>
-        <div className={`p-4 transition-opacity duration-300 ${activeId === id ? '' : 'hidden pointer-events-none'}`}>
-          <Editor connected={connected} setConnected={setConnected} />
+      <ClientSideSuspense fallback={<div></div>}>
+        <div
+          className={`p-4 transition-opacity duration-300 h-full ${activeId === id ? '' : 'hidden pointer-events-none'}`}
+        >
+          <Editor />
         </div>
       </ClientSideSuspense>
     </RoomProvider>
