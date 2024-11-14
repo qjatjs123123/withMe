@@ -25,8 +25,8 @@ export default async function ReadMe({ params }: Params) {
 
   return (
     <div className="responsive_mainResponsive">
-      <header style={{ paddingTop: '30px', paddingBottom: '30px' }} className="responsive_workspaceheader">
-        <PageHeader title={PAGE_HEADER.search} />
+      <header className="pt-[95px] pb-[50px] flex gap-[15px] flex-start header-container">
+        <PageHeader title={PAGE_HEADER.search} content={decodeURIComponent(keyword)} />
       </header>
       <div className="grid_mainGrid ">
         <WorkSpaceContainer workspaces={workspaces} />
