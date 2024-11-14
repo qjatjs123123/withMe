@@ -749,7 +749,7 @@ img, video {
   margin-right: auto;
   padding-left: 10px;
   padding-right: 10px;
-  margin-bottom:30px;
+  padding-bottom:80px;
 }
 
 @media screen and (width <= 1919px) {
@@ -825,13 +825,23 @@ img, video {
   visibility: hidden;
 }
 
-.workspace-image:hover ~ .workspace-item, .workspace-item:hover {
+.workspace-image:hover ~ .workspace-item,
+.workspace-item:hover {
   visibility: visible;
+  opacity: 1; /* 기본값: 요소가 보이게 함 */
+  transition: visibility 0s, opacity 0.3s ease-in-out; /* 트랜지션 추가 */
+}
+
+.workspace-item {
+  opacity: 0; /* 기본적으로 요소를 숨김 */
+  visibility: hidden; /* 요소를 숨김 */
+  transition: visibility 0s, opacity 0.3s ease-in-out; /* 트랜지션 추가 */
 }
 
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  transition: background-color 0.3s ease-in-out; /* 배경 색상 변화에 트랜지션 추가 */
 }
 
 .hover\:text-black:hover {

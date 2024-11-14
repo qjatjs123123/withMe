@@ -58,17 +58,20 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       {!isVisible ? (
         <div style={{ width: '100%', height: '70%', backgroundColor: '#CCCCCC' }} />
       ) : (
-        <Image
-          className="workspace-image cursor-pointer "
-          src={workspace.thumbnail}
-          alt="Description of the image"
-          width={200}
-          height={300}
-          sizes="100%"
-          style={{ width: '100%', height: '70%', objectFit: 'contain', border: '1px solid #eeeeee' }}
-          onLoad={() => setIsVisible(true)}
-          priority
-        />
+        <>
+          <div className="w-full h-[70%]"></div>
+          <Image
+            className="absolute workspace-image cursor-pointer "
+            src={workspace.thumbnail}
+            alt="Description of the image"
+            width={200}
+            height={300}
+            sizes="100%"
+            style={{ width: '100%', height: '70%', objectFit: 'contain', border: '1px solid #eeeeee' }}
+            onLoad={() => setIsVisible(true)}
+            priority
+          />
+        </>
       )}
 
       <div className="workspace-item absolute flex flex-row  ">
@@ -100,7 +103,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
         <div className="flex mt-[20px] justify-between">
           <div style={{ fontSize: '12px', fontFamily: 'SamsungOneKorean-400' }} className="flex flex-row justify-start">
             <span>{workspace.owner}</span>
-            <span> | </span>
+            <span style={{ marginLeft: '5px', marginRight: '5px' }}> | </span>
             <span>{formatDate(workspace.updatedAt)}</span>
           </div>
           <MoreBtn />

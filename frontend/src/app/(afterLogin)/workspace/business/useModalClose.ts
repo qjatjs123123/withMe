@@ -11,7 +11,8 @@ const useModalClose = () => {
 
   const handleClickOutside = (e) => {
     if (e.target.closest('nav')) return;
-    if (btnRef.current.contains(e.target)) return;
+    if (btnRef.current && btnRef.current.contains(e.target)) return;
+
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       setIsVisible(false);
     }
