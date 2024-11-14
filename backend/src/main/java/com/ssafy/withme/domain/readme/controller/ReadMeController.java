@@ -3,8 +3,8 @@ package com.ssafy.withme.domain.readme.controller;
 import com.ssafy.withme.domain.readme.dto.request.ReadMeDraftRequest;
 import com.ssafy.withme.domain.readme.dto.request.SaveReadMeRequestDTO;
 import com.ssafy.withme.domain.readme.dto.response.GetReadMeResponseDTO;
-import com.ssafy.withme.domain.readme.dto.response.SearchReadMeResponseDTO;
 import com.ssafy.withme.domain.readme.service.ReadMeService;
+import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceSimpleInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class ReadMeController {
 
     //TODO: 페이징 처리 추가
     @GetMapping("/search")
-    public List<SearchReadMeResponseDTO> getSearchReadMe(@RequestParam String keyword) {
+    public List<WorkspaceSimpleInfoResponse> getSearchReadMe(@RequestParam String keyword) {
         if(keyword == null || keyword.isEmpty())
             return readMeService.listReadme(30);
 

@@ -10,7 +10,7 @@ import com.ssafy.withme.domain.readme.dto.request.ChatGptRequest;
 import com.ssafy.withme.domain.readme.dto.request.ReadMeDraftRequest;
 import com.ssafy.withme.domain.readme.dto.request.SaveReadMeRequestDTO;
 import com.ssafy.withme.domain.readme.dto.response.GetReadMeResponseDTO;
-import com.ssafy.withme.domain.readme.dto.response.SearchReadMeResponseDTO;
+import com.ssafy.withme.domain.workspace.dto.Response.WorkspaceSimpleInfoResponse;
 import com.ssafy.withme.domain.workspace.entity.Workspace;
 import com.ssafy.withme.domain.workspace.entity.WorkspaceDocument;
 import com.ssafy.withme.domain.workspace.repository.elasticsearch.WorkspaceElasticsearchRepository;
@@ -28,6 +28,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -62,15 +63,11 @@ public class ReadMeServiceImpl implements ReadMeService {
     }
 
     @Override
-    public List<SearchReadMeResponseDTO> searchReadme(String keyword) {
+    public List<WorkspaceSimpleInfoResponse> searchReadme(String keyword) {
         return workspaceElasticsearchRepository.findByReadmeContentContaining(keyword).stream()
-                .map(workspace -> new SearchReadMeResponseDTO(
-                        workspace.getId(),
-                        workspace.getName(),
-                        workspaceJpaRepository.findById(workspace.getId())
-                                .map(Workspace::getThumbnail)
-                                .orElse(null)
-                ))
+                .map(document -> workspaceJpaRepository.findById(document.getId()).orElse(null))
+                .map(workspace -> workspace != null ? WorkspaceSimpleInfoResponse.from(workspace) : null)
+                .filter(Objects::nonNull)
                 .toList();
     }
 
@@ -102,9 +99,9 @@ public class ReadMeServiceImpl implements ReadMeService {
     }
 
     @Override
-    public List<SearchReadMeResponseDTO> listReadme(Integer size) {
+    public List<WorkspaceSimpleInfoResponse> listReadme(Integer size) {
         return workspaceJpaRepository.findByIsCreatedTrueOrderByUpdatedAtDesc().stream()
-                .map(workspace -> new SearchReadMeResponseDTO(workspace.getId(), workspace.getName(), workspace.getThumbnail()))
+                .map(WorkspaceSimpleInfoResponse::from)
                 .limit(size).toList();
     }
 
