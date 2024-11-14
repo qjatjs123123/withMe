@@ -36,17 +36,18 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       }}
       className="w-full relative  flex flex-col  aspect-[1/0.9]"
     >
-      <div className="w-full h-[70%]"></div>
-      <Image
-        className="absolute workspace-image cursor-pointer "
-        src={workspace.thumbnail}
-        alt="Description of the image"
-        width={0}
-        height={0}
-        sizes="100%"
-        style={{ width: '100%', height: '70%', objectFit: 'contain', border: '1px solid #eeeeee' }}
-        priority
-      />
+      <div className="w-full h-[70%] relative">
+        <Image
+          className="absolute workspace-image cursor-pointer "
+          src={workspace.thumbnail}
+          alt="Description of the image"
+          width={0}
+          height={0}
+          sizes="100%"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', border: '1px solid #eeeeee' }}
+          priority
+        />
+      </div>
 
       <div style={{ height: '70%' }} className="workspace-item absolute flex flex-row  ">
         <div className="flex-1 flex justify-center items-center">
@@ -54,13 +55,10 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
         </div>
       </div>
 
-      <div
-        style={{ fontSize: '30px' }}
-        className="flex items-end mt-[20px] font-bold overflow-hidden whitespace-nowrap text-ellipsis "
-      >
+      <div style={{ fontSize: '30px' }} className="flex items-end  font-bold overflow-hidden text-ellipsis1">
         {workspace.name}
       </div>
-      <div>
+      <div className="h-[55px] text-ellipsis2">
         <a
           href={workspace.repoUrl}
           target="_blank"
@@ -71,8 +69,11 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
         </a>
       </div>
       <div>
-        <div className="flex mt-[20px] justify-between">
-          <div style={{ fontSize: '12px', fontFamily: 'SamsungOneKorean-400' }} className="flex flex-row justify-start">
+        <div className="flex  justify-between">
+          <div
+            style={{ fontSize: '12px', fontFamily: 'SamsungOneKorean-400' }}
+            className=" text-ellipsis1 flex flex-row justify-start"
+          >
             <span>{workspace.owner}</span>
             <span style={{ marginLeft: '5px', marginRight: '5px' }}> | </span>
             <span>{formatDate(workspace.updatedAt)}</span>
