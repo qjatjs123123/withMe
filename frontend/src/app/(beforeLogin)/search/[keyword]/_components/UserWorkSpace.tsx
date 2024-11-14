@@ -38,22 +38,28 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       }}
       className="w-full relative  flex flex-col  aspect-[1/0.9]"
     >
-      <div className="w-full h-[70%] relative">
+      <div className="w-full h-[70%] relative group">
         <Image
-          className="absolute workspace-image cursor-pointer "
+          className="absolute workspace-image cursor-pointer"
           src={workspace.thumbnail}
           alt="Description of the image"
           width={0}
           height={0}
           sizes="100%"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', border: '1px solid #eeeeee' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            border: '1px solid #eeeeee',
+          }}
           priority
         />
-      </div>
 
-      <div style={{ height: '70%' }} className="workspace-item absolute flex flex-row  ">
-        <div className="flex-1 flex justify-center items-center">
-          <ViewIcon src={`/readme/${workspace.id}`} />
+        {/* Hover 시 보여질 div */}
+        <div className="workspace-item !h-[100%] absolute flex flex-row opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="flex-1 flex justify-center items-center">
+            <ViewIcon src={`/readme/${workspace.id}`} />
+          </div>
         </div>
       </div>
 
