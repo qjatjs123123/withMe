@@ -54,7 +54,7 @@ function DeleteModal({ isOpen, onClose, onConfirm }: DeleteModalProps) {
   );
 }
 
-function LeftBarContent({ toggleSidebar, isOpen }) {
+function LeftBarContent({ isOpen, toggleSidebar }) {
   const { activeId, setActiveId } = useActiveId();
   const { initialItems, setInitialItems, menuItems, setMenuItems } = useMenuItems();
   const { editorsRef } = useEditor();
@@ -246,7 +246,7 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
                   setEditValue('');
                 }
               }}
-              className="bg-transparent border-none outline-none flex-1 text-white"
+              className="bg-transparent border-none outline-none w-[100px]"
               autoFocus
             />
           ) : (
@@ -272,7 +272,8 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
             transition-all duration-200
             text-sm font-semibold
             border-[1.5px] border-dashed border-gray-600
-            hover:bg-gray-700
+            
+            hover:bg-black
             hover:border-gray-400
             hover:text-white
             flex items-center justify-center gap-2"
@@ -287,12 +288,8 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
   );
 }
 
-export function LeftBar() {
-  const [isOpen, setIsOpen] = useState(true);
+export function LeftBar({ isOpen, toggleSidebar }) {
   const { roomId } = useInfo();
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
 
   return (
     <RoomProvider
@@ -305,17 +302,15 @@ export function LeftBar() {
       <ClientSideSuspense
         fallback={
           <div
-            className="fixed bottom-0 flex w-full bg-white justify-center items-center z-[100]"
-            style={{ height: `calc(100vh - 72px)` }}
+            className="fixed bottom-0 flex w-full justify-center bg-white items-center z-[100]"
+            style={{ height: `calc(100vh - 90px)` }}
           >
             <Loading />
           </div>
         }
       >
         {() => (
-          <div
-            className={`bg-white w-60 border-r-2 h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
-          >
+          <div className={`w-60 border-r-2 h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}>
             <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />
           </div>
         )}

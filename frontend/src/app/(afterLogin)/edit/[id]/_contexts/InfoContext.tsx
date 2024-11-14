@@ -114,21 +114,27 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <>
-        <div className="relative h-[72px]">
+        <div className="relative">
           <nav
             style={{
-              backgroundColor: '#020623',
+              // position: 'fixed',
+              backgroundColor: 'white', // bg-[#020623]
               width: '100%',
-              height: '72px',
-              padding: '12px',
+              padding: '0px 50px', // p-[12px]
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
+              zIndex: '15',
+              height: '90px',
             }}
+            className="border-b-2"
           >
-            <div style={{ flex: '1 1 0%' }}>
-              <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
-                With<span className="text-[#49DCB0]">M</span>E.md
+            <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
+              <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                WithMe
+              </span>
+              <span className="cursor-pointer-nav text-[20px]" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                Workspace
               </span>
             </div>
             <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
@@ -137,13 +143,13 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
                 <div className="mr-4"></div>
                 <div className="flex items-center">
                   <CommitIcon />
-                  <span className="text-white ml-1.5 font-bold text-lg">Commit</span>
+                  <span className="ml-1.5 font-bold text-lg">Commit</span>
                 </div>
               </div>
             </div>
           </nav>
         </div>
-        <div className="w-full flex justify-center items-center" style={{ height: `calc(100vh - 72px)` }}>
+        <div className="w-full flex justify-center items-center" style={{ height: `calc(100vh - 90px)` }}>
           <Loading />
         </div>
       </>

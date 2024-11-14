@@ -21,20 +21,22 @@ export default function EditPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
   const mainContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const handleMouseDown = () => setIsDragging(true);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging && mainContainerRef.current) {
       const containerWidth = mainContainerRef.current.offsetWidth;
+      const sidebarWidth = isSidebarOpen ? LEFT_SIDEBAR_WIDTH : 0;
       if (isVertical) {
-        const adjustedY = e.clientY - 72;
-        const newLeftHeight = (adjustedY / (window.innerHeight - 72)) * 100;
+        const adjustedY = e.clientY - 90;
+        const newLeftHeight = (adjustedY / (window.innerHeight - 90)) * 100;
         if (newLeftHeight > 0 && newLeftHeight < 100) {
           setLeftSize(newLeftHeight);
         }
       } else {
-        const adjustedX = e.clientX - LEFT_SIDEBAR_WIDTH;
+        const adjustedX = e.clientX - sidebarWidth;
         const newLeftWidth = (adjustedX / containerWidth) * 100;
         if (newLeftWidth > 0 && newLeftWidth < 100) {
           setLeftSize(newLeftWidth);
@@ -81,8 +83,8 @@ export default function EditPage() {
                 <div className="flex flex-col bg-white h-full">
                   <Nav />
                   <div className="flex h-full">
-                    <div className="h-full">
-                      <LeftBar />
+                    <div className="h-full bg-[#f9f9f9]" style={{ fontFamily: 'SamsungOneKorean-700' }}>
+                      <LeftBar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
                     </div>
 
                     <ConnectionProvider>
@@ -91,7 +93,7 @@ export default function EditPage() {
                         ref={mainContainerRef}
                         style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
                       >
-                        <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 72px)` }}>
+                        <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
                           <div
                             style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
                             className="h-full w-full overflow-y-auto"
