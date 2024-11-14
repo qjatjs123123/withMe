@@ -21,7 +21,7 @@ interface GitLabCommitResponse {
 }
 
 export function CommitModal({ isOpen, onClose }: CommitModalProps) {
-  const { userName, repoName, token } = useInfo();
+  const { userName, repoName, token, ownerName } = useInfo();
   const { saveMarkdowns, getAllMarkdowns } = useMarkdown();
   const [isCommitting, setIsCommitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,49 +35,55 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
   // 레포지토리의 기본 브랜치 확인
   const checkDefaultBranch = async () => {
     try {
-      //TODO: username 대신 owner를 사용하도록 수정
+      let url: string;
+      let headers: HeadersInit = {
+        Authorization: `Bearer ${token}`,
+      };
 
-      const url =
-        provider === 'github'
-          ? `https://api.github.com/repos/${userName}/${repoName}`
-          : `https://lab.ssafy.com/api/v4/projects/${userName}%2F${repoName}`;
-
-      const response = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const repoData = await response.json();
-        setDefaultBranch(repoData.default_branch);
+      if (provider === 'github') {
+        url = `https://api.github.com/repos/${ownerName}/${repoName}`;
+      } else if (provider === 'gitlab') {
+        // GitLab API는 프로젝트 경로를 URL 인코딩해야 함
+        const encodedPath = encodeURIComponent(`${ownerName}/${repoName}`);
+        url = `https://lab.ssafy.com/api/v4/projects/${encodedPath}`;
       } else {
-        console.error('Failed to fetch repository info');
-        setDefaultBranch('main'); // 기본값으로 main 설정
+        throw new Error('Unsupported provider');
       }
+
+      const response = await fetch(url, { headers });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch repository info: ${response.statusText}`);
+      }
+
+      const repoData = await response.json();
+
+      // GitHub와 GitLab 모두 default_branch 필드를 동일하게 사용
+      setDefaultBranch(repoData.default_branch);
     } catch (error) {
       console.error('Error fetching repository info:', error);
-      setDefaultBranch('main'); // 에러 발생 시 main으로 설정
+      // 에러 발생 시 기본값으로 'main' 설정
+      setDefaultBranch('main');
     }
   };
 
   useEffect(() => {
-    if (isOpen && userName && repoName && provider) {
+    if (isOpen && ownerName && repoName && provider) {
       checkDefaultBranch();
     }
-  }, [isOpen, userName, repoName, provider]);
+  }, [isOpen, ownerName, repoName, provider]);
 
   const createCommit = async (message: string) => {
     saveMarkdowns();
-    // UTF-8로 인코딩 후 base64로 변환
-    const encoder = new TextEncoder();
-    const contentBytes = encoder.encode(getAllMarkdowns());
-    const content = Buffer.from(contentBytes).toString('base64');
-
     if (provider === 'github') {
-      createGitHubCommit(message, content);
+      // GitHub의 경우 기존 로직 유지
+      const encoder = new TextEncoder();
+      const contentBytes = encoder.encode(getAllMarkdowns());
+      const content = Buffer.from(contentBytes).toString('base64');
+      await createGitHubCommit(message, content);
     } else if (provider === 'gitlab') {
-      createGitlabCommit(message, content);
+      // GitLab의 경우 raw content 전송
+      await createGitlabCommit(message, getAllMarkdowns());
     } else return;
   };
 
@@ -85,7 +91,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     try {
       // 1. 현재 파일의 SHA 가져오기
       const getFileResponse = await fetch(
-        `https://api.github.com/repos/${userName}/${repoName}/contents/README.md?ref=${defaultBranch}`,
+        `https://api.github.com/repos/${ownerName}/${repoName}/contents/README.md?ref=${defaultBranch}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,7 +106,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       }
 
       // 2. 파일 업데이트 또는 생성
-      const response = await fetch(`https://api.github.com/repos/${userName}/${repoName}/contents/README.md`, {
+      const response = await fetch(`https://api.github.com/repos/${ownerName}/${repoName}/contents/README.md`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -140,7 +146,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     try {
       // 1. 현재 파일의 SHA 가져오기
       const getFileResponse = await fetch(
-        `https://lab.ssafy.com/api/v4/projects/${userName}%2F${repoName}/repository/files/README.md?ref=${defaultBranch}`,
+        `https://lab.ssafy.com/api/v4/projects/${ownerName}%2F${repoName}/repository/files/README.md?ref=${defaultBranch}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -154,7 +160,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
 
       // 3. 파일 업데이트 또는 생성
       const response = await fetch(
-        `https://lab.ssafy.com/api/v4/projects/${userName}%2F${repoName}/repository/files/README.md`,
+        `https://lab.ssafy.com/api/v4/projects/${ownerName}%2F${repoName}/repository/files/README.md`,
         {
           method,
           headers: {
@@ -241,7 +247,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
             onClick={handleCommit}
             disabled={isCommitting}
           >
-            {isCommitting ? 'Committing...' : 'Commit Changes'}
+            {isCommitting ? 'Committing...' : 'Commit & Push'}
           </button>
 
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

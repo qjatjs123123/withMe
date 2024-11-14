@@ -14,6 +14,46 @@ import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
 import { Loading } from './Loading';
 
+interface DeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+function DeleteModal({ isOpen, onClose, onConfirm }: DeleteModalProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
+
+      {/* Modal */}
+      <div className="relative bg-white rounded-lg p-6 w-80 max-w-md">
+        <h3 className="text-lg font-semibold mb-2">탭 삭제</h3>
+        <p className="text-gray-600 mb-6">이 탭을 삭제하시겠습니까?</p>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+          >
+            취소
+          </button>
+          <button
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
+            className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors"
+          >
+            삭제
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LeftBarContent({ toggleSidebar, isOpen }) {
   const { activeId, setActiveId } = useActiveId();
   const { initialItems, setInitialItems, menuItems, setMenuItems } = useMenuItems();
@@ -21,9 +61,12 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
   const [draggedItem, setDraggedItem] = useState<MenuItem | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<string>('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const storageMenuItems = useStorage((root) => root.menuItems);
   const storageInitialMenuItems = useStorage((root) => root.initialMenuItems);
+
   useEffect(() => {
     setMenuItems(storageMenuItems);
     setInitialItems(storageInitialMenuItems);
@@ -45,10 +88,7 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
     ({ storage }) => {
       if (!menuItems || !initialItems) return;
 
-      // 현재 사용 중인 id들을 Set으로 만들어 빠른 검색이 가능하게 함
       const usedIds = new Set(menuItems.map((item) => item.id));
-
-      // initialItems에서 아직 사용되지 않은 첫 번째 id를 찾음
       const availableId = initialItems.find((item) => !usedIds.has(item.id))?.id;
 
       if (!availableId) return;
@@ -109,15 +149,20 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
       alert('마지막 탭은 삭제할 수 없습니다.');
       return;
     }
-    if (window.confirm('정말 이 탭을 삭제하시겠습니까?')) {
-      deleteItem(id);
+    setItemToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (itemToDelete) {
+      deleteItem(itemToDelete);
+      setItemToDelete(null);
     }
   };
 
   const handleEditClick = (e: React.MouseEvent, item: MenuItem) => {
     e.stopPropagation();
     setEditingId(item.id);
-
     setEditValue(item.label);
   };
 
@@ -227,7 +272,6 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
             transition-all duration-200
             text-sm font-semibold
             border-[1.5px] border-dashed border-gray-600
-            
             hover:bg-gray-700
             hover:border-gray-400
             hover:text-white
@@ -237,6 +281,8 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
           <span>새 탭 추가</span>
         </button>
       )}
+
+      <DeleteModal isOpen={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
     </div>
   );
 }

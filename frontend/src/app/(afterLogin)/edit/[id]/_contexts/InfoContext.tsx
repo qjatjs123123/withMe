@@ -26,12 +26,14 @@ type InfoContextType = {
   setRepoName: (name: string) => void;
   repoUrl: string | null;
   setRepoUrl: (url: string) => void;
-  roomId: string; // null 타입 제거
+  roomId: string;
   setRoomId: (id: string) => void;
   userName: string | null;
   setUserName: (userName: string) => void;
   token: string | null;
   setToken: (token: string | null) => void;
+  ownerName: string | null; // 추가된 부분
+  setOwnerName: (owner: string) => void; // 추가된 부분
 };
 
 type WorkspaceResponse = {
@@ -48,6 +50,7 @@ type WorkspaceResponse = {
     repoUrl: string;
     roomId: string;
     thumbnail: null;
+    owner: string; // 추가된 부분
   };
   timestamp: string;
 };
@@ -64,9 +67,10 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [repoName, setRepoName] = useState<string | null>(null);
   const [repoUrl, setRepoUrl] = useState<string | null>(null);
-  const [roomId, setRoomId] = useState<string>(''); // 초기값을 빈 문자열로 설정
+  const [roomId, setRoomId] = useState<string>('');
   const [userName, setUserName] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [ownerName, setOwnerName] = useState<string | null>(null); // 추가된 부분
 
   useEffect(() => {
     const initializeData = async () => {
@@ -78,10 +82,11 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
             workspace_id: workspaceId,
           },
         );
-
+        console.log(response.data);
         setRepoName(response.data.data.name);
         setRepoUrl(response.data.data.repoUrl);
         setRoomId(response.data.data.roomId);
+        setOwnerName(response.data.data.owner); // 추가된 부분
 
         // 사용자 정보 처리
         const cookie = getCookieValue('userData');
@@ -122,16 +127,14 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
             }}
           >
             <div style={{ flex: '1 1 0%' }}>
-              {/* <Link href={'/workspace'}> */}
               <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
                 With<span className="text-[#49DCB0]">M</span>E.md
               </span>
-              {/* </Link> */}
             </div>
             <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
             <div style={{ flex: '1 1 0%' }}>
               <div className="flex justify-end items-center">
-                <div className="mr-4">{/* <LiveAvatars /> */}</div>
+                <div className="mr-4"></div>
                 <div className="flex items-center">
                   <CommitIcon />
                   <span className="text-white ml-1.5 font-bold text-lg">Commit</span>
@@ -160,6 +163,8 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
         setUserName,
         token,
         setToken,
+        ownerName, // 추가된 부분
+        setOwnerName, // 추가된 부분
       }}
     >
       {children}
