@@ -67,8 +67,8 @@ export default function WorkSpaceContainer() {
         </div>
       ) : (
         workspaces.map((workspace) => (
-          <WorkspaceStateProvider key={workspace.id}>
-            <UserWorkSpace key={workspace.id} workspace={workspace} />
+          <WorkspaceStateProvider key={`${workspace.id}`}>
+            <UserWorkSpace key={`${workspace.id}-user-workspace`} workspace={workspace} />
           </WorkspaceStateProvider>
         ))
       )}

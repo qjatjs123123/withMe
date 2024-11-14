@@ -1323,12 +1323,6 @@ video {
   }
 }
 
-body {
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  overflow-y: scroll;
-  background-color: #f7f9fa !important;
-}
 
 .responsive_workspaceheader {
   display: flex;
@@ -1485,7 +1479,7 @@ body {
 
 .container-wrapper {
   height: 100vh;
-  background-color: #f7f9fa;
+
 }
 
 /* 마크다운 바디에서는 모든 css revert */
