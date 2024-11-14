@@ -308,3 +308,27 @@ body:lang(ko) {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px); /* 아래에서 위로 나타나는 효과 */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* 원래 위치로 */
+  }
+}
+
+.scroll-event {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease forwards; /* 처음 로드 시 애니메이션 적용 */
+}
+
+.responsive_home {
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 758px) {
+    flex-direction: col !important;
+  }
+}
