@@ -12,7 +12,10 @@ export default function NavList() {
 
   return (
     <div className="flex flex-row text-[20px] items-center gap-[50px]">
-      <div className={getLinkClassName('/explore')}>EXPLORE</div>
+      <Link href={'/explore'}>
+        <div className={getLinkClassName('/explore')}>EXPLORE</div>
+      </Link>
+
       <Link href={'/'}>
         <div className={getLinkClassName('/')}>ABOUT US</div>
       </Link>
