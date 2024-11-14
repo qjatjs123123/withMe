@@ -1,7 +1,7 @@
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { RoomProvider, ClientSideSuspense } from '@liveblocks/react/suspense';
-import { Editor } from './Editor';
+import { Editor } from './DynamicEditor';
 
 export default function LeftMain() {
   const { initialItems } = useMenuItems();
