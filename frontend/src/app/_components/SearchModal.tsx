@@ -34,9 +34,9 @@ export default function SearchModal() {
         <div
           onMouseDown={(e) => e.stopPropagation()}
           ref={modalRef}
-          className={`fixed z-10 left-0 transition-transform duration-300 flex flex-col justify-center items-center ${
+          className={`fixed  z-10 left-0 transition-transform duration-300 flex flex-col justify-center items-center ${
             isVisible ? 'translate-y-0' : '-translate-y-full'
-          } bg-white p-6 shadow-lg w-[100vw] h-[45%]`}
+          } bg-white w-full p-6 shadow-lg h-[45%]`}
           style={{ top: 0 }}
         >
           <div className="responsive_text">

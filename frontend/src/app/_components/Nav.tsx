@@ -58,7 +58,7 @@ export default async function Nav() {
           {`
 /* [project]/src/app/geistsans_9fc57718.module.css [app-client] (css) */
 .container-block {
-  height: 67px;
+  height: 90px;
 }
 
 @font-face {
