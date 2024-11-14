@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function Main() {
   return (
     <div className="flex flex-col items-center">
-      {/* <div className="w-[1200px]">
+      <div className="w-[1200px]">
         <div className="flex my-28 justify-between">
           <div className="flex flex-col h-100 text-5xl font-bold mr-24">
             <span className="mb-4">
@@ -105,7 +105,7 @@ export default function Main() {
             sizes="100%"
           />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

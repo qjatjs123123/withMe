@@ -7,7 +7,7 @@ export default function PageHeader({ title, content }: PageHeaderProps) {
   return (
     <>
       <div
-        className="responsive_vtext w-full"
+        className="responsive_vtext w-auto"
         style={{
           fontFamily: 'SamsungSharpSansRegular',
           lineHeight: '2',
@@ -18,7 +18,7 @@ export default function PageHeader({ title, content }: PageHeaderProps) {
       <div
         className="responsive_vtext"
         style={{
-          fontFamily: 'SamsungOneKorean-700',
+          fontFamily: /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(content) ? 'SamsungOneKorean-700' : 'samsungsharpsans-bold',
           fontWeight: 'bold',
         }}
       >
