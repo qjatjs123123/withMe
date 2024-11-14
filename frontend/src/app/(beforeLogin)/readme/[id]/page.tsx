@@ -61,7 +61,7 @@ export default async function ReadMe({ params }: Params) {
   }
 
   return (
-    <div className="responsive_mainResponsive markdown-wrapper flex flex-col">
+    <div className="responsive_mainResponsive markdown-wrapper flex flex-col mb-[30px]">
       <div
         style={{
           borderBottom: '1px solid #d1d9e0',
@@ -1569,13 +1569,19 @@ overflow-w:scroll;
     flex-direction: row;
   }
 }
-p {
 
 img {
   max-width: 100% !important;
-  height: auto;
+  box-sizing: border-box;
 }
-          
+pre {
+  white-space: pre-wrap !important; /* 줄바꿈 허용 */
+  word-break: break-word !important; /* 단어 단위로 줄바꿈 */
+  overflow-x: auto !important;/* 가로 스크롤 허용 */
+  max-width: 100% !important; /* 부모 요소 너비 초과 방지 */
+  box-sizing: border-box;
+}
+     
           `}
         </style>
         <ReadMeBtn />
