@@ -744,26 +744,37 @@ img, video {
 
 
 .responsive_mainResponsive {
-  width: 1728px;
+  
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
   padding-right: 10px;
+  margin-bottom:30px;
 }
 
 @media screen and (width <= 1919px) {
   .responsive_mainResponsive {
-    width: 1376px;
+    width: 1819px;
   }
 }
 
 @media screen and (width <= 1440px) {
   .responsive_mainResponsive {
-    width: 1024px;
+    width: 1340px;
+  }
+}
+  @media screen and (width <= 1340px) {
+  .responsive_mainResponsive {
+    width: 1200px;
+  }
+}
+  @media screen and (width <= 1240px) {
+  .responsive_mainResponsive {
+    width: 1100px;
   }
 }
 
-@media screen and (width <= 1056px) {
+@media screen and (width <= 1240px) {
   .responsive_mainResponsive {
     width: 100%;
   }
@@ -775,51 +786,41 @@ img, video {
   grid-gap: 32px;
   padding: 0;
   margin: 0;
-  --card-count: 5;
-  --spacer: calc(var(--card-count)  - 1);
-  --width: 20%;
-  grid-template-columns: repeat(var(--card-count), calc(var(--width)  - (32px * var(--spacer) / var(--card-count))));
-}
+  --card-count: 4;
+  --spacer: calc(var(--card-count) - 1);
+  --width: 25%;
 
-@media screen and (width <= 1919px) {
-  .grid_mainGrid {
-    --card-count: 4;
-    --width: 25%;
-  }
-}
+  grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))));
 
-@media screen and (width <= 1440px) {
-  .grid_mainGrid {
-    --card-count: 4;
-    --width: 25%;
-  }
-}
-
-@media screen and (width <= 1056px) {
-  .grid_mainGrid {
+  @media screen and (max-width: 1919px) {
     --card-count: 3;
     --width: 33.33%;
   }
-}
 
-@media screen and (width <= 868px) {
-  .grid_mainGrid {
+  @media screen and (max-width: 1440px) {
+    --card-count: 3;
+    --width: 33.33%;
+  }
+
+  @media screen and (max-width: 1056px) {
     --card-count: 2;
     --width: 50%;
   }
-}
 
-@media screen and (width <= 568px) {
-  .grid_mainGrid {
+  @media screen and (max-width: 868px) {
+    --card-count: 2;
+    --width: 50%;
+  }
+
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 100%);
     grid-gap: 16px;
   }
 }
-
 .workspace-item {
   position: absolute;
   width: 100%;
-  height: 80%;
+  height: 70%;
   background-color: #00000080;
   visibility: hidden;
 }

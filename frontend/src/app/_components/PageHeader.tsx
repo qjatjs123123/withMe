@@ -7,7 +7,7 @@ export default function PageHeader({ title, content }: PageHeaderProps) {
   return (
     <>
       <div
-        className="responsive_vtext"
+        className="responsive_vtext w-full"
         style={{
           fontFamily: 'SamsungSharpSansRegular',
           lineHeight: '2',

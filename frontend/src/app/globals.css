@@ -110,25 +110,25 @@ h1 {
   grid-gap: 32px;
   padding: 0;
   margin: 0;
-  --card-count: 5;
+  --card-count: 4;
   --spacer: calc(var(--card-count) - 1);
-  --width: 20%;
+  --width: 25%;
 
   grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))));
 
   @media screen and (max-width: 1919px) {
-    --card-count: 4;
-    --width: 25%;
+    --card-count: 3;
+    --width: 33.33%;
   }
 
   @media screen and (max-width: 1440px) {
-    --card-count: 4;
-    --width: 25%;
+    --card-count: 3;
+    --width: 33.33%;
   }
 
   @media screen and (max-width: 1056px) {
-    --card-count: 3;
-    --width: 33.33%;
+    --card-count: 2;
+    --width: 50%;
   }
 
   @media screen and (max-width: 868px) {
@@ -210,7 +210,7 @@ h1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
   text-align: center; /* text-center */
   display: flex; /* flex */
-  border-radius: 0.5rem; /* rounded-lg */
+
   overflow: hidden; /* overflow-hidden */
   flex-direction: column; /* flex-col */
 }
@@ -251,6 +251,11 @@ h1 {
 @font-face {
   font-family: 'SamsungOneKorean-700';
   src: url('/fonts/SamsungOneKorean-700.ttf') format('truetype');
+  unicode-range: U+AC00-D7AF;
+}
+@font-face {
+  font-family: 'SamsungOneKorean-400';
+  src: url('/fonts/SamsungOneKorean-400.ttf') format('truetype');
   unicode-range: U+AC00-D7AF;
 }
 body:lang(en) {
