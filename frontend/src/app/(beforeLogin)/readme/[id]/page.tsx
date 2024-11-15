@@ -33,14 +33,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     description: workSpace_data?.workSpace_data.name || '기본 설명',
     openGraph: {
       title: workSpace_data?.name || '기본 제목',
-      description: workSpace_data?.readmeContent || '기본 설명',
+      description: workSpace_data?.name || '기본 설명',
       images: [workSpace_data?.thumbnail || '기본 이미지 URL'],
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/readme/${id}`,
     },
     twitter: {
       card: 'summary_large_image',
       title: workSpace_data?.name || '기본 제목',
-      description: workSpace_data?.readmeContent || '기본 설명',
+      description: workSpace_data?.name || '기본 설명',
       images: workSpace_data?.thumbnail || '기본 이미지 URL',
     },
   };
