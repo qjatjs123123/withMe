@@ -124,7 +124,7 @@ export default function EditPage() {
 
                           <div
                             style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
-                            className="h-full overflow-y-auto"
+                            className="h-full overflow-y-auto overflow-x-hidden"
                           >
                             <RightMain />
                           </div>
