@@ -21,7 +21,7 @@ export default function ClipBoardButton({ message }: ClipBoardButtonProps) {
 
         navigator.clipboard.write([clipboardItem]);
       }}
-      className="absolute top-3 right-3 flex items-center text-xs px-2 py-1 rounded hover:bg-gray-200"
+      className="absolute top-1 right-1 flex items-center text-xs px-2 py-1 rounded hover:bg-gray-200"
       style={{ zIndex: 10 }}
     >
       <HiOutlineClipboardCopy className="mr-1" size={20} />
