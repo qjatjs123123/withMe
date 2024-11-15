@@ -35,8 +35,6 @@ function Editor() {
   useEffect(() => {
     if (status === 'connected' && !connection.isRoomConnected(room.id)) {
       connection.rooms.add(room.id);
-      console.log(room.id);
-      console.log(connection.rooms);
     }
   }, [status, room.id, connection]);
 

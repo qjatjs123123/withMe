@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getCookieValue } from '@/util/axiosConfigClient';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
@@ -23,6 +23,7 @@ export function AIDraft() {
   const [cancelDelay, setCancelDelay] = useState(false);
   const params = useParams();
   const workspaceId = params.id;
+  const partialChunkRef = useRef('');
 
   useEffect(() => {
     const activeMenuItem = menuItems.find((item) => item.id === activeId);
@@ -78,18 +79,14 @@ export function AIDraft() {
 
         // 디코딩한 스트림 데이터를 `data:` 접두사를 제거한 후 파싱 준비
         const chunk = decoder.decode(value, { stream: true }).trim();
-        const lines = chunk.split('\n'); // 여러 줄로 분리
+        const processText = partialChunkRef.current + chunk;
+        partialChunkRef.current = '';
+        const lines = processText.split('\n'); // 여러 줄로 분리
 
         for (const line of lines) {
           // "data:"로 시작하는 줄만 처리
-          if (line.startsWith('data:')) {
+          if (line.startsWith('data:') && line.endsWith('}')) {
             const jsonString = line.slice(5).trim();
-
-            if (jsonString === '[DONE]') {
-              // [DONE] 신호를 받으면 스트리밍 종료
-              isReading = false;
-              break;
-            }
 
             try {
               const jsonData = JSON.parse(jsonString);
@@ -110,8 +107,16 @@ export function AIDraft() {
                 }
               }
             } catch (error) {
+              console.error('error line: ', line);
               console.error('Failed to parse JSON chunk:', error);
             }
+          } else {
+            if (line.endsWith('[DONE]')) {
+              partialChunkRef.current = '';
+              isReading = false;
+              break;
+            }
+            partialChunkRef.current = line;
           }
         }
       }
