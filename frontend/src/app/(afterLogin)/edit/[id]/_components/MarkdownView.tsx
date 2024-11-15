@@ -9,7 +9,7 @@ export function MarkdownView() {
       {markdowns &&
         markdowns.map((markdown) => (
           <div key={markdown.id} className="prose max-w-none">
-            <div className="whitespace-pre-wrap text-base">{markdown.content}</div>
+            <div className="whitespace-pre-wrap text-base break-words">{markdown.content}</div>
           </div>
         ))}
     </div>

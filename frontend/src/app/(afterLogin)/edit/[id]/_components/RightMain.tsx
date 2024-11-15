@@ -44,7 +44,7 @@ export default function RightMain() {
   return (
     <div className="flex flex-col h-full justify-start items-center bg-white">
       <div className="flex justify-center w-full relative" style={{ fontFamily: 'samsungsharpsans-bold' }}>
-        <div className="flex items-center justify-center w-[300px] h-[40px] text-xl my-2 text-black rounded-[90px]">
+        <div className="flex items-center justify-center w-[300px] h-[40px] text-xl mt-8 mb-2 text-black rounded-[90px]">
           <button
             onClick={() => handleViewChange('preview')}
             className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'preview' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
@@ -65,7 +65,7 @@ export default function RightMain() {
           </button>
         </div>
 
-        <div className="absolute top-1 right-6 flex flex-col justify-center h-full w-[180px]">
+        <div className="absolute top-1 right-6  w-[20%]">
           <Gauge connection={connection} />
         </div>
       </div>
