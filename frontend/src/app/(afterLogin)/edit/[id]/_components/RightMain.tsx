@@ -71,17 +71,17 @@ export default function RightMain() {
       <div className="text-[20px] w-full h-[90%] bg-white edit-scrollbar" style={{ fontFamily: 'sans-serif' }}>
         <AIDraftProvider>
           {activeView === 'preview' && (
-            <div className="w-[80%] mx-auto h-full pr-5 ">
+            <div className="w-[90%] mx-auto h-full ">
               <MarkdownPreview />
             </div>
           )}
           {activeView === 'markdown' && (
-            <div className="w-[80%] mx-auto h-full pr-5 ">
+            <div className="w-[90%] mx-auto h-full ">
               <MarkdownView />
             </div>
           )}
           {activeView === 'ai' && (
-            <div className="w-full flex justify-center overflow-x-hidden">
+            <div className="w-full mt-4 mb-8 flex justify-center overflow-x-hidden">
               <AIDraft />
             </div>
           )}
