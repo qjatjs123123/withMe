@@ -5,12 +5,12 @@ export default function Main() {
     <div className="flex items-center w-full  responsive_container pt-[30px] flex-col">
       <div className=" w-full items-center  h-full">
         <div
-          style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
+          style={{ fontSize: 'clamp(36px, 6vw, 72px)' }}
           className="flex flex-col sm:mb-4  flex-1  w-full justify-start"
         >
-          <span>Create Your ReadMe Together</span>
-          <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(18px, 3vw, 24px)' }}>
-            리드미 작업, 협업으로 가치를 더하다
+          <span>Create Together.</span>
+          <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(24px, 4vw, 32px)' }}>
+            협업을 통해 가치를 더하다
           </span>
         </div>
         <div></div>
@@ -29,12 +29,12 @@ export default function Main() {
 
       <div className="flex-1 mt-[30px] flex justify-center w-full pt-[130px]">
         <div
-          style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
+          style={{ fontSize: 'clamp(36px, 6vw, 72px)' }}
           className="flex flex-col sm:mb-4  flex-1  w-full text-start"
         >
-          <span>Recommend your ReadMe draft</span>
-          <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(18px, 3vw, 24px)' }}>
-            레포지토리 파일명 기반으로 리드미 초안 정확도를 높이다
+          <span>Collaborate with AI.</span>
+          <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(24px, 4vw, 32px)' }}>
+            체계적인 작성을 위한 인사이트를 제공하다
           </span>
         </div>
       </div>
@@ -52,12 +52,12 @@ export default function Main() {
 
       <div className="flex-1 mt-[30px] flex justify-center w-full pt-[130px]">
         <div
-          style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
+          style={{ fontSize: 'clamp(36px, 6vw, 72px)' }}
           className="flex flex-col sm:mb-4  flex-1  w-full text-start"
         >
-          <span>Share your ReadMe</span>
-          <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(18px, 3vw, 24px)' }}>
-            작성한 리드미를 공유하여 더 나은 결과를 만들다
+          <span>And Share Yours.</span>
+          <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(24px, 4vw, 32px)' }}>
+            아이디어를 공유하여 더 나은 결과를 만들다
           </span>
         </div>
       </div>
