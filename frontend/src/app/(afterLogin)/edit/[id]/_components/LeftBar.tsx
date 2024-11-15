@@ -9,6 +9,7 @@ import { DeleteIcon } from '../_icons/DeleteIcon';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
+import { useMarkdown } from '../_contexts/MarkdownContext';
 import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
@@ -63,6 +64,7 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
   const [editValue, setEditValue] = useState<string>('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const { markdowns, setMarkdowns } = useMarkdown();
 
   const storageMenuItems = useStorage((root) => root.menuItems);
   const storageInitialMenuItems = useStorage((root) => root.initialMenuItems);
@@ -97,7 +99,6 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
         id: availableId,
         label: '새로운 탭',
       };
-
       const updatedMenuItems = [...menuItems, newTab];
       storage.set('menuItems', updatedMenuItems);
       setMenuItems(updatedMenuItems);
@@ -105,7 +106,7 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
       setEditingId(newTab.id);
       setEditValue('');
     },
-    [menuItems, initialItems],
+    [menuItems, initialItems, markdowns],
   );
 
   const updateItemLabel = useMutation(({ storage }, { id, newLabel }: { id: string; newLabel: string }) => {
@@ -129,10 +130,17 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
           targetEditor.replaceBlocks(allBlocks, []);
         }
       }
+      if (markdowns) {
+        const updatedMarkdowns = markdowns.map((markdown) =>
+          markdown.id === id ? { ...markdown, content: '' } : markdown,
+        );
+        setMarkdowns(updatedMarkdowns);
+      }
 
       const updatedMenuItems = menuItems.filter((item: MenuItem) => item.id !== id);
       storage.set('menuItems', updatedMenuItems);
       setMenuItems(updatedMenuItems);
+
       if (activeId === id) {
         const nextItem = updatedMenuItems[0];
         if (nextItem) {
@@ -140,7 +148,7 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
         }
       }
     },
-    [activeId],
+    [activeId, markdowns],
   );
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
@@ -167,9 +175,8 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
   };
 
   const handleEditSubmit = (id: string) => {
-    if (editValue.trim()) {
-      updateItemLabel({ id, newLabel: editValue.trim() });
-    }
+    const newLabel = editValue.trim() || '새로운 탭';
+    updateItemLabel({ id, newLabel });
     setEditingId(null);
     setEditValue('');
   };
