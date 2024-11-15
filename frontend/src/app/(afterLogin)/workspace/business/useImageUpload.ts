@@ -3,14 +3,14 @@ import axios from '@/util/axiosConfigClient';
 import { API_URL } from '@/util/constants';
 import { useGlobalState } from '../../_components/RepoModalProvider';
 import useErrorHandler from './useErrorHandler';
-
+import { MESSAGE } from '@/util/constants';
 const useImageUpload = (repoUrl, curRepo) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { handlerMessage } = useErrorHandler();
 
   const invalidCheck = async () => {
     if (!curRepo.current || !curRepo.current.id) {
-      await handlerMessage('제대로 선택해주세요');
+      await handlerMessage(MESSAGE.SELECT_IMAGE);
       return false;
     }
     return true;
@@ -29,7 +29,7 @@ const useImageUpload = (repoUrl, curRepo) => {
 
   const handleUpload = async (file) => {
     if (!file) {
-      await handlerMessage('제대로 선택해주세요');
+      await handlerMessage(MESSAGE.SELECT_IMAGE);
       return;
     }
 

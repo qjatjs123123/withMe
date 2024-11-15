@@ -60,7 +60,7 @@ export default function LoginModal() {
           </button>
 
           <div className=" bg-[#F6F6F6] items-center justify-center mt-[30px]">
-            <span className="block pt-[15px] pb-[15px]">GitHub 계정으로 간편하게 로그인해 보세요</span>
+            <span className="block pt-[15px] pb-[15px]">Git 계정으로 간편하게 로그인해 보세요</span>
           </div>
         </div>
       </div>
