@@ -355,3 +355,24 @@ body:lang(ko) {
     flex-direction: col !important;
   }
 }
+
+.responsive_aboutResponsive {
+  width: 1728px;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  @media screen and (max-width: 1919px) {
+    width: 1376px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    width: 1024px;
+  }
+
+  @media screen and (max-width: 1056px) {
+    width: 100%;
+  }
+}
