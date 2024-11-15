@@ -9,7 +9,6 @@ import { CommitIcon } from '../_icons/CommitIcon';
 import ErrorModal from '../_components/ErrorModal';
 
 export const INITIAL_MENU_ITEMS = [
-  { id: uuidv4(), label: '헤더' },
   { id: uuidv4(), label: '프로젝트 소개' },
   { id: uuidv4(), label: '기획 배경' },
   { id: uuidv4(), label: '주요 기능' },
@@ -19,8 +18,9 @@ export const INITIAL_MENU_ITEMS = [
   { id: uuidv4(), label: '' },
   { id: uuidv4(), label: '' },
   { id: uuidv4(), label: '' },
+  { id: uuidv4(), label: '' },
 ];
-export const MENU_ITEMS = INITIAL_MENU_ITEMS.slice(0, 5);
+export const MENU_ITEMS = INITIAL_MENU_ITEMS.slice(0, 4);
 
 type InfoContextType = {
   repoName: string | null;

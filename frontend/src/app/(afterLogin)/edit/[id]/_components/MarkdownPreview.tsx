@@ -13,7 +13,8 @@ export function MarkdownPreview() {
   return (
     <div>
       {markdowns?.map((markdown) => {
-        const label = menuItems.find((menu) => menu.id === markdown.id).label;
+        const menuItem = menuItems.find((menu) => menu.id === markdown.id);
+        const label = menuItem?.label ?? '';
         return (
           <div key={markdown.id} className="relative mb-8">
             <div className="markdown-body">
