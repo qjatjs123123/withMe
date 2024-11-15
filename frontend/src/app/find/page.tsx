@@ -6,7 +6,7 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    router.back();
+    router.push('/');
   }, []);
 
   return <></>;
