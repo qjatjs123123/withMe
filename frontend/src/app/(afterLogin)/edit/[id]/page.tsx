@@ -13,6 +13,8 @@ import RightMain from './_components/RightMain';
 import LeftMain from './_components/LeftMain';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { ConnectionProvider } from './_contexts/ConnectionContext';
+import SnackBarUI from '@/app/_components/SnackBarUI';
+import { SnackBarProvider } from '@/app/(afterLogin)/_components/SnackBarProvider';
 
 const LEFT_SIDEBAR_WIDTH = 240;
 
@@ -88,52 +90,55 @@ export default function EditPage() {
         <MenuItemsProvider>
           <MarkdownProvider>
             <EditorProvider>
-              <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-                <div className="flex flex-col bg-white h-full">
-                  <Nav />
-                  <div className="flex h-full">
-                    <div className="h-full bg-[#f9f9f9]" style={{ fontFamily: 'SamsungOneKorean-700' }}>
-                      <LeftBar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-                    </div>
+              <SnackBarProvider>
+                <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
+                  <div className="flex flex-col bg-white h-full">
+                    <Nav />
+                    <div className="flex h-full">
+                      <div className="h-full bg-[#f9f9f9]" style={{ fontFamily: 'SamsungOneKorean-700' }}>
+                        <LeftBar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+                      </div>
 
-                    <ConnectionProvider>
-                      <div
-                        className="flex-1"
-                        ref={mainContainerRef}
-                        style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
-                      >
-                        <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
-                          <div
-                            style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
-                            className="h-full w-full edit-scrollbar"
-                          >
-                            <LeftMain />
-                          </div>
+                      <ConnectionProvider>
+                        <div
+                          className="flex-1"
+                          ref={mainContainerRef}
+                          style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
+                        >
+                          <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
+                            <div
+                              style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
+                              className="h-full w-full edit-scrollbar"
+                            >
+                              <LeftMain />
+                            </div>
 
-                          <div
-                            className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around mx-4"
-                            style={{
-                              width: isVertical ? '100%' : '6px',
-                              height: isVertical ? '6px' : '100%',
-                              cursor: isVertical ? 'row-resize' : 'col-resize',
-                            }}
-                            onMouseDown={handleMouseDown}
-                          >
-                            <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
-                          </div>
+                            <div
+                              className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around mx-4"
+                              style={{
+                                width: isVertical ? '100%' : '6px',
+                                height: isVertical ? '6px' : '100%',
+                                cursor: isVertical ? 'row-resize' : 'col-resize',
+                              }}
+                              onMouseDown={handleMouseDown}
+                            >
+                              <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
+                            </div>
 
-                          <div
-                            style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
-                            className="h-full overflow-x-hidden"
-                          >
-                            <RightMain />
+                            <div
+                              style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
+                              className="h-full overflow-x-hidden"
+                            >
+                              <RightMain />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </ConnectionProvider>
+                      </ConnectionProvider>
+                    </div>
                   </div>
-                </div>
-              </LiveblocksProvider>
+                  <SnackBarUI />
+                </LiveblocksProvider>
+              </SnackBarProvider>
             </EditorProvider>
           </MarkdownProvider>
         </MenuItemsProvider>
