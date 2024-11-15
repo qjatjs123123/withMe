@@ -65,7 +65,7 @@ export default function RightMain() {
           </button>
         </div>
 
-        <div className="absolute top-1 right-6  w-[20%]">
+        <div className="absolute top-1 right-6 w-[180px]">
           <Gauge connection={connection} />
         </div>
       </div>
