@@ -29,4 +29,6 @@ export const MESSAGE = {
   VISIBLE_SUCCCESS: '숨기기 완료',
   IMAGE_CREATE: '이미지 등록중...',
   IMAGE_SUCCESS: '이미지 등록 완료',
+  SELECT_IMAGE: '이미지 선택해주세요',
+  SELECT_REPO: '레포지토리 선택해주세요',
 };
