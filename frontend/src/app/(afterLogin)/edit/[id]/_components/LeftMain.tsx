@@ -35,7 +35,7 @@ function RoomWithEditor({ id }: { id: string }) {
     >
       <ClientSideSuspense fallback={<div></div>}>
         <div
-          className={`p-4 transition-opacity duration-300 h-full ${activeId === id ? '' : 'hidden pointer-events-none'}`}
+          className={`p-6 transition-opacity duration-300 h-full ${activeId === id ? '' : 'hidden pointer-events-none'}`}
         >
           <div className="text-xl ml-[53px] pb-2 border-b-2 mb-2">{activeMenu.label}</div>
           <Editor />
