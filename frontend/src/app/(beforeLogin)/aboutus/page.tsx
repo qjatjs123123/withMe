@@ -1,13 +1,14 @@
+import Footer from '@/app/_components/Footer';
 import Image from 'next/image';
 
 export default function AboutUs() {
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <div className="flex justify-between my-20">
+    <div className="responsive_aboutResponsive">
+      <div className="flex justify-between mt-[100px] w-full mb-[50px]">
         <div className="flex flex-col h-100">
           <span className="text-5xl">
             Build perfect <br />
-            docs, together.
+            Readme, together.
           </span>{' '}
           <br />
           <span className="text-xl text-[#ccc]">
@@ -15,7 +16,7 @@ export default function AboutUs() {
             and ask AI to add the finishing touches.
           </span>
         </div>
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <div className="flex">
             <div>
               <Image
@@ -44,8 +45,8 @@ export default function AboutUs() {
             Login github or gitLab, <br />
             and commit directly.
           </span>
-        </div>
-        <div className="flex flex-col">
+        </div> */}
+        {/* <div className="flex flex-col">
           <div className="flex">
             <div>
               <Image
@@ -74,18 +75,72 @@ export default function AboutUs() {
             Login github or gitLab, <br />
             and commit directly.
           </span>
-        </div>
+        </div> */}
       </div>
       <div className="flex justify-center">
         <Image
-          className="image mr-5"
+          className="image "
           src="/capture.png"
           alt="capture of the Editor image"
           width={800}
           height={600}
+          style={{ width: '100%' }}
           sizes="100%"
         />
       </div>
+      <div className="flex justify-between mt-[200px] w-full mb-[30px]">
+        <div className="flex flex-col h-100">
+          <span className="text-5xl">
+            The happier <br />
+            workspace
+          </span>{' '}
+          <br />
+          <span className="text-xl text-[#ccc]">
+            Link a GitHub repository with <br />
+            git social login
+          </span>
+        </div>
+      </div>
+
+      <div className="flex justify-center">
+        <Image
+          className="image mr-5"
+          src="/capture1.PNG"
+          alt="capture of the Editor image"
+          width={800}
+          height={600}
+          style={{ width: '100%' }}
+          sizes="100%"
+        />
+      </div>
+
+      <div className="flex justify-between mt-[200px] w-full mb-[30px]">
+        <div className="flex flex-col h-100">
+          <span className="text-5xl">
+            Find everthing <br />
+            Get Insight
+          </span>{' '}
+          <br />
+          <span className="text-xl text-[#ccc]">
+            No more endless searching. <br />
+            Our built in Elastic Search Skill finds what you are <br />
+            looking for in our apps
+          </span>
+        </div>
+      </div>
+
+      <div className="flex justify-center">
+        <Image
+          className="image mr-5"
+          src="/capture2.PNG"
+          alt="capture of the Editor image"
+          width={800}
+          height={600}
+          style={{ width: '100%' }}
+          sizes="100%"
+        />
+      </div>
+      <Footer />
     </div>
   );
 }
