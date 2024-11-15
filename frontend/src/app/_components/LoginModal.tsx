@@ -45,18 +45,18 @@ export default function LoginModal() {
             <span>SSAFY 깃 로그인</span>
           </div>
           <button
-            className=" border border-gray pl-[10px] flex gap-5 p-3  items-center"
+            className=" border border-gray pl-[12px] flex gap-5 p-3 items-center"
             onClick={() => sendLoginAPI(API_URL.LOGIN_LAB)}
           >
             <Image
               className="workspace-image cursor-pointer"
-              src="/gitlabLogo.png"
+              src="/ssafy_logo.png"
               alt="loginLogo of the image"
-              width={25}
-              height={25}
+              width={30}
+              height={30}
               sizes="100%"
             />
-            SSAFY GitLab
+            <div className="-ml-[5px]">SSAFY GitLab</div>
           </button>
 
           <div className=" bg-[#F6F6F6] items-center justify-center mt-[30px]">
