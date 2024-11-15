@@ -131,33 +131,35 @@ export function AIDraft() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full p-5 rounded-xl bg-gray-50 relative">
-      <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
-      <div className="flex-grow rounded-lg p-4 overflow-auto">
-        {messages.map((message, idx) => (
-          <div key={idx} className={`ml-2 mb-4 flex p-3 justify-center rounded-lg max-w-[750px] bg-white relative`}>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkBreaks]}
-              rehypePlugins={[rehypeRaw]}
-              className="markdown-body flex flex-col justify-start items-start text-left w-full"
-            >
-              {message.text}
-            </ReactMarkdown>
-            <ClipBoardButton message={message.text} />
-          </div>
-        ))}
+    <div className="flex flex-col items-center w-full h-full p-5 rounded-xl bg-gray-50 relative">
+      <div className="absolute top-3 left-6 text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
+      <div className="mt-10 w-[750px]">
+        <div className="flex-grow rounded-lg p-4 edit-scrollbar">
+          {messages.map((message, idx) => (
+            <div key={idx} className={`ml-2 mb-4 flex p-3 justify-center rounded-lg max-w-[750px] bg-white relative`}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+                rehypePlugins={[rehypeRaw]}
+                className="markdown-body flex flex-col justify-start items-start text-left w-full"
+              >
+                {message.text}
+              </ReactMarkdown>
+              <ClipBoardButton message={message.text} />
+            </div>
+          ))}
 
-        {accumulatedContent && (
-          <div className="ml-2 mb-4 flex p-3 justify-center rounded-lg  max-w-[750px] bg-white">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkBreaks]}
-              rehypePlugins={[rehypeRaw]}
-              className="markdown-body flex flex-col justify-start items-start text-left w-full"
-            >
-              {accumulatedContent}
-            </ReactMarkdown>
-          </div>
-        )}
+          {accumulatedContent && (
+            <div className="ml-2 mb-4 flex p-3 justify-center rounded-lg  max-w-[750px] bg-white">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+                rehypePlugins={[rehypeRaw]}
+                className="markdown-body flex flex-col justify-start items-start text-left w-full"
+              >
+                {accumulatedContent}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
       </div>
       <button
         onClick={handleSubmit}
@@ -165,12 +167,12 @@ export function AIDraft() {
         disabled={isStreaming && !reader}
       >
         {isStreaming ? (
-          <div className="bg-[#f1f0f0] text-gray-500 w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+          <div className="bg-[#f1f0f0] text-gray-500 w-[220px] h-[38px] flex justify-center items-center rounded-md font-bold">
             <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
             <span>AI 초안 생성하기</span>
           </div>
         ) : (
-          <div className="bg-[#f1f0f0] w-[220px] h-[40px] flex justify-center items-center rounded-md font-bold">
+          <div className="bg-[#f1f0f0] w-[220px] h-[38px] flex justify-center items-center rounded-md font-bold">
             <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
             <span>AI 초안 생성하기</span>
           </div>

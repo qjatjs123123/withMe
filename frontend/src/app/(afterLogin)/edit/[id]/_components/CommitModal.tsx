@@ -236,7 +236,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
             <label className="block text-base font-bold text-gray-700 mb-2">Commit Message</label>
             <textarea
               ref={messageRef}
-              className="w-full p-2 border border-gray-300 rounded-md h-14 text-sm"
+              className="w-full p-2 border border-gray-300 rounded-md h-14 text-sm edit-scrollbar"
               placeholder="Please enter your commit message..."
             />
           </div>
