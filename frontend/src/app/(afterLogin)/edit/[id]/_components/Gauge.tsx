@@ -15,7 +15,7 @@ export default function Gauge({ connection }) {
       const timeout = setTimeout(() => {
         setIsExiting(true); // 이동 시작
         setTimeout(() => setShowMessage(false), 1000); // 이동 후 메시지 숨김
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timeout); // 언마운트 시 타이머 클리어
     } else {
