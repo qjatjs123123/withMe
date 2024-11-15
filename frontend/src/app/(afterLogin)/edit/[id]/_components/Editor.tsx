@@ -44,10 +44,10 @@ function Editor() {
     setDoc(yDoc);
     setProvider(yProvider);
 
-    return () => {
-      yDoc?.destroy();
-      yProvider?.destroy();
-    };
+    // return () => {
+    //   yDoc?.destroy();
+    //   yProvider?.destroy();
+    // };
   }, [room]);
 
   if (!doc || !provider) {
@@ -86,16 +86,6 @@ function BlockNote({ doc, provider }: EditorProps) {
       throw error;
     }
   };
-  // const fixTableMarkdown = (markdown: string): string => {
-  //   // 각 표를 개별적으로 찾아서 처리
-  //   return markdown.replace(
-  //     /\|((?:\s*\|\s*)+)\n(\|(?:\s*-+\s*\|)+)\n(\|(?:[^|\n]*\|)+)(?:\n|$)/g,
-  //     (match, firstRow, separator, contentRow) => {
-  //       // 각 표마다 내용행, 구분선행 순서로 재배치
-  //       return `${contentRow}\n${separator}\n`;
-  //     },
-  //   );
-  // };
   const fixTableMarkdown = (markdown: string): string => {
     // 빈 행으로 시작하는 표를 찾아서 수정하는 정규식
     const pattern = /\|(\s*\|\s*)+\n(\|(?:\s*-+\s*\|)+)\n(\|(?:[^|\n]*\|)+(?:\n\|(?:[^|\n]*\|)+)*)/g;

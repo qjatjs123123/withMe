@@ -1,66 +1,76 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Gauge({ connection }) {
   const [progress, setProgress] = useState(0);
-  const [showMessage, setShowMessage] = useState(true);
-  const [isExiting, setIsExiting] = useState(false); // 메시지 이동 상태
+  const [isVisible, setIsVisible] = useState(true);
+  const [showConnected, setShowConnected] = useState(false);
 
   useEffect(() => {
-    // connection.rooms.size를 기준으로 10%씩 증가
     const percentage = Math.min(10 * connection.rooms.size, 100);
     setProgress(percentage);
 
-    // progress가 100이 되면 메시지 이동 트리거
-    if (percentage === 100) {
-      const timeout = setTimeout(() => {
-        setIsExiting(true); // 이동 시작
-        setTimeout(() => setShowMessage(false), 1000); // 이동 후 메시지 숨김
-      }, 3000);
-
-      return () => clearTimeout(timeout); // 언마운트 시 타이머 클리어
-    } else {
-      // progress가 100이 아니면 메시지 초기화
-      setShowMessage(true);
-      setIsExiting(false);
+    if (percentage >= 100) {
+      setShowConnected(true);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000);
+      return () => clearTimeout(timer);
     }
   }, [connection.rooms.size]);
 
+  if (!isVisible) return null;
+
+  const size = 40;
+  const strokeWidth = 4;
+  const center = size / 2;
+  const radius = center - strokeWidth;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
+
   return (
-    <div
-      className={`transition-all duration-1000 ease-out ${
-        isExiting ? '-mr-[200%] ml-[200%]' : 'mr-0'
-      } ${showMessage ? '' : 'hidden'}`}
-    >
-      <div className="w-full flex justify-between pr-3 text-sm">
-        <div className={progress < 100 ? `loading-dots` : ''}></div>
-        <div>{progress < 100 ? `${progress === 0 ? '' : `${progress}%`}` : 'Connected!'}</div>
-      </div>
-      <div className="w-full h-2 bg-gray-200 rounded-md overflow-hidden relative">
-        <div
-          className={`h-full bg-gray-300 rounded-full text-black font-bold flex items-center justify-center transition-all duration-500 ease-out`}
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
-
+    <div className="flex items-center">
+      {showConnected ? (
+        <span className="text-sm font-medium text-green-600 animate-fade-in">Connected!</span>
+      ) : (
+        <div className="relative w-10 h-10">
+          <svg className="transform -rotate-90 w-full h-full" viewBox={`0 0 ${size} ${size}`}>
+            <circle
+              className="stroke-gray-200"
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              r={radius}
+              cx={center}
+              cy={center}
+            />
+            <circle
+              className="stroke-blue-500 transition-all duration-500 ease-out"
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              r={radius}
+              cx={center}
+              cy={center}
+              style={{
+                strokeDasharray: circumference,
+                strokeDashoffset: strokeDashoffset,
+              }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-xs font-medium">{progress}%</span>
+          </div>
+        </div>
+      )}
       <style jsx>{`
-        .loading-dots::after {
-          content: 'Loading';
-          animation: dots 1.5s steps(3, end) infinite;
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
-
-        @keyframes dots {
-          0% {
-            content: 'Loading ';
-          }
-          33% {
-            content: 'Loading .';
-          }
-          66% {
-            content: 'Loading . .';
-          }
-          100% {
-            content: 'Loading . . .';
-          }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
         }
       `}</style>
     </div>
