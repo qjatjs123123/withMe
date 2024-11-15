@@ -65,15 +65,12 @@ export default function RightMain() {
           </button>
         </div>
 
-        <div className="absolute top-1 right-6  w-[20%]">
+        <div className="absolute top-1 right-6 w-[140px]">
           <Gauge connection={connection} />
         </div>
       </div>
 
-      <div
-        className="text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll"
-        style={{ fontFamily: 'sans-serif' }}
-      >
+      <div className="text-[20px] w-full h-[90%] p-7 bg-white edit-scrollbar mr-5" style={{ fontFamily: 'sans-serif' }}>
         <AIDraftProvider>
           {activeView === 'preview' && <MarkdownPreview />}
           {activeView === 'markdown' && <MarkdownView />}

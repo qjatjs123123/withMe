@@ -73,6 +73,15 @@ export default function EditPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    // 컴포넌트 언마운트 시 overflow를 제거
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   return (
     <InfoProvider>
       <ActiveIdProvider>
@@ -96,13 +105,13 @@ export default function EditPage() {
                         <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
                           <div
                             style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
-                            className="h-full w-full overflow-y-auto"
+                            className="h-full w-full edit-scrollbar"
                           >
                             <LeftMain />
                           </div>
 
                           <div
-                            className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
+                            className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around mx-4"
                             style={{
                               width: isVertical ? '100%' : '6px',
                               height: isVertical ? '6px' : '100%',
@@ -115,7 +124,7 @@ export default function EditPage() {
 
                           <div
                             style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
-                            className="h-full overflow-y-auto"
+                            className="h-full overflow-x-hidden"
                           >
                             <RightMain />
                           </div>
