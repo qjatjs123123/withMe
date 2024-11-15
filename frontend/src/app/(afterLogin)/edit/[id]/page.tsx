@@ -73,6 +73,15 @@ export default function EditPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    // 컴포넌트 언마운트 시 overflow를 제거
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
   return (
     <InfoProvider>
       <ActiveIdProvider>
