@@ -22,6 +22,8 @@ import com.ssafy.withme.global.openfeign.service.APICallService;
 import com.ssafy.withme.global.openfeign.service.APICallServiceImpl.TreeNode;
 import com.ssafy.withme.global.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -100,7 +102,11 @@ public class ReadMeServiceImpl implements ReadMeService {
 
     @Override
     public List<WorkspaceSimpleInfoResponse> listReadme(Integer size) {
-        return workspaceJpaRepository.findByIsCreatedTrueOrderByUpdatedAtDesc().stream()
+        assert(size != null && size > 0);
+
+        Pageable pageable = PageRequest.ofSize(size);
+
+        return workspaceJpaRepository.findNonEmptyWorkspace(pageable).stream()
                 .map(WorkspaceSimpleInfoResponse::from)
                 .limit(size).toList();
     }
