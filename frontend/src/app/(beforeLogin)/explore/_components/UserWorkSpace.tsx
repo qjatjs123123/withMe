@@ -50,7 +50,6 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
             objectFit: 'cover',
             border: '1px solid #eeeeee',
           }}
-          priority
         />
 
         {/* Hover 시 보여질 div */}
