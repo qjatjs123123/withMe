@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useInfo } from '../_contexts/InfoContext';
 import { getCookieValue } from '@/util/axiosConfigClient';
+import useErrorHandler from '@/app/(afterLogin)/workspace/business/useErrorHandler';
 
 type CommitModalProps = {
   isOpen: boolean;
@@ -27,14 +28,15 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [defaultBranch, setDefaultBranch] = useState<string>('');
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const { handlerMessage } = useErrorHandler();
 
   const userDataCookie = getCookieValue('userData');
   const userData = JSON.parse(userDataCookie as string);
   const provider = userData.provider;
 
-  // 레포지토리의 기본 브랜치 확인
   const checkDefaultBranch = async () => {
     try {
+      await handlerMessage('기본 브랜치 확인 중...');
       let url: string;
       const headers: HeadersInit = {
         Authorization: `Bearer ${token}`,
@@ -43,7 +45,6 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       if (provider === 'github') {
         url = `https://api.github.com/repos/${ownerName}/${repoName}`;
       } else if (provider === 'gitlab') {
-        // GitLab API는 프로젝트 경로를 URL 인코딩해야 함
         const encodedPath = encodeURIComponent(`${ownerName}/${repoName}`);
         url = `https://lab.ssafy.com/api/v4/projects/${encodedPath}`;
       } else {
@@ -57,39 +58,40 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       }
 
       const repoData = await response.json();
-
-      // GitHub와 GitLab 모두 default_branch 필드를 동일하게 사용
       setDefaultBranch(repoData.default_branch);
+      await handlerMessage('브랜치 확인 완료');
     } catch (error) {
       console.error('Error fetching repository info:', error);
-      // 에러 발생 시 기본값으로 'main' 설정
+      await handlerMessage('브랜치 확인 실패');
       setDefaultBranch('main');
     }
   };
 
   useEffect(() => {
-    if (isOpen && ownerName && repoName && provider) {
+    if (defaultBranch) return;
+
+    if (ownerName && repoName && provider) {
       checkDefaultBranch();
     }
-  }, [isOpen, ownerName, repoName, provider]);
+  }, [ownerName, repoName, provider]);
 
   const createCommit = async (message: string) => {
     saveMarkdowns();
+    await handlerMessage('커밋 내용 준비 중...');
+
     if (provider === 'github') {
-      // GitHub의 경우 기존 로직 유지
       const encoder = new TextEncoder();
       const contentBytes = encoder.encode(getAllMarkdowns());
       const content = Buffer.from(contentBytes).toString('base64');
       await createGitHubCommit(message, content);
     } else if (provider === 'gitlab') {
-      // GitLab의 경우 raw content 전송
       await createGitlabCommit(message, getAllMarkdowns());
     } else return;
   };
 
   const createGitHubCommit = async (message: string, content: string) => {
     try {
-      // 1. 현재 파일의 SHA 가져오기
+      await handlerMessage('현재 파일 상태 확인 중...');
       const getFileResponse = await fetch(
         `https://api.github.com/repos/${ownerName}/${repoName}/contents/README.md?ref=${defaultBranch}`,
         {
@@ -105,12 +107,11 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
         sha = fileData.sha;
       }
 
-      // 2. 파일 업데이트 또는 생성
+      await handlerMessage('커밋 생성 중...');
       const response = await fetch(`https://api.github.com/repos/${ownerName}/${repoName}/contents/README.md`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
-          // Authorization: 'Bearer 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',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -128,10 +129,12 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('GitHub API Error:', errorData);
+        await handlerMessage('커밋 생성 실패');
         throw new Error(`Failed to create commit: ${errorData.message}`);
       }
 
       const data = (await response.json()) as GitHubCommitResponse;
+      await handlerMessage('커밋이 성공적으로 생성되었습니다!');
       onClose();
       return data;
     } catch (error) {
@@ -141,10 +144,8 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
   };
 
   const createGitlabCommit = async (commit_message: string, content: string) => {
-    console.log(content);
-
     try {
-      // 1. 현재 파일의 SHA 가져오기
+      await handlerMessage('현재 파일 상태 확인 중...');
       const getFileResponse = await fetch(
         `https://lab.ssafy.com/api/v4/projects/${ownerName}%2F${repoName}/repository/files/README.md?ref=${defaultBranch}`,
         {
@@ -154,11 +155,9 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
         },
       );
 
-      console.log(getFileResponse);
-      // 2. 파일 유무에 따라 HTTP Method 변경
       const method = getFileResponse.ok ? 'PUT' : 'POST';
 
-      // 3. 파일 업데이트 또는 생성
+      await handlerMessage('커밋 생성 중...');
       const response = await fetch(
         `https://lab.ssafy.com/api/v4/projects/${ownerName}%2F${repoName}/repository/files/README.md`,
         {
@@ -180,10 +179,12 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('GitLab API Error:', errorData);
+        await handlerMessage('커밋 생성 실패');
         throw new Error(`Failed to create commit: ${errorData.message}`);
       }
 
       const data = (await response.json()) as GitLabCommitResponse;
+      await handlerMessage('커밋이 성공적으로 생성되었습니다!');
       onClose();
       return data;
     } catch (error) {
@@ -196,7 +197,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     const message = messageRef.current?.value.trim();
 
     if (!message) {
-      alert('커밋 메시지를 입력해주세요.');
+      await handlerMessage('커밋 메시지를 입력해주세요');
       return;
     }
 
@@ -206,7 +207,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     try {
       await createCommit(message);
     } catch (error) {
-      setError('Failed to create commit. Please try again.');
+      setError('커밋 생성에 실패했습니다. 다시 시도해주세요.');
       console.error('Failed to create commit:', error);
     } finally {
       setIsCommitting(false);
