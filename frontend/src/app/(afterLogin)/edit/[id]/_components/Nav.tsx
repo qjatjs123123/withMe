@@ -20,7 +20,7 @@ export default function Nav() {
         menuItems: MENU_ITEMS,
       }}
     >
-      <div className="relative">
+      <div className="relative z-[9999]">
         <nav
           style={{
             // position: 'fixed',
