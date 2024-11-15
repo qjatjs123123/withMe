@@ -7,6 +7,7 @@ export default function Layout({ children }: Props) {
     <div className="container-wrapper">
       <Nav />
       {children}
+      <Footer />
     </div>
   );
 }
