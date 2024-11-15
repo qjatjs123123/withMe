@@ -10,10 +10,13 @@ import RepoBtnContainer from '../RepoBtnContainer';
 export default function SnakBarContainer() {
   return (
     <SnackBarProvider>
-      <header style={{ paddingTop: '55px', paddingBottom: '50px' }} className="responsive_workspaceheader ">
+      <header
+        style={{ paddingTop: '55px', paddingBottom: '50px' }}
+        className="flex responsive_workspaceheader justify-between !flex-row "
+      >
         <PageHeader title={PAGE_HEADER.workspace} content="" />
-        <div className="flex justify-end h-full gap-3 ">
-          <SyncBtn />
+        <div className="flex  h-full gap-3 ">
+          {/* <SyncBtn /> */}
           <RepoBtnContainer />
         </div>
       </header>

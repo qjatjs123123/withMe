@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import CreateProject from './CreateProject';
 import CreateImage from './CreateImage';
 import { useGlobalState } from '../../_components/RepoModalProvider';
+import SyncBtn from './SyncBtn';
 
 interface AddModalProps {
   onClose: (isClosed: boolean) => void;
@@ -34,7 +35,8 @@ const AddModal: React.FC<AddModalProps> = ({ onClose, ref }) => {
     <div className="modal" ref={ref}>
       <div className="modal-header">
         <h2 className="font-bold">Creating a New Project</h2>
-        <button className="close" onClick={() => onClose(false)}>
+        <SyncBtn />
+        <button className="close font-bold" onClick={() => onClose(false)}>
           &times;
         </button>
       </div>

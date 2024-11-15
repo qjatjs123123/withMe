@@ -2,6 +2,7 @@ import { useGlobalState } from '../../_components/RepoModalProvider';
 import useErrorHandler from '../business/useErrorHandler';
 import RepoList from './RepoList';
 import { useState } from 'react';
+import { MESSAGE } from '@/util/constants';
 
 interface CreateProjectProps {
   onNextClick: (isClosed: boolean) => void;
@@ -21,7 +22,7 @@ export default function CreateProject({ onNextClick }: CreateProjectProps) {
 
   const handlerNextClick = async () => {
     if (!curRepo.current) {
-      await handlerMessage('레포 선택해주세요');
+      await handlerMessage(MESSAGE.SELECT_REPO);
       return;
     }
     onNextClick(true);
