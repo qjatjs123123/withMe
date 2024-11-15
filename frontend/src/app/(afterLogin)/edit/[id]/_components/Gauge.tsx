@@ -2,15 +2,29 @@ import { useEffect, useState } from 'react';
 
 export default function Gauge({ connection }) {
   const [progress, setProgress] = useState(0);
+  const [showMessage, setShowMessage] = useState(true);
 
   useEffect(() => {
     // connection.rooms.size를 기준으로 10%씩 증가
     const percentage = Math.min(10 * connection.rooms.size, 100);
     setProgress(percentage);
+
+    // progress가 100이 되면 1초 후 메시지 숨기기
+    if (percentage === 100) {
+      const timeout = setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
+
+      // 컴포넌트 언마운트 시 타이머 클리어
+      return () => clearTimeout(timeout);
+    } else {
+      // progress가 100이 아니면 메시지 다시 표시
+      setShowMessage(true);
+    }
   }, [connection.rooms.size]);
 
   return (
-    <>
+    <div className={`${showMessage ? '' : 'hidden'}`}>
       <div className="w-full flex justify-between pr-3 text-sm">
         <div className={progress < 100 ? `loading-dots` : ''}></div>
         <div>{progress < 100 ? `${progress === 0 ? '' : `${progress}%`}` : 'Connected!'}</div>
@@ -43,6 +57,6 @@ export default function Gauge({ connection }) {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 }
