@@ -1,13 +1,13 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import Nav from '../_components/Nav';
+import Main from '../_components/Main';
+import SearchModal from '../_components/SearchModal';
 
 export default function Page() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push('/');
-  }, []);
-
-  return <></>;
+  return (
+    <>
+      <Nav />
+      <Main />
+      <SearchModal />
+    </>
+  );
 }

@@ -7,6 +7,7 @@ import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
 import SearchBtn from './SearchBtn';
 import NavList from './NavList';
+import Hamburger from './hamburgar';
 
 export default async function Nav() {
   const cookieStore = cookies();
@@ -34,7 +35,7 @@ export default async function Nav() {
       >
         <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
           <Link href={isLogin ? '/' : '/'}>
-            <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+            <span className="text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
               WithMe
             </span>
           </Link>
@@ -53,6 +54,8 @@ export default async function Nav() {
           ) : (
             <LoginBtn />
           )}
+
+          <Hamburger />
         </div>
         <style>
           {`

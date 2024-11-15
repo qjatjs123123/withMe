@@ -11,7 +11,7 @@ export default function NavList() {
   };
 
   return (
-    <div className="flex flex-row text-[20px] items-center gap-[50px]">
+    <div className="flex flex-row text-[20px] items-center gap-[50px] hidden-header hidden">
       <Link href={'/explore'}>
         <div className={getLinkClassName('/explore')}>EXPLORE</div>
       </Link>
