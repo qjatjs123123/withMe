@@ -12,6 +12,7 @@ export default function RightMain() {
   const { menuItems } = useMenuItems();
   const { markdowns, setMarkdowns } = useMarkdown();
   const connection = useConnection();
+  const [activeView, setActiveView] = useState('preview');
 
   useEffect(() => {
     if (!menuItems) return;
@@ -35,37 +36,34 @@ export default function RightMain() {
     setMarkdowns(sortedMarkdowns);
   }, [menuItems]);
 
-  const [activeView, setActiveView] = useState<'markdown' | 'preview' | 'ai'>('preview');
-
-  const handleViewChange = (view: 'markdown' | 'preview' | 'ai') => {
-    setActiveView(view);
-  };
-
   return (
     <div className="flex flex-col h-full justify-start items-center bg-white">
-      <div className="flex justify-center w-full relative" style={{ fontFamily: 'samsungsharpsans-bold' }}>
-        <div className="flex items-center justify-center w-[300px] h-[40px] text-xl mt-8 mb-2 text-black rounded-[90px]">
+      <div
+        className="flex w-full px-6 items-center justify-between mt-8 mb-2"
+        style={{ fontFamily: 'samsungsharpsans-bold' }}
+      >
+        <div className="flex-1" /> {/* Spacer */}
+        <div className="flex items-center justify-center space-x-8 text-xl">
           <button
-            onClick={() => handleViewChange('preview')}
-            className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'preview' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
+            onClick={() => setActiveView('preview')}
+            className={`h-8 ${activeView === 'preview' ? 'border-b-2 border-black' : ''}`}
           >
             Preview
           </button>
           <button
-            onClick={() => handleViewChange('markdown')}
-            className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'markdown' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
+            onClick={() => setActiveView('markdown')}
+            className={`h-8 ${activeView === 'markdown' ? 'border-b-2 border-black' : ''}`}
           >
             MarkDown
           </button>
           <button
-            onClick={() => handleViewChange('ai')}
-            className={` mx-4 my-2 cursor-pointer h-[30px]  ${activeView === 'ai' ? 'border-b-2 border-black' : 'cursor-pointer-nav'}`}
+            onClick={() => setActiveView('ai')}
+            className={`h-8 ${activeView === 'ai' ? 'border-b-2 border-black' : ''}`}
           >
             AI
           </button>
         </div>
-
-        <div className="absolute top-1 right-6 w-[140px]">
+        <div className="flex-1 flex justify-end">
           <Gauge connection={connection} />
         </div>
       </div>
