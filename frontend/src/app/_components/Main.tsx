@@ -10,7 +10,7 @@ export default function Main() {
         >
           <span>Create Together.</span>
           <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-            협업을 통해 가치를 더하다
+            협업을 통해 가치를 더하세요.
           </span>
         </div>
         <div></div>
@@ -34,7 +34,7 @@ export default function Main() {
         >
           <span>Collaborate with AI.</span>
           <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-            체계적인 작성을 위한 인사이트를 제공하다
+            창작을 위해 인사이트를 제공받으세요.
           </span>
         </div>
       </div>
@@ -57,7 +57,7 @@ export default function Main() {
         >
           <span>And Share Yours.</span>
           <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: 'clamp(24px, 4vw, 32px)' }}>
-            아이디어를 공유하여 더 나은 결과를 만들다
+            아이디어를 나누고 더 나은 결과를 만들어 보세요.
           </span>
         </div>
       </div>
@@ -71,10 +71,6 @@ export default function Main() {
           sizes="100%"
           style={{ width: '100%', height: '60%' }}
         />
-      </div>
-      <div className="h-[40px] flex flex-row text-[24px] mt-[200px] w-full text-start items-center gap-[20px]">
-        WITHME
-        <span style={{ fontFamily: 'SamsungOneKorean-400', fontSize: '16px' }}>© SSAFY All Rights Reserved</span>
       </div>
     </div>
   );
