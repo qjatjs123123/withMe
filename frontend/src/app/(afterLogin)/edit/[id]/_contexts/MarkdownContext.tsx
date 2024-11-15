@@ -40,19 +40,6 @@ export function MarkdownProvider({ children }: { children: React.ReactNode }) {
     }
   }, [markdowns, getAllMarkdowns]);
 
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (markdowns) {
-        saveMarkdowns();
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [markdowns, saveMarkdowns]);
-
   return (
     <MarkdownContext.Provider
       value={{
