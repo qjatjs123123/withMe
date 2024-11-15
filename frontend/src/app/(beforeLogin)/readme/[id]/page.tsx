@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   return {
     title: workSpace_data ? workSpace_data.name : '기본 제목',
-    description: workSpace_data?.readmeContent || '기본 설명',
+    description: workSpace_data?.workSpace_data.name || '기본 설명',
     openGraph: {
       title: workSpace_data?.name || '기본 제목',
       description: workSpace_data?.readmeContent || '기본 설명',

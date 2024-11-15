@@ -11,7 +11,6 @@ export default function ExistingRepoThumbnail({ thumbnail }) {
         objectFit="contain"
         className="rounded-lg"
         style={{ width: '100%', height: '90%', objectFit: 'contain' }}
-        priority
       />
       <div className="font-bold text-[16px] text-center w-full">이미 존재하는 레포입니다.</div>
     </div>
