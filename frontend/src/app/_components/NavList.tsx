@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-export default function NavList() {
+export default function NavList({ fontClassName }) {
   const pathname = usePathname();
 
   const getLinkClassName = (path: string) => {
@@ -11,7 +11,7 @@ export default function NavList() {
   };
 
   return (
-    <div className="flex flex-row text-[20px] items-center gap-[50px] hidden-header hidden">
+    <div className={` ${fontClassName} flex flex-row text-[20px] items-center gap-[50px] hidden-header hidden`}>
       <Link href={'/explore'}>
         <div className={getLinkClassName('/explore')}>EXPLORE</div>
       </Link>
