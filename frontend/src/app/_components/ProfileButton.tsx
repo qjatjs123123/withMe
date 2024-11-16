@@ -30,7 +30,12 @@ export default function ProfileButton({ children }: ProfileButtonProps) {
 
   return (
     <>
-      <button ref={modalRef} className="flex flex-row items-center focus:outline-none" onClick={onClick}>
+      <button
+        ref={modalRef}
+        className="flex flex-row items-center focus:outline-none"
+        onClick={onClick}
+        aria-label="모달 닫기"
+      >
         <div>{children}</div>
       </button>
       {isVisible && (

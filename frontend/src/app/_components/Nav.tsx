@@ -8,6 +8,7 @@ import LoginBtn from './LoginBtn';
 import SearchBtn from './SearchBtn';
 import NavList from './NavList';
 import Hamburger from './hamburgar';
+import { SamsungSharpSansBold } from '../layout';
 
 export default async function Nav() {
   const cookieStore = cookies();
@@ -35,12 +36,19 @@ export default async function Nav() {
       >
         <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
           <Link href={isLogin ? '/' : '/'}>
-            <span className="text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+            <span
+              className={`${SamsungSharpSansBold.className} text-3xl`}
+              style={
+                {
+                  /* fontFamily: 'samsungsharpsans-bold' */
+                }
+              }
+            >
               WithMe
             </span>
           </Link>
 
-          <NavList />
+          <NavList fontClassName={SamsungSharpSansBold.className} />
         </div>
         <div style={{ marginLeft: '10px' }}></div>
         <div className="flex items-center justify-end " style={{ gap: '26px' }}>
