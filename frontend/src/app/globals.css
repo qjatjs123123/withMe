@@ -180,13 +180,14 @@ h1 {
 .edit-scrollbar {
   /* width: 250px; */
   /* height: 1vh-120px; */
+  overflow-x: visible;
   overflow-y: auto;
 }
 
 /* 스크롤바의 폭 너비 */
 .edit-scrollbar::-webkit-scrollbar {
   width: 8px;
-  /* height: 10px; */
+  height: 8px;
   border-radius: 10px;
 }
 

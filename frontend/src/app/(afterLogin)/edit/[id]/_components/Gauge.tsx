@@ -13,12 +13,12 @@ export default function Gauge({ connection }) {
       setShowConnected(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [connection.rooms.size]);
 
-  if (!isVisible) return null;
+  // if (!isVisible) return null;
 
   const size = 40;
   const strokeWidth = 4;
@@ -28,7 +28,9 @@ export default function Gauge({ connection }) {
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="flex items-center">
+    <div
+      className={`flex items-center transition-all duration-1000 ease-out ${isVisible ? '' : '-mr-[200%] ml-[200%]'}`}
+    >
       {showConnected ? (
         <span className="text-sm font-medium text-green-600 animate-fade-in">Connected!</span>
       ) : (

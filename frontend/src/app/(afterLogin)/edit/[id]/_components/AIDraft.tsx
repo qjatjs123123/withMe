@@ -131,16 +131,41 @@ export function AIDraft() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-full p-5 rounded-xl bg-gray-50 relative">
-      <div className="absolute top-3 left-6 text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
-      <div className="mt-10 w-[750px]">
-        <div className="flex-grow rounded-lg p-4 edit-scrollbar">
+    <div className="flex flex-col items-center w-[600px] min-h-[500px] p-5 rounded-xl bg-gray-100 relative">
+      <div
+        className="absolute top-3 left-6 text-base font-semibold mb-4"
+        style={{ fontFamily: 'Samsungsamsungsharpsans-bold, SamsungOneKorean-700' }}
+      >
+        현재 목차: {activeLabel}
+      </div>
+      <button
+        onClick={handleSubmit}
+        className={`absolute bottom-1 right-8 pb-2 rounded-full ${isStreaming ? 'pointer-events-none' : ''}`}
+        disabled={isStreaming && !reader}
+      >
+        {isStreaming ? (
+          <div className="bg-[#f1f0f0]  w-[150px] h-[30px] text-sm flex justify-center items-center rounded-md font-bold text-gray-500">
+            <Image alt="twinkle" src="/twinkle.svg" height={15} width={15} className="mr-2" />
+            <span>AI 초안 생성하기</span>
+          </div>
+        ) : (
+          <div className="bg-[#f1f0f0] w-[150px] h-[30px] text-sm flex justify-center items-center rounded-md font-bold">
+            <Image alt="twinkle" src="/twinkle.svg" height={15} width={15} className="mr-2" />
+            <span>AI 초안 생성하기</span>
+          </div>
+        )}
+      </button>
+      <div className="mt-3 w-[600px]">
+        <div className="rounded-lg py-4">
           {messages.map((message, idx) => (
-            <div key={idx} className={`ml-2 mb-4 flex p-3 justify-center rounded-lg max-w-[750px] bg-white relative`}>
+            <div
+              key={idx}
+              className={`mb-4 mx-auto flex p-3 justify-center rounded-lg max-w-[500px] bg-white relative`}
+            >
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkBreaks]}
                 rehypePlugins={[rehypeRaw]}
-                className="markdown-body flex flex-col justify-start items-start text-left w-full"
+                className="markdown-body flex flex-col justify-start items-start text-left w-full p-4"
               >
                 {message.text}
               </ReactMarkdown>
@@ -149,11 +174,11 @@ export function AIDraft() {
           ))}
 
           {accumulatedContent && (
-            <div className="ml-2 mb-4 flex p-3 justify-center rounded-lg  max-w-[750px] bg-white">
+            <div className="mb-4 mx-auto flex p-3 justify-center rounded-lg  max-w-[500px] bg-white">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkBreaks]}
                 rehypePlugins={[rehypeRaw]}
-                className="markdown-body flex flex-col justify-start items-start text-left w-full"
+                className="markdown-body flex flex-col justify-start items-start text-left w-full p-4"
               >
                 {accumulatedContent}
               </ReactMarkdown>
@@ -161,23 +186,6 @@ export function AIDraft() {
           )}
         </div>
       </div>
-      <button
-        onClick={handleSubmit}
-        className={`absolute top-4 right-3 pb-2 rounded-full ${isStreaming ? 'pointer-events-none' : ''}`}
-        disabled={isStreaming && !reader}
-      >
-        {isStreaming ? (
-          <div className="bg-[#f1f0f0] text-gray-500 w-[220px] h-[38px] flex justify-center items-center rounded-md font-bold">
-            <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
-            <span>AI 초안 생성하기</span>
-          </div>
-        ) : (
-          <div className="bg-[#f1f0f0] w-[220px] h-[38px] flex justify-center items-center rounded-md font-bold">
-            <Image alt="twinkle" src="/twinkle.svg" height={20} width={20} className="mr-3" />
-            <span>AI 초안 생성하기</span>
-          </div>
-        )}
-      </button>
     </div>
   );
 }
