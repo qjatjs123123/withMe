@@ -114,7 +114,7 @@ export default function EditPage() {
                             </div>
 
                             <div
-                              className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around mx-4"
+                              className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
                               style={{
                                 width: isVertical ? '100%' : '6px',
                                 height: isVertical ? '6px' : '100%',
