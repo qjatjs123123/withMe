@@ -4,7 +4,7 @@ import { SamsungSharpSansBold } from '../layout';
 export default function Main() {
   return (
     <div className="flex items-center w-full  responsive_container pt-[30px] flex-col">
-      <div className=" w-full items-center  h-full">
+      <div className=" w-full items-center  h-full justify-center">
         <div
           style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
           className="flex flex-col sm:mb-4  flex-1  w-full justify-start"
@@ -15,16 +15,18 @@ export default function Main() {
           </span>
         </div>
         <div></div>
-        <div className="flex-1 mt-[30px] flex justify-center w-[80%] h-[auto] items-center">
-          <Image
-            className="image"
-            src="/MainImg1.png"
-            alt="Main logo of the image"
-            width={16}
-            height={9}
-            sizes="100%"
-            style={{ width: '100%', height: 'auto' }}
-          />
+        <div className="flex-1 mt-[30px] flex justify-center w-full h-[auto] items-center">
+          <div className="w-[80%] h-[auto]">
+            <Image
+              className="image"
+              src="/MainImg1.png"
+              alt="Main logo of the image"
+              width={16}
+              height={9}
+              sizes="100%"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
         </div>
       </div>
 
