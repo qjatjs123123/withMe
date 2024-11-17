@@ -10,7 +10,7 @@ import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
 import { useMarkdown } from '../_contexts/MarkdownContext';
-import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { useInfo } from '../_contexts/InfoContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
 import { Loading } from './Loading';
@@ -296,14 +296,14 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
 }
 
 export function LeftBar({ isOpen, toggleSidebar }) {
-  const { roomId } = useInfo();
+  const { roomId, menuItems } = useInfo();
 
   return (
     <RoomProvider
       id={roomId}
       initialStorage={{
-        initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: MENU_ITEMS,
+        initialMenuItems: menuItems,
+        menuItems: menuItems.slice(0, 4),
       }}
     >
       <ClientSideSuspense
