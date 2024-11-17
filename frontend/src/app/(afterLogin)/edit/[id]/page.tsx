@@ -96,19 +96,30 @@ export default function EditPage() {
                   <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
                     <div className="flex flex-col bg-white h-full">
                       <Nav />
-                      <div className="flex h-full">
-                        <div className="h-full bg-[#f9f9f9]" style={{ fontFamily: 'SamsungOneKorean-700' }}>
+                      <div className={`flex h-full ${isVertical ? 'relative' : ''}`}>
+                        <div
+                          className={`h-full bg-[#f9f9f9] ${isVertical ? 'absolute z-[9999]' : ''}`}
+                          style={{ fontFamily: 'SamsungOneKorean-700' }}
+                        >
                           <LeftBar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
                         </div>
 
+                        {isVertical && isSidebarOpen && (
+                          <div className="fixed inset-0 bg-black bg-opacity-40 z-[9998]"></div>
+                        )}
+
                         <div
-                          className="flex-1"
+                          className={`flex-1`}
                           ref={mainContainerRef}
                           style={{ width: `calc(100% - ${LEFT_SIDEBAR_WIDTH}px)` }}
                         >
                           <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
                             <div
-                              style={isVertical ? { height: `${leftSize}%`, width: '100%' } : { width: `${leftSize}%` }}
+                              style={
+                                isVertical
+                                  ? { height: `50%`, width: '100%', borderBottom: '2px solid rgb(229, 231, 235)' }
+                                  : { width: `${leftSize}%` }
+                              }
                               className="h-full w-full edit-scrollbar"
                             >
                               <LeftMain />

@@ -138,7 +138,7 @@ export function AIDraft() {
   };
 
   return (
-    <div className="flex flex-col items-center w-[600px] min-h-[500px] p-5 rounded-xl bg-gray-100 relative">
+    <div className="flex flex-col items-center responsive_AIDraft min-h-[500px] p-5 rounded-xl bg-gray-100 relative">
       <div
         className="absolute top-3 left-6 text-base font-semibold mb-4"
         style={{ fontFamily: 'Samsungsamsungsharpsans-bold, SamsungOneKorean-700' }}
@@ -162,12 +162,12 @@ export function AIDraft() {
           </div>
         )}
       </button>
-      <div className="mt-3 w-[600px]">
+      <div className="mt-3 responsive_AIDraft">
         <div className="rounded-lg py-4">
           {messages.map((message, idx) => (
             <div
               key={idx}
-              className={`mb-4 mx-auto flex p-3 justify-center rounded-lg max-w-[500px] bg-white relative`}
+              className={`mb-4 mx-auto flex p-3 justify-center rounded-lg responsive_AIDraftMsg bg-white relative`}
             >
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -186,7 +186,7 @@ export function AIDraft() {
             </div>
           )}
           {accumulatedContent && (
-            <div className="mb-4 mx-auto flex p-3 justify-center rounded-lg  max-w-[500px] bg-white">
+            <div className="mb-4 mx-auto flex p-3 justify-center rounded-lg  responsive_AIDraftMsg bg-white">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkBreaks]}
                 rehypePlugins={[rehypeRaw]}

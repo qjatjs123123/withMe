@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
 import SearchBtn from './SearchBtn';
 import NavList from './NavList';
-import Hamburger from './hamburgar';
+import Hamburger from './Hamburger';
 import { SamsungSharpSansBold } from '../layout';
 
 export default async function Nav() {

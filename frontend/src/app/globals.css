@@ -460,3 +460,37 @@ body:lang(ko) {
     display: none;
   }
 }
+
+.responsive_AIDraft {
+  width: 600px; /* 기본 너비 */
+  transition: width 0.3s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+@media (max-width: 1480px) {
+  .responsive_AIDraft {
+    width: 400px; /* 화면 너비가 1400px보다 작을 때 */
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive_AIDraft {
+    width: 300px; /* 화면 너비가 768px보다 작을 때 */
+  }
+}
+
+.responsive_AIDraftMsg {
+  max-width: 500px; /* 기본 최대 너비 */
+  transition: max-width 0.3s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+@media (max-width: 1480px) {
+  .responsive_AIDraftMsg {
+    max-width: 350px; /* 화면 너비가 1400px보다 작을 때 */
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive_AIDraftMsg {
+    max-width: 250px; /* 화면 너비가 768px보다 작을 때 */
+  }
+}
