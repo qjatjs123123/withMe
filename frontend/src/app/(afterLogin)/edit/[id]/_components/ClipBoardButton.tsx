@@ -1,6 +1,5 @@
 import { HiOutlineClipboardCopy } from 'react-icons/hi';
 import { useCreateBlockNote } from '@blocknote/react';
-// import { useEffect } from 'react';
 
 interface ClipBoardButtonProps {
   message: string;
@@ -22,7 +21,7 @@ export default function ClipBoardButton({ message }: ClipBoardButtonProps) {
 
         navigator.clipboard.write([clipboardItem]);
       }}
-      className="absolute top-1 right-1 flex items-center text-xs px-2 py-1 rounded hover:bg-gray-200"
+      className="absolute top-[0.2rem] right-[0.2rem] flex items-center text-xs px-2 py-1 rounded hover:bg-gray-200"
       style={{ zIndex: 10 }}
     >
       <HiOutlineClipboardCopy className="mr-1" size={20} />

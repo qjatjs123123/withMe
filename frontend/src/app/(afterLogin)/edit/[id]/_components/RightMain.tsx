@@ -5,10 +5,14 @@ import { MarkdownPreview } from './MarkdownPreview';
 import { AIDraftProvider } from '../_contexts/AIDraftContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useMarkdown } from '../_contexts/MarkdownContext';
+import { useConnection } from '../_contexts/ConnectionContext';
+import Gauge from './Gauge';
 
 export default function RightMain() {
   const { menuItems } = useMenuItems();
   const { markdowns, setMarkdowns } = useMarkdown();
+  const connection = useConnection();
+  const [activeView, setActiveView] = useState('preview');
 
   useEffect(() => {
     if (!menuItems) return;
@@ -32,39 +36,55 @@ export default function RightMain() {
     setMarkdowns(sortedMarkdowns);
   }, [menuItems]);
 
-  const [activeView, setActiveView] = useState<'markdown' | 'preview' | 'ai'>('preview');
-
-  const handleViewChange = (view: 'markdown' | 'preview' | 'ai') => {
-    setActiveView(view);
-  };
-
   return (
-    <div className="flex flex-col h-full items-center bg-white">
-      <div className="flex items-center justify-center my-5 w-[300px] h-[40px] bg-[#495365] text-white rounded-[90px]">
-        <button
-          onClick={() => handleViewChange('preview')}
-          className={`px-5 mx-1 border-none cursor-pointer rounded-[90px] h-[30px] ${activeView === 'preview' ? 'bg-[#49DCB0] text-black' : 'bg-[#3D424A] text-white'}`}
-        >
-          Preview
-        </button>
-        <button
-          onClick={() => handleViewChange('markdown')}
-          className={`px-5 mx-1  border-none cursor-pointer rounded-[90px] h-[30px] ${activeView === 'markdown' ? 'bg-[#49DCB0] text-black' : 'bg-[#3D424A] text-white'}`}
-        >
-          MarkDown
-        </button>
-        <button
-          onClick={() => handleViewChange('ai')}
-          className={`px-5 mx-1  border-none cursor-pointer rounded-[90px] h-[30px] ${activeView === 'ai' ? 'bg-[#49DCB0] text-black' : 'bg-[#3D424A] text-white'}`}
-        >
-          AI
-        </button>
+    <div className="flex flex-col h-full justify-start items-center bg-white">
+      <div
+        className="flex w-full px-6 items-center justify-between mt-8 mb-2"
+        style={{ fontFamily: 'samsungsharpsans-bold' }}
+      >
+        <div className="flex-1" /> {/* Spacer */}
+        <div className="flex items-center justify-center space-x-8 text-xl">
+          <button
+            onClick={() => setActiveView('preview')}
+            className={`h-8 focus:outline-none ${activeView === 'preview' ? 'border-b-2 border-black' : ''}`}
+          >
+            Preview
+          </button>
+          <button
+            onClick={() => setActiveView('markdown')}
+            className={`h-8 focus:outline-none ${activeView === 'markdown' ? 'border-b-2 border-black' : ''}`}
+          >
+            MarkDown
+          </button>
+          <button
+            onClick={() => setActiveView('ai')}
+            className={`h-8 focus:outline-none ${activeView === 'ai' ? 'border-b-2 border-black' : ''}`}
+          >
+            AI
+          </button>
+        </div>
+        <div className="flex-1 flex justify-end">
+          <Gauge connection={connection} />
+        </div>
       </div>
-      <div className="mt-5 text-[20px] w-full h-[90%] p-7 bg-white overflow-x-auto overflow-y-scroll">
+
+      <div className="text-[20px] w-full h-[90%] bg-white edit-scrollbar" style={{ fontFamily: 'sans-serif' }}>
         <AIDraftProvider>
-          {activeView === 'preview' && <MarkdownPreview />}
-          {activeView === 'markdown' && <MarkdownView />}
-          {activeView === 'ai' && <AIDraft />}
+          {activeView === 'preview' && (
+            <div className="w-[90%] mx-auto h-full ">
+              <MarkdownPreview />
+            </div>
+          )}
+          {activeView === 'markdown' && (
+            <div className="w-[90%] mx-auto h-full ">
+              <MarkdownView />
+            </div>
+          )}
+          {activeView === 'ai' && (
+            <div className="w-full mt-4 mb-8 flex justify-center overflow-x-hidden">
+              <AIDraft />
+            </div>
+          )}
         </AIDraftProvider>
       </div>
     </div>

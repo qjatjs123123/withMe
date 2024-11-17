@@ -11,6 +11,7 @@ import { API_URL } from '@/util/constants';
 import WorkSpaceContainer from './_component/WorkSpaceContainer';
 import RepoBtnContainer from './_component/RepoBtnContainer';
 import SnakBarContainer from './_component/_providerComponent/SnakBarContainer';
+import Footer from '@/app/_components/Footer';
 
 interface PageParam {
   page: number;
@@ -49,12 +50,13 @@ export default async function Home() {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <div className="responsive_mainResponsive">
+    <div className="responsive_container">
       <HydrationBoundary state={dehydratedState}>
         <main className="w-full ">
           <SnakBarContainer />
         </main>
       </HydrationBoundary>
+      <Footer />
     </div>
   );
 }

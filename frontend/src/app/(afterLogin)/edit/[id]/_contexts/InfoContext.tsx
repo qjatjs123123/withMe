@@ -4,32 +4,30 @@ import { API_URL } from '@/util/constants';
 import { jwtDecode } from 'jwt-decode';
 import { useParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import { Loading } from '../_components/Loading';
+import { CommitIcon } from '../_icons/CommitIcon';
+import ErrorModal from '../_components/ErrorModal';
 
-export const INITIAL_MENU_ITEMS = [
-  { id: uuidv4(), label: '헤더' },
-  { id: uuidv4(), label: '프로젝트 소개' },
-  { id: uuidv4(), label: '기획 배경' },
-  { id: uuidv4(), label: '주요 기능' },
-  { id: uuidv4(), label: '아키텍쳐' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-];
-export const MENU_ITEMS = INITIAL_MENU_ITEMS.slice(0, 5);
+type MenuItem = {
+  id: string;
+  label: string;
+};
 
 type InfoContextType = {
   repoName: string | null;
   setRepoName: (name: string) => void;
   repoUrl: string | null;
   setRepoUrl: (url: string) => void;
-  roomId: string; // null 타입 제거
+  roomId: string;
   setRoomId: (id: string) => void;
   userName: string | null;
   setUserName: (userName: string) => void;
   token: string | null;
   setToken: (token: string | null) => void;
+  ownerName: string | null;
+  setOwnerName: (owner: string) => void;
+  menuItems: MenuItem[];
+  setMenuItems: (items: MenuItem[]) => void;
 };
 
 type WorkspaceResponse = {
@@ -46,6 +44,7 @@ type WorkspaceResponse = {
     repoUrl: string;
     roomId: string;
     thumbnail: null;
+    owner: string;
   };
   timestamp: string;
 };
@@ -53,6 +52,8 @@ type WorkspaceResponse = {
 type DecodedTokenType = {
   token: string;
 };
+
+const INITIAL_MENU_LABELS = ['프로젝트 소개', '기획 배경', '주요 기능', '아키텍쳐', '', '', '', '', '', ''];
 
 const InfoContext = createContext<InfoContextType | undefined>(undefined);
 
@@ -62,13 +63,23 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [repoName, setRepoName] = useState<string | null>(null);
   const [repoUrl, setRepoUrl] = useState<string | null>(null);
-  const [roomId, setRoomId] = useState<string>(''); // 초기값을 빈 문자열로 설정
+  const [roomId, setRoomId] = useState<string>('');
   const [userName, setUserName] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [ownerName, setOwnerName] = useState<string | null>(null);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const initializeData = async () => {
       try {
+        // Initialize menu items with UUIDs
+        const initializedMenuItems = INITIAL_MENU_LABELS.map((label) => ({
+          id: uuidv4(),
+          label: label,
+        }));
+        setMenuItems(initializedMenuItems);
+
         // Workspace 정보 가져오기
         const response = await axios.post<WorkspaceResponse>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.WORKSPACE_INFO}`,
@@ -76,10 +87,11 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
             workspace_id: workspaceId,
           },
         );
-
+        console.log(response.data);
         setRepoName(response.data.data.name);
         setRepoUrl(response.data.data.repoUrl);
         setRoomId(response.data.data.roomId);
+        setOwnerName(response.data.data.owner);
 
         // 사용자 정보 처리
         const cookie = getCookieValue('userData');
@@ -94,8 +106,9 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
 
         setIsLoading(false);
       } catch (error) {
-        console.error('Error initializing data:', error);
-        // 에러 발생시 기본 roomId 설정
+        if (error.response && error.response.status === 400) {
+          setIsError(true);
+        }
         setRoomId('WITHME_ROOM_ID_1515151515');
         setIsLoading(false);
       }
@@ -104,11 +117,49 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
     initializeData();
   }, [workspaceId]);
 
+  if (isError) return <ErrorModal />;
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="w-20 h-20 border-8 border-gray-300 border-t-black rounded-full animate-spin mb-4 mt-4"></div>
-      </div>
+      <>
+        <div className="relative">
+          <nav
+            style={{
+              backgroundColor: 'white',
+              width: '100%',
+              padding: '0px 50px',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              zIndex: '15',
+              height: '90px',
+            }}
+            className="border-b-2"
+          >
+            <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
+              <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                WithMe
+              </span>
+              <span className="cursor-pointer-nav text-[20px]" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                Workspace
+              </span>
+            </div>
+            <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
+            <div style={{ flex: '1 1 0%' }}>
+              <div className="flex justify-end items-center">
+                <div className="mr-4"></div>
+                <div className="flex items-center">
+                  <CommitIcon />
+                  <span className="ml-1.5 font-bold text-lg">Commit</span>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div className="w-full flex justify-center items-center" style={{ height: `calc(100vh - 90px)` }}>
+          <Loading />
+        </div>
+      </>
     );
   }
 
@@ -125,6 +176,10 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
         setUserName,
         token,
         setToken,
+        ownerName,
+        setOwnerName,
+        menuItems,
+        setMenuItems,
       }}
     >
       {children}

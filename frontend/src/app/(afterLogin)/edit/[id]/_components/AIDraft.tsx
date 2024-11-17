@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getCookieValue } from '@/util/axiosConfigClient';
-import { FaArrowCircleUp } from 'react-icons/fa';
-import { FaCircleStop } from 'react-icons/fa6';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useAIDraft } from '../_contexts/AIDraftContext';
@@ -11,17 +9,22 @@ import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import 'github-markdown-css';
 import ClipBoardButton from './ClipBoardButton';
+import { useParams } from 'next/navigation';
+import Image from 'next/image';
 
 export function AIDraft() {
   const { activeId } = useActiveId();
   const { menuItems } = useMenuItems();
   const { messages, addMessage } = useAIDraft();
   const [activeLabel, setActiveLabel] = useState<string>();
-  const [promptValue, setPromptValue] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [accumulatedContent, setAccumulatedContent] = useState<string>('');
   const [reader, setReader] = useState<ReadableStreamDefaultReader | null>(null);
   const [cancelDelay, setCancelDelay] = useState(false);
+  const params = useParams();
+  const workspaceId = params.id;
+  const partialChunkRef = useRef('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const activeMenuItem = menuItems.find((item) => item.id === activeId);
@@ -30,20 +33,12 @@ export function AIDraft() {
 
   useEffect(() => {
     if (accumulatedContent) {
-      addMessage({ text: accumulatedContent, isUser: false });
+      addMessage({ text: accumulatedContent });
       setAccumulatedContent(''); // 메시지 추가 후 초기화
     }
   }, [isStreaming]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPromptValue(event.target.value);
-  };
-
   const handleSubmit = () => {
-    if (!promptValue) return;
-
-    addMessage({ text: promptValue, isUser: true });
-    setPromptValue('');
     startStreamingResponse();
   };
 
@@ -51,6 +46,7 @@ export function AIDraft() {
   const userData = JSON.parse(userDataCookie as string);
 
   const startStreamingResponse = async () => {
+    setIsLoading(true);
     setIsStreaming(true);
     setAccumulatedContent('');
     setCancelDelay(false);
@@ -63,13 +59,17 @@ export function AIDraft() {
           Authorization: `Bearer ${userData.access_token}`,
         },
         body: JSON.stringify({
-          workspace_id: 95, // 수정 예정: 현재 선택된 레포명
+          workspace_id: workspaceId,
           section_name: activeLabel,
-          user_prompt: promptValue,
         }),
       });
 
-      if (!response.body) throw new Error('ReadableStream not supported in this environment');
+      if (!response.body) {
+        setIsLoading(false);
+        throw new Error('ReadableStream not supported in this environment');
+      }
+
+      setIsLoading(false);
 
       const readerInstance = response.body.getReader();
       setReader(readerInstance);
@@ -86,18 +86,14 @@ export function AIDraft() {
 
         // 디코딩한 스트림 데이터를 `data:` 접두사를 제거한 후 파싱 준비
         const chunk = decoder.decode(value, { stream: true }).trim();
-        const lines = chunk.split('\n'); // 여러 줄로 분리
+        const processText = partialChunkRef.current + chunk;
+        partialChunkRef.current = '';
+        const lines = processText.split('\n'); // 여러 줄로 분리
 
         for (const line of lines) {
           // "data:"로 시작하는 줄만 처리
-          if (line.startsWith('data:')) {
+          if (line.startsWith('data:') && line.endsWith('}')) {
             const jsonString = line.slice(5).trim();
-
-            if (jsonString === '[DONE]') {
-              // [DONE] 신호를 받으면 스트리밍 종료
-              isReading = false;
-              break;
-            }
 
             try {
               const jsonData = JSON.parse(jsonString);
@@ -113,13 +109,21 @@ export function AIDraft() {
                     return;
                   }
 
-                  await new Promise((resolve) => setTimeout(resolve, 20)); // 30ms 딜레이
+                  await new Promise((resolve) => setTimeout(resolve, 20)); // 20ms 딜레이
                   setAccumulatedContent((prevContent) => prevContent + char);
                 }
               }
             } catch (error) {
+              console.error('error line: ', line);
               console.error('Failed to parse JSON chunk:', error);
             }
+          } else {
+            if (line.endsWith('[DONE]')) {
+              partialChunkRef.current = '';
+              isReading = false;
+              break;
+            }
+            partialChunkRef.current = line;
           }
         }
       }
@@ -133,84 +137,66 @@ export function AIDraft() {
     }
   };
 
-  const stopStreamingResponse = () => {
-    if (reader) {
-      reader.cancel();
-      setReader(null);
-    }
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (isStreaming) {
-      event.preventDefault();
-    } else if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      handleSubmit();
-    }
-  };
-
   return (
-    <div className="flex flex-col w-full h-full p-5 rounded-xl bg-gray-50">
-      <div className="text-lg font-semibold mb-4">현재 목차: {activeLabel}</div>
-      <div className="flex-grow rounded-lg p-4 overflow-auto">
-        {messages.map((message, idx) => (
-          <div key={idx} className={`mb-2 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`p-3 rounded-lg max-w-[80%]`}
-              style={{ backgroundColor: message.isUser ? '#e5e7eb' : 'white' }}
-            >
-              {message.isUser ? (
-                // 사용자 메시지: 일반 텍스트와 줄바꿈 처리
-                message.text.split('\n').map((line, lineIdx) => (
-                  <React.Fragment key={lineIdx}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))
-              ) : (
-                // 사용자 외 메시지: Markdown 플러그인 적용
-                <div className="relative">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm, remarkBreaks]}
-                    rehypePlugins={[rehypeRaw]}
-                    className="markdown-body"
-                  >
-                    {message.text}
-                  </ReactMarkdown>
-                  <ClipBoardButton message={message.text} />
-                </div>
-              )}
-            </div>
+    <div className="flex flex-col items-center w-[600px] min-h-[500px] p-5 rounded-xl bg-gray-100 relative">
+      <div
+        className="absolute top-3 left-6 text-base font-semibold mb-4"
+        style={{ fontFamily: 'Samsungsamsungsharpsans-bold, SamsungOneKorean-700' }}
+      >
+        현재 목차: {activeLabel}
+      </div>
+      <button
+        onClick={handleSubmit}
+        className={`absolute bottom-1 right-8 pb-2 rounded-full ${isStreaming ? 'pointer-events-none' : ''}`}
+        disabled={isStreaming && !reader}
+      >
+        {isStreaming ? (
+          <div className="bg-[#f1f0f0]  w-[150px] h-[30px] text-sm flex justify-center items-center rounded-md font-bold text-gray-500">
+            <Image alt="twinkle" src="/twinkle.svg" height={15} width={15} className="mr-2" />
+            <span>AI 초안 생성하기</span>
           </div>
-        ))}
-
-        {accumulatedContent && (
-          <div className="mb-2 flex p-3 justify-start rounded-lg bg-white max-w-[80%] markdown-body">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkBreaks]}
-              rehypePlugins={[rehypeRaw]}
-              className="markdown-body"
-            >
-              {accumulatedContent}
-            </ReactMarkdown>
+        ) : (
+          <div className="bg-[#f1f0f0] w-[150px] h-[30px] text-sm flex justify-center items-center rounded-md font-bold">
+            <Image alt="twinkle" src="/twinkle.svg" height={15} width={15} className="mr-2" />
+            <span>AI 초안 생성하기</span>
           </div>
         )}
-      </div>
-      <div className="relative">
-        <textarea
-          value={promptValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          placeholder="메시지 ChatGPT"
-          className="w-full p-3 bg-[#F1F1F1] rounded-lg h-24 resize-none pr-20 focus:outline-none focus:border-none"
-        />
-        <button
-          onClick={isStreaming ? stopStreamingResponse : handleSubmit}
-          className="absolute bottom-2 right-2 pb-2 rounded-full "
-          disabled={isStreaming && !reader}
-        >
-          {isStreaming ? <FaCircleStop size={32} /> : <FaArrowCircleUp size={32} />}
-        </button>
+      </button>
+      <div className="mt-3 w-[600px]">
+        <div className="rounded-lg py-4">
+          {messages.map((message, idx) => (
+            <div
+              key={idx}
+              className={`mb-4 mx-auto flex p-3 justify-center rounded-lg max-w-[500px] bg-white relative`}
+            >
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+                rehypePlugins={[rehypeRaw]}
+                className="markdown-body flex flex-col justify-start items-start text-left w-full p-4"
+              >
+                {message.text}
+              </ReactMarkdown>
+              <ClipBoardButton message={message.text} />
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className="ml-[64px] mt-4">
+              <div className="loader"></div>
+            </div>
+          )}
+          {accumulatedContent && (
+            <div className="mb-4 mx-auto flex p-3 justify-center rounded-lg  max-w-[500px] bg-white">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+                rehypePlugins={[rehypeRaw]}
+                className="markdown-body flex flex-col justify-start items-start text-left w-full p-4"
+              >
+                {accumulatedContent}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

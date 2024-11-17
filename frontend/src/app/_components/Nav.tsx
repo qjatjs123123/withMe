@@ -5,6 +5,10 @@ import UserProfile from './UserProfile';
 import ProfileButton from './ProfileButton';
 import { cookies } from 'next/headers';
 import LoginBtn from './LoginBtn';
+import SearchBtn from './SearchBtn';
+import NavList from './NavList';
+import Hamburger from './hamburgar';
+import { SamsungSharpSansBold } from '../layout';
 
 export default async function Nav() {
   const cookieStore = cookies();
@@ -19,37 +23,36 @@ export default async function Nav() {
   return (
     <>
       <nav
+        className="fixed w-full bg-white flex flex-row items-center z-15 h-[90px] px-8 md:px-[50px]"
         style={{
           position: 'fixed',
-          backgroundColor: '#020623', // bg-[#020623]
-          width: '100%',
-          padding: '12px', // p-[12px]
+          backgroundColor: 'white',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          zIndex: '5',
+          zIndex: '15',
+          height: '90px',
         }}
       >
-        <div style={{ flex: '1 1 0%' }}>
-          <Link href={isLogin ? '/workspace' : '/'}>
-            {/* <Image
-              className="workspace-image cursor-pointer"
-              src="/Logo.png"
-              alt="logo of the image"
-              width={200}
-              height={43}
-              sizes="100%"
-              style={{ width: '200px', height: '100%' }}
-            /> */}
-            <span className="ml-2 text-white text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
-              With<span className="text-[#49DCB0]">M</span>E.md
+        <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
+          <Link href={isLogin ? '/' : '/'}>
+            <span
+              className={`${SamsungSharpSansBold.className} text-3xl`}
+              style={
+                {
+                  /* fontFamily: 'samsungsharpsans-bold' */
+                }
+              }
+            >
+              WithMe
             </span>
           </Link>
+
+          <NavList fontClassName={SamsungSharpSansBold.className} />
         </div>
-        <div style={{ flex: '2 1 0%', marginLeft: '10px' }}>
-          <SearchBar />
-        </div>
-        <div className="flex justify-end" style={{ flex: '1 1 0%' }}>
+        <div style={{ marginLeft: '10px' }}></div>
+        <div className="flex items-center justify-end " style={{ gap: '26px' }}>
+          <SearchBtn />
           {isLogin ? (
             <>
               <ProfileButton>
@@ -59,12 +62,14 @@ export default async function Nav() {
           ) : (
             <LoginBtn />
           )}
+
+          <Hamburger />
         </div>
         <style>
           {`
 /* [project]/src/app/geistsans_9fc57718.module.css [app-client] (css) */
 .container-block {
-  height: 67px;
+  height: 90px;
 }
 
 @font-face {
@@ -109,9 +114,7 @@ export default async function Nav() {
   size-adjust: 107.19%;
 }
 
-.geistsans_9fc57718-module__5N2VMq__className {
-  font-family: geistSans, geistSans Fallback;
-}
+
 
 .geistsans_9fc57718-module__5N2VMq__variable {
   --font-geist-sans: "geistSans", "geistSans Fallback";
@@ -295,8 +298,6 @@ html, :host {
   -webkit-text-size-adjust: 100%;
   -moz-tab-size: 4;
   tab-size: 4;
-  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-feature-settings: normal;
   font-variation-settings: normal;
   -webkit-tap-highlight-color: transparent;
 }
@@ -751,33 +752,138 @@ img, video {
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@media only screen and (max-width: 767.7px) {
+    .responsive_container {
+    padding-left:30px;
+    padding-right:30px;
+        min-height:100vh !important
+    }
 }
 
+@media only screen and (max-width: 767.7px) and (max-width: 767.7px) {
+    .responsive_container {
+        padding-top:12.8vw
+        padding-left:30px;
+    padding-right:30px;
+    }
+}
+
+@media only screen and (max-width: 767.7px) and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:90px;
+    padding-right:90px;
+        padding-top:96px;
+        padding-top: 7.5vw
+    }
+}
+
+@media only screen and (max-width: 767.7px) and (min-width: 1281px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:96px
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        min-height:calc(100vh - (61 * 100 / 1280 * 1vw)) !important
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) and (max-width: 767.7px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:12vw
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px;
+        padding-top: 7.03125vw
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1280px) and (min-width: 1281px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px
+    }
+}
+
+@media only screen and (min-width: 1281px) {
+    .responsive_container {
+        min-height:calc(100vh - 61px) !impo
+        padding-left:50px;
+    padding-right:50px;
+    }
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 767.7px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:12vw
+    }
+}
+
+@media only screen and (min-width: 1281px) and (min-width: 768px) and (max-width: 1280px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px;
+        padding-top: 7.03125vw
+    }
+}
+
+@media only screen and (min-width: 1281px) and (min-width: 1281px) {
+    .responsive_container {
+    padding-left:50px;
+    padding-right:50px;
+        padding-top:90px
+    }
+}
+
+
 .responsive_mainResponsive {
-  width: 1728px;
+  
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom:80px;
 }
 
 @media screen and (width <= 1919px) {
   .responsive_mainResponsive {
-    width: 1376px;
+    width: 1819px;
   }
 }
 
 @media screen and (width <= 1440px) {
   .responsive_mainResponsive {
-    width: 1024px;
+    width: 1340px;
+  }
+}
+  @media screen and (width <= 1340px) {
+  .responsive_mainResponsive {
+    width: 1200px;
+  }
+}
+  @media screen and (width <= 1240px) {
+  .responsive_mainResponsive {
+    width: 1100px;
   }
 }
 
-@media screen and (width <= 1056px) {
+@media screen and (width <= 1240px) {
   .responsive_mainResponsive {
     width: 100%;
   }
@@ -789,62 +895,62 @@ body {
   grid-gap: 32px;
   padding: 0;
   margin: 0;
-  --card-count: 5;
-  --spacer: calc(var(--card-count)  - 1);
-  --width: 20%;
-  grid-template-columns: repeat(var(--card-count), calc(var(--width)  - (32px * var(--spacer) / var(--card-count))));
-}
+  --card-count: 4;
+  --spacer: calc(var(--card-count) - 1);
+  --width: 25%;
 
-@media screen and (width <= 1919px) {
-  .grid_mainGrid {
-    --card-count: 4;
-    --width: 25%;
-  }
-}
+  grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))));
 
-@media screen and (width <= 1440px) {
-  .grid_mainGrid {
-    --card-count: 4;
-    --width: 25%;
-  }
-}
-
-@media screen and (width <= 1056px) {
-  .grid_mainGrid {
+  @media screen and (max-width: 1919px) {
     --card-count: 3;
     --width: 33.33%;
   }
-}
 
-@media screen and (width <= 868px) {
-  .grid_mainGrid {
+  @media screen and (max-width: 1440px) {
+    --card-count: 3;
+    --width: 33.33%;
+  }
+
+  @media screen and (max-width: 1056px) {
     --card-count: 2;
     --width: 50%;
   }
-}
 
-@media screen and (width <= 568px) {
-  .grid_mainGrid {
+  @media screen and (max-width: 868px) {
+    --card-count: 2;
+    --width: 50%;
+  }
+
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 100%);
     grid-gap: 16px;
   }
 }
-
 .workspace-item {
   position: absolute;
   width: 100%;
-  height: 80%;
+  height: 70%;
   background-color: #00000080;
   visibility: hidden;
 }
 
-.workspace-image:hover ~ .workspace-item, .workspace-item:hover {
+.workspace-image:hover ~ .workspace-item,
+.workspace-item:hover {
   visibility: visible;
+  opacity: 1; /* 기본값: 요소가 보이게 함 */
+  transition: visibility 0s, opacity 0.3s ease-in-out; /* 트랜지션 추가 */
+}
+
+.workspace-item {
+  opacity: 0; /* 기본적으로 요소를 숨김 */
+  visibility: hidden; /* 요소를 숨김 */
+  transition: visibility 0s, opacity 0.3s ease-in-out; /* 트랜지션 추가 */
 }
 
 .hover\:bg-white:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  transition: background-color 0.3s ease-in-out; /* 배경 색상 변화에 트랜지션 추가 */
 }
 
 .hover\:text-black:hover {
@@ -860,17 +966,14 @@ body {
 .login-button {
   height: 35px;
   border: 1px solid white;
-  color: white;
+  color: black;
   background-color: transparent;
   border-radius: 30px;
   padding: 4px 16px; /* px-4, py-1 */
   transition: background-color 300ms, color 300ms;
 }
 
-.login-button:hover {
-  background-color: white;
-  color: black;
-}
+
 
 .justify-between {
   justify-content: space-between;

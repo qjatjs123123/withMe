@@ -16,7 +16,7 @@ export default function CreateBtn({ url }) {
     const repo = curRepo.current;
 
     if (!repo || !repo.thumbnail) {
-      await handlerMessage('제대로 선택해주세요');
+      await handlerMessage(MESSAGE.SELECT_IMAGE);
       return false;
     }
 

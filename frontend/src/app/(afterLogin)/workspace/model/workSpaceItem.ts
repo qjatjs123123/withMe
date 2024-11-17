@@ -7,14 +7,16 @@ export interface WorkspaceContent {
   isCreated: boolean;
   readmeContent: string;
   isPrivate: boolean;
+  owner: string;
+  updatedAt: string;
 }
 
 // 페이지 정보와 정렬 옵션을 정의하는 인터페이스
 export interface SortOption {
-  direction: "ASC" | "DESC";
+  direction: 'ASC' | 'DESC';
   property: string;
   ignoreCase: boolean;
-  nullHandling: "NATIVE" | "NULLS_FIRST" | "NULLS_LAST";
+  nullHandling: 'NATIVE' | 'NULLS_FIRST' | 'NULLS_LAST';
   ascending: boolean;
   descending: boolean;
 }
@@ -59,9 +61,9 @@ export interface RootResponse {
 }
 
 export interface test {
-  data: test1
+  data: test1;
 }
 
 export interface test1 {
-  data:WorkspaceData
+  data: WorkspaceData;
 }

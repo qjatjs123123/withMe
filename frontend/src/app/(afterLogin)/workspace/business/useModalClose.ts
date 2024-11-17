@@ -10,8 +10,9 @@ const useModalClose = () => {
   };
 
   const handleClickOutside = (e) => {
-    // setIsVisible(false);
-    if (btnRef.current.contains(e.target)) return;
+    if (e.target.closest('nav')) return;
+    if (btnRef.current && btnRef.current.contains(e.target)) return;
+
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       setIsVisible(false);
     }
@@ -29,7 +30,7 @@ const useModalClose = () => {
     };
   }, [isVisible]);
 
-  return { isVisible, modalRef, btnRef, changeState, setIsVisible };
+  return { isVisible, modalRef, btnRef, changeState, setIsVisible, handleClickOutside };
 };
 
 export default useModalClose;

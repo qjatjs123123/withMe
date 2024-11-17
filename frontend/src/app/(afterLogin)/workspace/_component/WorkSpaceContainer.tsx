@@ -58,11 +58,20 @@ export default function WorkSpaceContainer() {
 
   return (
     <>
-      {workspaces.map((workspace) => (
-        <WorkspaceStateProvider key={workspace.id}>
-          <UserWorkSpace key={workspace.id} workspace={workspace} />
-        </WorkspaceStateProvider>
-      ))}
+      {workspaces.length === 0 ? (
+        <div>
+          <span className="text-[30px]" style={{ fontFamily: 'SamsungOneKorean-400' }}>
+            Add 버튼을 클릭하여
+          </span>
+          <p className=" text-[30px]">레포지토리를 추가해주세요.</p>
+        </div>
+      ) : (
+        workspaces.map((workspace) => (
+          <WorkspaceStateProvider key={`${workspace.id}`}>
+            <UserWorkSpace key={`${workspace.id}-user-workspace`} workspace={workspace} />
+          </WorkspaceStateProvider>
+        ))
+      )}
       {hasNextPage && <div ref={observerRef} style={{ height: '20px', backgroundColor: 'transparent' }} />}
     </>
   );

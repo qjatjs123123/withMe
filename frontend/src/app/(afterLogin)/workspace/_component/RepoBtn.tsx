@@ -56,7 +56,7 @@ export default function RepoBtn() {
             fill="#020623"
           />
         </svg>
-        추가
+        Add
       </button>
       {isVisible && <AddModal ref={modalRef} onClose={setIsVisible} />}
     </div>

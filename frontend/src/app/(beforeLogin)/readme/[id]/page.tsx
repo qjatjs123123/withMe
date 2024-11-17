@@ -1,9 +1,7 @@
-// app/readme/[workspace_id]/page.tsx
 import ReadMeBtn from '@/app/_components/ReadMeBtn';
-import axios from '@/util/axiosConfig';
+import axios from 'axios';
 import { Metadata } from 'next';
-import Head from 'next/head';
-import { notFound } from 'next/navigation'; // 404 페이지로 리디렉션을 위한 함수
+import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkBreaks from 'remark-breaks';
@@ -18,51 +16,54 @@ interface Params {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
   let workSpace_data = null;
+  if (!(id && !isNaN(Number(id)))) return;
   try {
-    const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/info`, {
+    const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
       workspace_id: id,
     });
 
     workSpace_data = response1.data.data;
   } catch (error) {
     console.error('Error fetching data:', error);
-    return { title: '페이지를 찾을 수 없습니다' }; // 오류 시 기본 메타데이터 반환
+    return { title: '페이지를 찾을 수 없습니다' };
   }
 
-  // 데이터에서 가져온 정보를 메타데이터로 반환
   return {
-    title: workSpace_data.name,
-    description: workSpace_data.readmeContent || '기본 설명',
+    title: workSpace_data ? workSpace_data.name : '기본 제목',
+    description: workSpace_data ? workSpace_data.name : '기본 제목',
     openGraph: {
-      title: workSpace_data.name || '기본 제목',
-      description: workSpace_data.readmeContent || '기본 설명',
-      images: [workSpace_data.thumbnail || '기본 이미지 URL'],
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/${id}`,
+      title: workSpace_data?.name || '기본 제목',
+      description: workSpace_data?.name || '기본 설명',
+      images: [workSpace_data?.thumbnail || '기본 이미지 URL'],
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/readme/${id}`,
     },
     twitter: {
       card: 'summary_large_image',
-      title: workSpace_data.name || '기본 제목',
-      description: workSpace_data.readmeContent || '기본 설명',
-      images: workSpace_data.thumbnail || '기본 이미지 URL',
+      title: workSpace_data?.name || '기본 제목',
+      description: workSpace_data?.name || '기본 설명',
+      images: workSpace_data?.thumbnail || '기본 이미지 URL',
     },
   };
 }
-
 export default async function ReadMe({ params }: Params) {
   const { id } = await params;
   let data = null;
+  if (!(id && !isNaN(Number(id)))) return;
 
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/${id}`);
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
+      workspace_id: id,
+    });
     data = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
-    notFound();
+    return;
   }
 
   return (
-    <div className="responsive_mainResponsive markdown-wrapper flex flex-col">
+    <div className="responsive_mainResponsive markdown-wrapper flex flex-col mb-[30px]">
       <div
+        className="inner"
         style={{
           borderBottom: '1px solid #d1d9e0',
           paddingBottom: '8px',
@@ -71,10 +72,6 @@ export default async function ReadMe({ params }: Params) {
           fontWeight: 'bold',
         }}
       >
-        <ReadMeBtn />
-        <span style={{ marginLeft: '10px' }}>README</span>
-      </div>
-      <div className="markdown-body">
         <style>
           {`
             /*!*****************************************************************************************************************************************************************************************************************************************************************!*\
@@ -381,6 +378,7 @@ input:where([type='submit']) {
             border-radius: 6px;
             padding: 16px;
             margin-top: 30px;
+            display:flex;
           }
 /*
 Use the modern Firefox focus style for all focusable elements.
@@ -1323,12 +1321,6 @@ video {
   }
 }
 
-body {
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  overflow-y: scroll;
-  background-color: #f7f9fa !important;
-}
 
 .responsive_workspaceheader {
   display: flex;
@@ -1485,11 +1477,12 @@ body {
 
 .container-wrapper {
   height: 100vh;
-  background-color: #f7f9fa;
+
 }
 
 /* 마크다운 바디에서는 모든 css revert */
 .markdown-body * {
+overflow-w:scroll;
   all: revert;
 }
 .hover\:scale-105:hover {
@@ -1578,14 +1571,42 @@ body {
   }
 }
 
-
-          
+img {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+.markdown-body pre {
+  white-space: pre-wrap !important; /* 줄바꿈 허용 */
+  word-break: break-word !important; /* 단어 단위로 줄바꿈 */
+  overflow-x: auto !important; /* 가로 스크롤 허용 */
+  max-width: 100% !important; /* 부모 요소 너비 초과 방지 */
+  box-sizing: border-box;
+}
+.markdown-body pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 100%;
+  display: block;
+}  
           `}
         </style>
+        <ReadMeBtn />
+        <span style={{ marginLeft: '10px' }}>README</span>
+      </div>
+      <div className="markdown-body">
         <ReactMarkdown key={1} remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw]}>
-          {data.data?.readme_content}
+          {data?.data?.readmeContent}
         </ReactMarkdown>
       </div>
+      <style>{`
+          .markdown-wrapper .markdown-body pre {
+  white-space: pre-wrap !important; /* 줄바꿈 허용 */
+  word-break: break-word !important; /* 단어 단위로 줄바꿈 */
+  overflow-x: auto !important; /* 가로 스크롤 허용 */
+  max-width: 100% !important; /* 부모 요소 너비 초과 방지 */
+  box-sizing: border-box;
+}
+        `}</style>
     </div>
   );
 }

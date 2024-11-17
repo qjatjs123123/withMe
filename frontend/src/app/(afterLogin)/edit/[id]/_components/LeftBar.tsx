@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useStorage, useMutation } from '@liveblocks/react/suspense';
 import { ClientSideSuspense } from '@liveblocks/react/suspense';
 import { MenuItem } from '../_types/MenuItem';
@@ -9,24 +9,71 @@ import { DeleteIcon } from '../_icons/DeleteIcon';
 import { useActiveId } from '../_contexts/ActiveIdContext';
 import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
-import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { useMarkdown } from '../_contexts/MarkdownContext';
+import { useInfo } from '../_contexts/InfoContext';
+import { useConnection } from '../_contexts/ConnectionContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
+import { Loading } from './Loading';
 
-function LeftBarContent({ toggleSidebar, isOpen }) {
+interface DeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+function DeleteModal({ isOpen, onClose, onConfirm }: DeleteModalProps) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
+      <div className="relative bg-white rounded-lg p-6 w-80 max-w-md">
+        <h3 className="text-lg font-semibold mb-2">탭 삭제</h3>
+        <p className="text-gray-600 mb-6">이 탭을 삭제하시겠습니까?</p>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+          >
+            취소
+          </button>
+          <button
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
+            className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors"
+          >
+            삭제
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LeftBarContent({ isOpen, toggleSidebar }) {
   const { activeId, setActiveId } = useActiveId();
   const { initialItems, setInitialItems, menuItems, setMenuItems } = useMenuItems();
   const { editorsRef } = useEditor();
   const [draggedItem, setDraggedItem] = useState<MenuItem | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<string>('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const { markdowns, setMarkdowns } = useMarkdown();
+  const { rooms } = useConnection();
 
   const storageMenuItems = useStorage((root) => root.menuItems);
   const storageInitialMenuItems = useStorage((root) => root.initialMenuItems);
+
+  const isFeatureDisabled = rooms.size !== 10;
+
   useEffect(() => {
     setMenuItems(storageMenuItems);
     setInitialItems(storageInitialMenuItems);
-  }, [storageMenuItems, setMenuItems, storageInitialMenuItems]);
+  }, [storageMenuItems, setMenuItems, storageInitialMenuItems, setInitialItems]);
 
   useEffect(() => {
     if (menuItems && menuItems.length > 0 && activeId === null) {
@@ -42,12 +89,9 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
 
   const addNewTab = useMutation(
     ({ storage }) => {
-      if (!menuItems || !initialItems) return;
+      if (isFeatureDisabled || !menuItems || !initialItems) return;
 
-      // 현재 사용 중인 id들을 Set으로 만들어 빠른 검색이 가능하게 함
       const usedIds = new Set(menuItems.map((item) => item.id));
-
-      // initialItems에서 아직 사용되지 않은 첫 번째 id를 찾음
       const availableId = initialItems.find((item) => !usedIds.has(item.id))?.id;
 
       if (!availableId) return;
@@ -56,7 +100,6 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
         id: availableId,
         label: '새로운 탭',
       };
-
       const updatedMenuItems = [...menuItems, newTab];
       storage.set('menuItems', updatedMenuItems);
       setMenuItems(updatedMenuItems);
@@ -64,18 +107,25 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
       setEditingId(newTab.id);
       setEditValue('');
     },
-    [menuItems, initialItems],
+    [menuItems, initialItems, markdowns, isFeatureDisabled],
   );
 
-  const updateItemLabel = useMutation(({ storage }, { id, newLabel }: { id: string; newLabel: string }) => {
-    const menuItems = storage.get('menuItems');
-    const updatedMenuItems = menuItems.map((item: MenuItem) => (item.id === id ? { ...item, label: newLabel } : item));
-    storage.set('menuItems', updatedMenuItems);
-    setMenuItems(updatedMenuItems);
-  }, []);
+  const updateItemLabel = useMutation(
+    ({ storage }, { id, newLabel }: { id: string; newLabel: string }) => {
+      if (isFeatureDisabled) return;
+      const menuItems = storage.get('menuItems');
+      const updatedMenuItems = menuItems.map((item: MenuItem) =>
+        item.id === id ? { ...item, label: newLabel } : item,
+      );
+      storage.set('menuItems', updatedMenuItems);
+      setMenuItems(updatedMenuItems);
+    },
+    [isFeatureDisabled],
+  );
 
   const deleteItem = useMutation(
     ({ storage }, id: string) => {
+      if (isFeatureDisabled) return;
       const menuItems = storage.get('menuItems');
       if (menuItems.length <= 1) {
         return;
@@ -88,10 +138,17 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
           targetEditor.replaceBlocks(allBlocks, []);
         }
       }
+      if (markdowns) {
+        const updatedMarkdowns = markdowns.map((markdown) =>
+          markdown.id === id ? { ...markdown, content: '' } : markdown,
+        );
+        setMarkdowns(updatedMarkdowns);
+      }
 
       const updatedMenuItems = menuItems.filter((item: MenuItem) => item.id !== id);
       storage.set('menuItems', updatedMenuItems);
       setMenuItems(updatedMenuItems);
+
       if (activeId === id) {
         const nextItem = updatedMenuItems[0];
         if (nextItem) {
@@ -99,51 +156,65 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
         }
       }
     },
-    [activeId],
+    [activeId, markdowns, isFeatureDisabled],
   );
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
+    if (isFeatureDisabled) return;
     e.stopPropagation();
     if (menuItems && menuItems.length <= 1) {
       alert('마지막 탭은 삭제할 수 없습니다.');
       return;
     }
-    if (window.confirm('정말 이 탭을 삭제하시겠습니까?')) {
-      deleteItem(id);
+    setItemToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (itemToDelete) {
+      deleteItem(itemToDelete);
+      setItemToDelete(null);
     }
   };
 
   const handleEditClick = (e: React.MouseEvent, item: MenuItem) => {
+    if (isFeatureDisabled) return;
     e.stopPropagation();
     setEditingId(item.id);
-
     setEditValue(item.label);
   };
 
   const handleEditSubmit = (id: string) => {
-    if (editValue.trim()) {
-      updateItemLabel({ id, newLabel: editValue.trim() });
-    }
+    if (isFeatureDisabled) return;
+    const newLabel = editValue.trim() || '새로운 탭';
+    updateItemLabel({ id, newLabel });
     setEditingId(null);
     setEditValue('');
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: MenuItem) => {
+    if (isFeatureDisabled) {
+      e.preventDefault();
+      return;
+    }
     setDraggedItem(item);
     e.currentTarget.style.opacity = '0.4';
   };
 
   const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+    if (isFeatureDisabled) return;
     e.currentTarget.style.opacity = '1';
     setDraggedItem(null);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
+    if (isFeatureDisabled) return;
     e.preventDefault();
   };
 
   const handleDrop = useMutation(
     ({ storage }, { draggedItem, targetItem }: { draggedItem: MenuItem; targetItem: MenuItem }) => {
+      if (isFeatureDisabled) return;
       const menuItems = storage.get('menuItems');
       const updatedItems = [...menuItems];
       const draggedIndex = updatedItems.findIndex((item: MenuItem) => item.id === draggedItem.id);
@@ -156,7 +227,7 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
         setMenuItems(updatedItems);
       }
     },
-    [],
+    [isFeatureDisabled],
   );
 
   if (!menuItems) return null;
@@ -167,28 +238,24 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
       {menuItems.map((item: MenuItem) => (
         <div
           key={item.id}
-          draggable={editingId !== item.id}
+          draggable={!isFeatureDisabled && editingId !== item.id}
           onDragStart={(e) => handleDragStart(e, item)}
           onDragEnd={handleDragEnd}
           onDragOver={handleDragOver}
           onDrop={(e) => {
             e.preventDefault();
-            if (!draggedItem) return;
+            if (!draggedItem || isFeatureDisabled) return;
             handleDrop({ draggedItem, targetItem: item });
           }}
           className={`
-            w-full px-4 py-3 rounded-lg
-            transition-colors duration-200
-            text-xl font-bold
-            group
-            ${editingId !== item.id ? 'cursor-grab active:cursor-grabbing' : ''}
-            ${
-              activeId === item.id
-                ? 'bg-white bg-opacity-10 text-white'
-                : 'text-gray-400 hover:bg-white hover:bg-opacity-5 hover:text-gray-200'
-            }
-            flex items-center justify-between
-          `}
+          w-full px-4 py-2 rounded-lg
+          transition-colors duration-200
+          text-md font-semibold
+          group
+          ${!isFeatureDisabled && editingId !== item.id ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}
+          ${activeId === item.id ? 'bg-gray-200 bg-opacity-70' : 'hover:bg-gray-200 hover:bg-opacity-70'}
+          flex items-center justify-between
+        `}
           onClick={() => handleItemClick(item.id)}
         >
           {editingId === item.id ? (
@@ -204,13 +271,13 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
                   setEditValue('');
                 }
               }}
-              className="bg-transparent border-none outline-none flex-1 text-white"
+              className="bg-transparent border-none outline-none w-[100px]"
               autoFocus
             />
           ) : (
             <span>{item.label}</span>
           )}
-          {
+          {!isFeatureDisabled && (
             <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
               <button onClick={(e) => handleEditClick(e, item)} className="hover:text-green-500">
                 <EditIcon />
@@ -219,71 +286,60 @@ function LeftBarContent({ toggleSidebar, isOpen }) {
                 <DeleteIcon />
               </button>
             </div>
-          }
+          )}
         </div>
       ))}
 
-      {menuItems.length <= 9 && (
+      {menuItems.length <= 9 && ( // isFeatureDisabled 조건 제거
         <button
           onClick={() => addNewTab()}
-          className="w-full px-4 py-3 rounded-lg
-            transition-all duration-200
-            text-sm font-medium
-            border border-dashed border-gray-600
-            text-gray-300 hover:text-white
-            hover:bg-white hover:bg-opacity-5
-            hover:border-gray-400
-            flex items-center justify-center gap-2"
+          disabled={isFeatureDisabled} // disabled 속성 추가
+          className={`
+          w-full px-4 py-3 rounded-lg
+          transition-all duration-200
+          text-sm font-semibold
+          border-[1.5px] border-dashed
+          flex items-center justify-center gap-2
+          ${
+            isFeatureDisabled
+              ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+              : 'border-gray-600 hover:bg-black hover:border-gray-400 hover:text-white'
+          }
+        `}
         >
           <span className="text-lg">+</span>
           <span>새 탭 추가</span>
         </button>
       )}
+
+      <DeleteModal isOpen={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} onConfirm={handleConfirmDelete} />
     </div>
   );
 }
 
-export function LeftBar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { roomId } = useInfo();
-  // Toggle function to open and close the sidebar
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const leftBarRef = useRef(null);
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // leftBarRef.current가 정의되어 있고, 클릭 이벤트 대상이 leftBarRef 내에 없는 경우
-      if (leftBarRef.current && !leftBarRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    // 마운트 시 이벤트 리스너 추가
-    document.addEventListener('mousedown', handleClickOutside);
-
-    // 언마운트 시 이벤트 리스너 제거
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+export function LeftBar({ isOpen, toggleSidebar }) {
+  const { roomId, menuItems } = useInfo();
 
   return (
     <RoomProvider
       id={roomId}
-      // id="sidebar-room-2"
       initialStorage={{
-        initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: MENU_ITEMS,
+        initialMenuItems: menuItems,
+        menuItems: menuItems.slice(0, 4),
       }}
     >
-      <ClientSideSuspense fallback={<div></div>}>
-        {() => (
+      <ClientSideSuspense
+        fallback={
           <div
-            ref={leftBarRef}
-            className={`bg-gray-900 w-60 border-r h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}
+            className="fixed bottom-0 flex w-full justify-center bg-white items-center z-[100]"
+            style={{ height: `calc(100vh - 90px)` }}
           >
+            <Loading />
+          </div>
+        }
+      >
+        {() => (
+          <div className={`w-60 border-r-2 h-full relative transition-all duration-300 ${isOpen ? 'ml-0' : '-ml-60'}`}>
             <LeftBarContent toggleSidebar={toggleSidebar} isOpen={isOpen} />
           </div>
         )}

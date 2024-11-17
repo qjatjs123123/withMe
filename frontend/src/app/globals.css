@@ -23,9 +23,8 @@
 
 body {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif, 'samsungsharpsans-bold';
+  /* font-family: Arial, Helvetica, sans-serif, 'samsungsharpsans-bold'; */
   overflow-y: scroll;
-  background-color: #f7f9fa !important;
 }
 
 .responsive_workspaceheader {
@@ -41,6 +40,48 @@ body {
   /* 768px 이상에서 가로 정렬 */
   .responsive_workspaceheader {
     flex-direction: row;
+  }
+}
+h1 {
+  padding: 0;
+  margin: 0;
+}
+.responsive_vtext {
+  font-size: clamp(30px, 3vw, 48px);
+}
+@media (max-width: 748px) {
+  .header-container {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+.responsive_text {
+  font-size: 36px;
+  width: 50%;
+  @media screen and (max-width: 1440px) {
+  }
+
+  @media screen and (max-width: 1056px) {
+    font-size: 26px;
+  }
+  @media screen and (max-width: 786px) {
+    width: 80%;
+    font-size: 18px;
+  }
+}
+
+.responsive_text {
+  font-size: 36px;
+  width: 50%;
+  @media screen and (max-width: 1440px) {
+  }
+
+  @media screen and (max-width: 1056px) {
+    font-size: 26px;
+  }
+  @media screen and (max-width: 786px) {
+    width: 80%;
+    font-size: 18px;
   }
 }
 
@@ -69,25 +110,25 @@ body {
   grid-gap: 32px;
   padding: 0;
   margin: 0;
-  --card-count: 5;
+  --card-count: 4;
   --spacer: calc(var(--card-count) - 1);
-  --width: 20%;
+  --width: 25%;
 
   grid-template-columns: repeat(var(--card-count), calc(var(--width) - (32px * var(--spacer) / var(--card-count))));
 
   @media screen and (max-width: 1919px) {
-    --card-count: 4;
-    --width: 25%;
+    --card-count: 3;
+    --width: 33.33%;
   }
 
   @media screen and (max-width: 1440px) {
-    --card-count: 4;
-    --width: 25%;
+    --card-count: 3;
+    --width: 33.33%;
   }
 
   @media screen and (max-width: 1056px) {
-    --card-count: 3;
-    --width: 33.33%;
+    --card-count: 2;
+    --width: 50%;
   }
 
   @media screen and (max-width: 868px) {
@@ -104,7 +145,7 @@ body {
 .workspace-item {
   position: absolute;
   width: 100%;
-  height: 80%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   visibility: hidden;
 }
@@ -135,6 +176,30 @@ body {
 .scrollbar::-webkit-scrollbar-track {
   background: rgba(121, 121, 121, 0.1); /*스크롤바 뒷 배경 색상*/
 }
+
+.edit-scrollbar {
+  /* width: 250px; */
+  /* height: 1vh-120px; */
+  overflow-x: visible;
+  overflow-y: auto;
+}
+
+/* 스크롤바의 폭 너비 */
+.edit-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+}
+
+.edit-scrollbar::-webkit-scrollbar-thumb {
+  background: #ccc; /* 스크롤바 색상 */
+  border-radius: 10px; /* 스크롤바 둥근 테두리 */
+}
+
+.edit-scrollbar::-webkit-scrollbar-track {
+  background: rgba(121, 121, 121, 0.1); /*스크롤바 뒷 배경 색상*/
+}
+
 .custom-checkbox {
   -webkit-appearance: none; /* 크롬, 사파리 */
   -moz-appearance: none; /* 파이어폭스 */
@@ -169,7 +234,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
   text-align: center; /* text-center */
   display: flex; /* flex */
-  border-radius: 0.5rem; /* rounded-lg */
+
   overflow: hidden; /* overflow-hidden */
   flex-direction: column; /* flex-col */
 }
@@ -183,7 +248,6 @@ body {
 
 .container-wrapper {
   height: 100vh;
-  background-color: #f7f9fa;
 }
 
 .container-block {
@@ -198,4 +262,233 @@ body {
 @font-face {
   font-family: 'samsungsharpsans-bold';
   src: url('/fonts/samsungsharpsans-bold.otf') format('opentype');
+  unicode-range: U+0000-007F;
+}
+@font-face {
+  font-family: 'SamsungSharpSansRegular';
+  src: url('/fonts/SamsungSharpSansRegular.woff') format('opentype');
+}
+@font-face {
+  font-family: 'SamsungOne';
+  src: url('/fonts/SamsungOne.ttf') format('opentype');
+}
+@font-face {
+  font-family: 'SamsungOneKorean-700';
+  src: url('/fonts/SamsungOneKorean-700.ttf') format('truetype');
+  unicode-range: U+AC00-D7AF;
+}
+@font-face {
+  font-family: 'SamsungOneKorean-400';
+  src: url('/fonts/SamsungOneKorean-400.ttf') format('truetype');
+  unicode-range: U+AC00-D7AF;
+}
+body:lang(en) {
+  font-family: 'samsungsharpsans-bold'; /* 기본 폰트는 Roboto로 설정 */
+}
+
+/* 한글이 포함된 부분은 Nanum Gothic 폰트로 설정 */
+/* HTML 요소에서 lang 속성을 활용해 한글에 다른 폰트 적용 */
+body:lang(ko) {
+  font-family: 'SamsungOneKorean-700', 'SamsungSharpSans-Bold', sans-serif;
+}
+
+.cursor-pointer-nav {
+  position: relative;
+  cursor: pointer;
+}
+
+.cursor-pointer-nav::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background-color: black;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.cursor-pointer-nav:hover::before {
+  width: 100%;
+}
+
+.text-ellipsis1 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.text-ellipsis2 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px); /* 아래에서 위로 나타나는 효과 */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* 원래 위치로 */
+  }
+}
+
+.scroll-event {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease forwards; /* 처음 로드 시 애니메이션 적용 */
+}
+
+.responsive_home {
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 758px) {
+    flex-direction: col !important;
+  }
+}
+
+.responsive_aboutResponsive {
+  width: 1728px;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  @media screen and (max-width: 1919px) {
+    width: 1376px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    width: 1024px;
+  }
+
+  @media screen and (max-width: 1056px) {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .hidden-header {
+    display: flex !important;
+  }
+}
+/* HamburgerButton.css */
+
+/* 기본 스타일 */
+.hamburger-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 햄버거 아이콘 스타일 */
+.hamburger-button {
+  display: block;
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 25px;
+  height: 20px;
+}
+
+.bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #333;
+  border-radius: 2px;
+}
+
+/* 모바일 메뉴 */
+.mobile-menu {
+  position: absolute;
+  top: 64px; /* 햄버거 버튼 아래로 메뉴 위치 */
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 모바일 메뉴 항목 스타일 */
+.mobile-menu ul {
+  padding: 24px;
+  text-align: center;
+}
+
+.mobile-menu li {
+  margin-bottom: 16px;
+}
+
+/* 미디어 쿼리: 768px 이상에서는 햄버거 버튼 숨기기 */
+@media (min-width: 768px) {
+  .hamburger-container {
+    display: none !important;
+  }
+}
+.aboutus-responsive-image {
+  display: flex;
+  flex-direction: column; /* 기본적으로 flex-row */
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .aboutus-responsive-image {
+    flex-direction: row; /* 1024px 이상에서는 flex-col로 변경 */
+  }
+  .aboutus-responsive-image img {
+    margin-top: 0px;
+  }
+}
+
+.loader {
+  width: 40px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side, #666666 90%, #0000);
+  background:
+    var(--_g) 0% 50%,
+    var(--_g) 50% 50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 50%;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+  20% {
+    background-position:
+      0% 0%,
+      50% 50%,
+      100% 50%;
+  }
+  40% {
+    background-position:
+      0% 100%,
+      50% 0%,
+      100% 50%;
+  }
+  60% {
+    background-position:
+      0% 50%,
+      50% 100%,
+      100% 0%;
+  }
+  80% {
+    background-position:
+      0% 50%,
+      50% 50%,
+      100% 100%;
+  }
 }

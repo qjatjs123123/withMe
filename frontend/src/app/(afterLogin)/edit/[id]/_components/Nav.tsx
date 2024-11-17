@@ -4,43 +4,48 @@ import LiveAvatars from './LiveAvatars';
 import { CommitIcon } from '../_icons/CommitIcon';
 import { CommitModal } from './CommitModal';
 import { RoomProvider } from '@liveblocks/react';
-import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { useInfo } from '../_contexts/InfoContext';
+import Link from 'next/link';
 
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { roomId } = useInfo();
+  const { roomId, menuItems } = useInfo();
   const handleToggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
     <RoomProvider
       id={roomId}
       initialStorage={{
-        initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: MENU_ITEMS,
+        initialMenuItems: menuItems,
+        menuItems: menuItems.slice(0, 4),
       }}
     >
-      <div className="relative">
+      <div className="relative z-[9999]">
         <nav
           style={{
-            backgroundColor: '#020623',
+            // position: 'fixed',
+            backgroundColor: 'white', // bg-[#020623]
             width: '100%',
-            padding: '12px',
+            padding: '0px 50px', // p-[12px]
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            zIndex: '15',
+            height: '90px',
           }}
+          className="border-b-2"
         >
-          <div style={{ flex: '1 1 0%' }}>
-            {/* <Image
-              className="workspace-image cursor-pointer"
-              src="/Logo.png"
-              alt="logo of the image"
-              width={200}
-              height={43.05}
-              sizes="100%"
-              style={{ width: '200px', height: '100%' }}
-            /> */}
-            <span style={{ fontFamily: 'samsungsharpsans-bold' }}>WithME.md</span>
+          <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
+            <Link href={'/'}>
+              <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                WithMe
+              </span>
+            </Link>
+            <Link href={'/workspace'}>
+              <span className="cursor-pointer-nav pb-1 text-[20px]" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+                Workspace
+              </span>
+            </Link>
           </div>
           <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
           <div style={{ flex: '1 1 0%' }}>
@@ -50,7 +55,7 @@ export default function Nav() {
               </div>
               <div className="flex items-center cursor-pointer hover:opacity-75" onClick={handleToggleModal}>
                 <CommitIcon />
-                <span className="text-white ml-1.5 font-bold text-lg">Commit</span>
+                <span className=" ml-1.5 font-bold text-lg">Commit</span>
               </div>
             </div>
           </div>
