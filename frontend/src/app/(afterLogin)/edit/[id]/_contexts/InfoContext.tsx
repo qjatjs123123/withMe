@@ -8,19 +8,10 @@ import { Loading } from '../_components/Loading';
 import { CommitIcon } from '../_icons/CommitIcon';
 import ErrorModal from '../_components/ErrorModal';
 
-export const INITIAL_MENU_ITEMS = [
-  { id: uuidv4(), label: '프로젝트 소개' },
-  { id: uuidv4(), label: '기획 배경' },
-  { id: uuidv4(), label: '주요 기능' },
-  { id: uuidv4(), label: '아키텍쳐' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-  { id: uuidv4(), label: '' },
-];
-export const MENU_ITEMS = INITIAL_MENU_ITEMS.slice(0, 4);
+type MenuItem = {
+  id: string;
+  label: string;
+};
 
 type InfoContextType = {
   repoName: string | null;
@@ -33,8 +24,10 @@ type InfoContextType = {
   setUserName: (userName: string) => void;
   token: string | null;
   setToken: (token: string | null) => void;
-  ownerName: string | null; // 추가된 부분
-  setOwnerName: (owner: string) => void; // 추가된 부분
+  ownerName: string | null;
+  setOwnerName: (owner: string) => void;
+  menuItems: MenuItem[];
+  setMenuItems: (items: MenuItem[]) => void;
 };
 
 type WorkspaceResponse = {
@@ -51,7 +44,7 @@ type WorkspaceResponse = {
     repoUrl: string;
     roomId: string;
     thumbnail: null;
-    owner: string; // 추가된 부분
+    owner: string;
   };
   timestamp: string;
 };
@@ -59,6 +52,8 @@ type WorkspaceResponse = {
 type DecodedTokenType = {
   token: string;
 };
+
+const INITIAL_MENU_LABELS = ['프로젝트 소개', '기획 배경', '주요 기능', '아키텍쳐', '', '', '', '', '', ''];
 
 const InfoContext = createContext<InfoContextType | undefined>(undefined);
 
@@ -72,11 +67,19 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
   const [userName, setUserName] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [ownerName, setOwnerName] = useState<string | null>(null);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const initializeData = async () => {
       try {
+        // Initialize menu items with UUIDs
+        const initializedMenuItems = INITIAL_MENU_LABELS.map((label) => ({
+          id: uuidv4(),
+          label: label,
+        }));
+        setMenuItems(initializedMenuItems);
+
         // Workspace 정보 가져오기
         const response = await axios.post<WorkspaceResponse>(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}${API_URL.WORKSPACE_INFO}`,
@@ -88,7 +91,7 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
         setRepoName(response.data.data.name);
         setRepoUrl(response.data.data.repoUrl);
         setRoomId(response.data.data.roomId);
-        setOwnerName(response.data.data.owner); // 추가된 부분
+        setOwnerName(response.data.data.owner);
 
         // 사용자 정보 처리
         const cookie = getCookieValue('userData');
@@ -122,10 +125,9 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
         <div className="relative">
           <nav
             style={{
-              // position: 'fixed',
-              backgroundColor: 'white', // bg-[#020623]
+              backgroundColor: 'white',
               width: '100%',
-              padding: '0px 50px', // p-[12px]
+              padding: '0px 50px',
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
@@ -174,8 +176,10 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
         setUserName,
         token,
         setToken,
-        ownerName, // 추가된 부분
-        setOwnerName, // 추가된 부분
+        ownerName,
+        setOwnerName,
+        menuItems,
+        setMenuItems,
       }}
     >
       {children}

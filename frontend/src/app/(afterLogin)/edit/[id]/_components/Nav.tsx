@@ -4,20 +4,20 @@ import LiveAvatars from './LiveAvatars';
 import { CommitIcon } from '../_icons/CommitIcon';
 import { CommitModal } from './CommitModal';
 import { RoomProvider } from '@liveblocks/react';
-import { INITIAL_MENU_ITEMS, MENU_ITEMS, useInfo } from '../_contexts/InfoContext';
+import { useInfo } from '../_contexts/InfoContext';
 import Link from 'next/link';
 
 export default function Nav() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { roomId } = useInfo();
+  const { roomId, menuItems } = useInfo();
   const handleToggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
     <RoomProvider
       id={roomId}
       initialStorage={{
-        initialMenuItems: INITIAL_MENU_ITEMS,
-        menuItems: MENU_ITEMS,
+        initialMenuItems: menuItems,
+        menuItems: menuItems.slice(0, 4),
       }}
     >
       <div className="relative z-[9999]">
