@@ -445,9 +445,7 @@ body:lang(ko) {
   flex-direction: column; /* 기본적으로 flex-row */
   width: 100%;
 }
-.aboutus-responsive-image img {
-  margin-top: 30px;
-}
+
 @media (min-width: 1024px) {
   .aboutus-responsive-image {
     flex-direction: row; /* 1024px 이상에서는 flex-col로 변경 */

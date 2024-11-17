@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function AboutUs() {
   return (
     <div className="responsive_aboutResponsive ">
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="flex flex-col h-100 mr-[100px]">
           <span className="text-5xl">
             Build perfect <br />
@@ -31,7 +31,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="">
           <Image
             className="image border-4 border-gray-200 rounded-xl aboutImage  mb-[30px]"
@@ -43,7 +43,7 @@ export default function AboutUs() {
             sizes="100%"
           />
         </div>
-        <div className="flex flex-col h-100 text-end">
+        <div className="flex flex-col h-100 text-end ">
           <span className="text-5xl ">
             Real-time Preview <br />
             and Markdown.
@@ -58,7 +58,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="flex flex-col h-100 text-start">
           <span className="text-5xl leading-tight">
             AI-powered Drafts, <br />
@@ -85,7 +85,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div>
           <Image
             className="image  mb-[30px]"
@@ -112,7 +112,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="flex flex-col h-100 text-start">
           <span className="text-5xl">
             The happier <br />
@@ -139,7 +139,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="">
           <Image
             className="image border-4 border-gray-200 rounded-xl mb-[30px]"
