@@ -4,6 +4,7 @@ import PageHeader from '@/app/_components/PageHeader';
 import { PAGE_HEADER } from '@/util/constants';
 import axios from 'axios';
 import WorkSpaceContainer from './_components/WorkspaceContainer';
+import Footer from '@/app/_components/Footer';
 
 interface Params {
   params: {
@@ -29,6 +30,7 @@ export default async function ReadMe({ params }: Params) {
       <div className="grid_mainGrid ">
         <WorkSpaceContainer workspaces={workspaces} />
       </div>
+      <Footer />
     </div>
   );
 }

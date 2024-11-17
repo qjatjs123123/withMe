@@ -11,7 +11,7 @@ export default function SnakBarContainer() {
   return (
     <SnackBarProvider>
       <header
-        style={{ paddingTop: '55px', paddingBottom: '50px' }}
+        style={{ paddingBottom: '50px', paddingTop: '0px' }}
         className="flex responsive_workspaceheader justify-between !flex-row "
       >
         <PageHeader title={PAGE_HEADER.workspace} content="" />

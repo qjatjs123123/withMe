@@ -7,7 +7,7 @@ import UploadThumbnail from './_addModalComponent/UploadThumbnail';
 
 export default function CreateImage() {
   const { curRepo } = useGlobalState();
-  const { selectedImage, handleImageChange } = useImageUpload(
+  const { selectedImage, handleImageChange, handleErrorImageChange } = useImageUpload(
     curRepo.current ? curRepo.current.repoUrl : null,
     curRepo,
   );
@@ -22,7 +22,7 @@ export default function CreateImage() {
         ) : selectedImage ? (
           <ThumbnailPreview image={selectedImage} />
         ) : (
-          <UploadThumbnail handleImageChange={handleImageChange} />
+          <UploadThumbnail handleImageChange={handleErrorImageChange} />
         )}
       </div>
       <div className="h-[10%] flex flex-col justify-between w-full mt-[10px]">

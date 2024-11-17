@@ -16,9 +16,22 @@ const useImageUpload = (repoUrl, curRepo) => {
     return true;
   };
 
+  const handleErrorImageChange = async (e) => {
+    try {
+      await handleImageChange(e);
+    } catch (Error) {
+      await handlerMessage(MESSAGE.ERROR_IMAGE);
+    }
+  };
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!(await invalidCheck())) return;
     const file = e.target.files?.[0];
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'];
+    if (!validImageTypes.includes(file.type)) {
+      e.target.value = ''; // 파일 입력 초기화
+      throw '이미지 파일 형식만 업로드할 수 있습니다.';
+    }
     if (file) {
       setSelectedImage(file);
       const url = await handleUpload(file);
@@ -56,6 +69,7 @@ const useImageUpload = (repoUrl, curRepo) => {
     setSelectedImage,
     handleImageChange,
     handleUpload,
+    handleErrorImageChange,
   };
 };
 

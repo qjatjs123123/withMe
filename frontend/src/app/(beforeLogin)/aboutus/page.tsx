@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 export default function AboutUs() {
   return (
-    <div className="responsive_aboutResponsive">
-      <div className="flex justify-between my-[100px] w-full">
+    <div className="responsive_aboutResponsive ">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
         <div className="flex flex-col h-100 mr-[100px]">
           <span className="text-5xl">
             Build perfect <br />
@@ -31,10 +31,10 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
         <div className="">
           <Image
-            className="image border-4 border-gray-200 rounded-xl"
+            className="image border-4 border-gray-200 rounded-xl aboutImage  mb-[30px]"
             src="/preview&markdown.png"
             alt="preview&markdown"
             width={800}
@@ -58,7 +58,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
         <div className="flex flex-col h-100 mr-[100px]">
           <span className="text-5xl leading-tight">
             AI-powered Drafts, <br />
@@ -85,10 +85,10 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
         <div>
           <Image
-            className="image "
+            className="image  mb-[30px]"
             src="/tab_group.png"
             alt="tab_group"
             width={800}
@@ -112,7 +112,7 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
         <div className="flex flex-col h-100 mr-[100px]">
           <span className="text-5xl">
             The happier <br />
@@ -139,10 +139,10 @@ export default function AboutUs() {
 
       <div className="w-full border-t-2 border-gray-2"></div>
 
-      <div className="flex justify-between my-[100px] w-full">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
         <div className="">
           <Image
-            className="image border-4 border-gray-200 rounded-xl"
+            className="image border-4 border-gray-200 rounded-xl mb-[30px]"
             src="/capture2.PNG"
             alt="capture of the Editor image"
             width={800}
