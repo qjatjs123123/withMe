@@ -46,19 +46,19 @@ export default function RightMain() {
         <div className="flex items-center justify-center space-x-8 text-xl">
           <button
             onClick={() => setActiveView('preview')}
-            className={`h-8 ${activeView === 'preview' ? 'border-b-2 border-black' : ''}`}
+            className={`h-8 focus:outline-none ${activeView === 'preview' ? 'border-b-2 border-black' : ''}`}
           >
             Preview
           </button>
           <button
             onClick={() => setActiveView('markdown')}
-            className={`h-8 ${activeView === 'markdown' ? 'border-b-2 border-black' : ''}`}
+            className={`h-8 focus:outline-none ${activeView === 'markdown' ? 'border-b-2 border-black' : ''}`}
           >
             MarkDown
           </button>
           <button
             onClick={() => setActiveView('ai')}
-            className={`h-8 ${activeView === 'ai' ? 'border-b-2 border-black' : ''}`}
+            className={`h-8 focus:outline-none ${activeView === 'ai' ? 'border-b-2 border-black' : ''}`}
           >
             AI
           </button>

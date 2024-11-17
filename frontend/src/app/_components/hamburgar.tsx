@@ -31,12 +31,12 @@ const HamburgerButton = () => {
         <ul className="space-y-4 p-6 text-center text-gray-700">
           <li>
             <Link href="/explore" onClick={() => setIsMenuOpen(false)}>
-              explore
+              EXPLORE
             </Link>
           </li>
           <li>
             <Link href="/aboutus" onClick={() => setIsMenuOpen(false)}>
-              about us
+              ABOUT US
             </Link>
           </li>
         </ul>
