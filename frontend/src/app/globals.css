@@ -454,3 +454,9 @@ body:lang(ko) {
     margin-top: 0px;
   }
 }
+
+@media (max-width: 768px) {
+  .hide-below-md {
+    display: none;
+  }
+}
