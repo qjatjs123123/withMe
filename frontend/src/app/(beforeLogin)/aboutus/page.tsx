@@ -18,8 +18,8 @@ export default function AboutUs() {
         </div>
         <div className="">
           <Image
-            className="image border-4 border-gray-200 rounded-xl"
-            src="/edit1.png"
+            className="image border-2 border-gray-200 rounded-xl"
+            src="/edit.png"
             alt="Editor full view"
             width={800}
             height={600}
@@ -72,7 +72,7 @@ export default function AboutUs() {
         </div>
         <div>
           <Image
-            className="image border-4 border-gray-200 rounded-xl"
+            className="image border-2 border-gray-200 rounded-xl"
             src="/AIDraft.png"
             alt="AIDraft"
             width={800}
@@ -126,7 +126,7 @@ export default function AboutUs() {
         </div>
         <div className="">
           <Image
-            className="image border-4 border-gray-200 rounded-xl"
+            className="image border-2 border-gray-200 rounded-xl"
             src="/capture1.PNG"
             alt="capture of the Editor image"
             width={800}
