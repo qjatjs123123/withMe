@@ -1,19 +1,13 @@
 import Image from 'next/image';
 import { SamsungOneKorean400 } from '../layout';
 import { SamsungSharpSansBold } from '../layout';
-
-// 이미지 파일 import
-import MainImg1 from '/public/MainImg1.png';
-import MainImage2 from '/public/MainImage2.jpeg';
-import MainLogo2 from '/public/MainLogo2.jpg';
-
 export default function Main() {
   return (
-    <div className="flex items-center w-full responsive_container pt-[30px] flex-col">
-      <div className="w-full items-center h-full justify-center">
+    <div className="flex items-center w-full  responsive_container pt-[30px] flex-col">
+      <div className=" w-full items-center  h-full justify-center">
         <div
           style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
-          className="flex flex-col sm:mb-4 flex-1 w-full justify-start"
+          className="flex flex-col sm:mb-4  flex-1  w-full justify-start"
         >
           <span className={SamsungSharpSansBold.className}>Create Your ReadMe Together</span>
           <span className={SamsungOneKorean400.className} style={{ fontSize: 'clamp(18px, 3vw, 24px)' }}>
@@ -25,8 +19,10 @@ export default function Main() {
           <div className="w-[80%] h-[auto]">
             <Image
               className="image"
-              src={MainImg1}
+              src="/MainImg1.png"
               alt="Main logo of the image"
+              width={16}
+              height={9}
               sizes="100%"
               style={{ width: '100%', height: 'auto' }}
             />
@@ -35,7 +31,10 @@ export default function Main() {
       </div>
 
       <div className="flex-1 mt-[30px] flex justify-center w-full pt-[130px]">
-        <div style={{ fontSize: 'clamp(24px, 4vw, 48px)' }} className="flex flex-col sm:mb-4 flex-1 w-full text-start">
+        <div
+          style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
+          className="flex flex-col sm:mb-4  flex-1  w-full text-start"
+        >
           <span className={SamsungSharpSansBold.className}>Recommend your ReadMe draft</span>
           <span className={SamsungOneKorean400.className} style={{ fontSize: 'clamp(18px, 3vw, 24px)' }}>
             레포지토리 파일명 기반으로 리드미 초안 정확도를 높이다
@@ -45,15 +44,20 @@ export default function Main() {
       <div className="flex-1 mt-[30px] flex justify-center w-full h-[60%]">
         <Image
           className="image"
-          src={MainImage2}
+          src="/MainImage2.jpeg"
           alt="Main logo of the image"
+          width={16}
+          height={9}
           sizes="100%"
           style={{ width: '100%', height: 'auto' }}
         />
       </div>
 
       <div className="flex-1 mt-[30px] flex justify-center w-full pt-[130px]">
-        <div style={{ fontSize: 'clamp(24px, 4vw, 48px)' }} className="flex flex-col sm:mb-4 flex-1 w-full text-start">
+        <div
+          style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
+          className="flex flex-col sm:mb-4  flex-1  w-full text-start"
+        >
           <span className={SamsungSharpSansBold.className}>Share your ReadMe</span>
           <span className={SamsungOneKorean400.className} style={{ fontSize: 'clamp(18px, 3vw, 24px)' }}>
             작성한 리드미를 공유하여 더 나은 결과를 만들다
@@ -63,8 +67,10 @@ export default function Main() {
       <div className="flex-1 mt-[30px] flex justify-center w-full">
         <Image
           className="image"
-          src={MainLogo2}
+          src="/MainLogo2.jpg"
           alt="Main logo of the image"
+          width={16}
+          height={9}
           sizes="100%"
           style={{ width: '100%', height: 'auto' }}
         />
