@@ -29,6 +29,7 @@ export default function Main() {
               alt="Main logo of the image"
               sizes="100%"
               style={{ width: '100%', height: 'auto' }}
+              priority
             />
           </div>
         </div>
