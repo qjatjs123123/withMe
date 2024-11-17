@@ -24,6 +24,7 @@ export function AIDraft() {
   const params = useParams();
   const workspaceId = params.id;
   const partialChunkRef = useRef('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const activeMenuItem = menuItems.find((item) => item.id === activeId);
@@ -45,6 +46,7 @@ export function AIDraft() {
   const userData = JSON.parse(userDataCookie as string);
 
   const startStreamingResponse = async () => {
+    setIsLoading(true);
     setIsStreaming(true);
     setAccumulatedContent('');
     setCancelDelay(false);
@@ -62,7 +64,12 @@ export function AIDraft() {
         }),
       });
 
-      if (!response.body) throw new Error('ReadableStream not supported in this environment');
+      if (!response.body) {
+        setIsLoading(false);
+        throw new Error('ReadableStream not supported in this environment');
+      }
+
+      setIsLoading(false);
 
       const readerInstance = response.body.getReader();
       setReader(readerInstance);
@@ -173,6 +180,11 @@ export function AIDraft() {
             </div>
           ))}
 
+          {isLoading && (
+            <div className="ml-[64px] mt-4">
+              <div className="loader"></div>
+            </div>
+          )}
           {accumulatedContent && (
             <div className="mb-4 mx-auto flex p-3 justify-center rounded-lg  max-w-[500px] bg-white">
               <ReactMarkdown
