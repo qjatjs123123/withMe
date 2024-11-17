@@ -88,18 +88,18 @@ export default function EditPage() {
     <InfoProvider>
       <ActiveIdProvider>
         <MenuItemsProvider>
-          <MarkdownProvider>
-            <EditorProvider>
-              <SnackBarProvider>
-                <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-                  <div className="flex flex-col bg-white h-full">
-                    <Nav />
-                    <div className="flex h-full">
-                      <div className="h-full bg-[#f9f9f9]" style={{ fontFamily: 'SamsungOneKorean-700' }}>
-                        <LeftBar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-                      </div>
+          <ConnectionProvider>
+            <MarkdownProvider>
+              <EditorProvider>
+                <SnackBarProvider>
+                  <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
+                    <div className="flex flex-col bg-white h-full">
+                      <Nav />
+                      <div className="flex h-full">
+                        <div className="h-full bg-[#f9f9f9]" style={{ fontFamily: 'SamsungOneKorean-700' }}>
+                          <LeftBar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+                        </div>
 
-                      <ConnectionProvider>
                         <div
                           className="flex-1"
                           ref={mainContainerRef}
@@ -133,14 +133,14 @@ export default function EditPage() {
                             </div>
                           </div>
                         </div>
-                      </ConnectionProvider>
+                      </div>
                     </div>
-                  </div>
-                  <SnackBarUI />
-                </LiveblocksProvider>
-              </SnackBarProvider>
-            </EditorProvider>
-          </MarkdownProvider>
+                    <SnackBarUI />
+                  </LiveblocksProvider>
+                </SnackBarProvider>
+              </EditorProvider>
+            </MarkdownProvider>
+          </ConnectionProvider>
         </MenuItemsProvider>
       </ActiveIdProvider>
     </InfoProvider>
