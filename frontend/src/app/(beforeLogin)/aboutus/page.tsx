@@ -34,7 +34,7 @@ export default function AboutUs() {
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="">
           <Image
-            className="image border-4 border-gray-200 rounded-xl aboutImage  mb-[30px]"
+            className="image border-4 border-gray-200 rounded-xl aboutImage "
             src="/preview&markdown.png"
             alt="preview&markdown"
             width={800}
@@ -88,7 +88,7 @@ export default function AboutUs() {
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div>
           <Image
-            className="image  mb-[30px]"
+            className="image  "
             src="/tab_group.png"
             alt="tab_group"
             width={800}
@@ -142,7 +142,7 @@ export default function AboutUs() {
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="">
           <Image
-            className="image border-4 border-gray-200 rounded-xl mb-[30px]"
+            className="image border-4 border-gray-200 rounded-xl"
             src="/capture2.PNG"
             alt="capture of the Editor image"
             width={800}
