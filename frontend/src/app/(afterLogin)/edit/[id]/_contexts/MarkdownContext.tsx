@@ -44,20 +44,12 @@ export function MarkdownProvider({ children }: { children: React.ReactNode }) {
         readme_content: currentContent,
       });
       lastSavedContentRef.current = currentContent;
-      console.log('Markdown saved successfully');
     } catch (error) {
       console.error('Failed to save README:', error);
     } finally {
       setIsSaving(false);
     }
   }, [markdowns, getAllMarkdowns, params.id, isSaving]);
-
-  // 마크다운 내용이 변경될 때마다 저장 실행
-  useEffect(() => {
-    if (markdowns) {
-      saveMarkdowns();
-    }
-  }, [markdowns, saveMarkdowns]);
 
   // 페이지 언로드 전 저장
   useEffect(() => {
