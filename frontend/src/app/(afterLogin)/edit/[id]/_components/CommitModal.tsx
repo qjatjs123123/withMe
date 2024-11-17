@@ -148,12 +148,12 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('GitHub API Error:', errorData);
-        await handlerMessage('커밋 생성 실패');
+        await handlerMessage('❌ 커밋 실패');
         throw new Error(`Failed to create commit: ${errorData.message}`);
       }
 
       const data = (await response.json()) as GitHubCommitResponse;
-      await handlerMessage('커밋이 성공적으로 생성되었습니다!');
+      await handlerMessage('✔ 커밋 완료');
       onClose();
       return data;
     } catch (error) {
@@ -198,12 +198,12 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('GitLab API Error:', errorData);
-        await handlerMessage('커밋 생성 실패');
+        await handlerMessage('❌ 커밋 실패');
         throw new Error(`Failed to create commit: ${errorData.message}`);
       }
 
       const data = (await response.json()) as GitLabCommitResponse;
-      await handlerMessage('커밋이 성공적으로 생성되었습니다!');
+      await handlerMessage('✔ 커밋 완료');
       onClose();
       return data;
     } catch (error) {
@@ -216,7 +216,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     const message = messageRef.current?.value.trim();
 
     if (!message) {
-      await handlerMessage('커밋 메시지를 입력해주세요');
+      await handlerMessage('✔ 커밋 완료');
       return;
     }
 
@@ -226,7 +226,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
     try {
       await createCommit(message);
     } catch (error) {
-      setError('커밋 생성에 실패했습니다. 다시 시도해주세요.');
+      setError('❌ 커밋 실패');
       console.error('Failed to create commit:', error);
     } finally {
       setIsCommitting(false);
