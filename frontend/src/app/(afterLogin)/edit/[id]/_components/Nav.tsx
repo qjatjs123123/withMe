@@ -42,8 +42,13 @@ export default function Nav() {
             </Link>
             <Link href={'/workspace'}>
               <span
-                className="hide-below-md cursor-pointer-nav pb-1 text-[20px]"
-                style={{ fontFamily: 'samsungsharpsans-bold' }}
+                style={{
+                  display: window.innerWidth >= 768 ? 'inline' : 'none',
+                  fontFamily: 'samsungsharpsans-bold',
+                  paddingBottom: '0.25rem',
+                  fontSize: '20px',
+                  cursor: 'pointer',
+                }}
               >
                 Workspace
               </span>
@@ -52,7 +57,12 @@ export default function Nav() {
           <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
           <div style={{ flex: '1 1 0%' }}>
             <div className="flex justify-end items-center">
-              <div className="mr-4 hide-below-md ">
+              <div
+                style={{
+                  display: window.innerWidth >= 768 ? 'block' : 'none',
+                  marginRight: '1rem',
+                }}
+              >
                 <LiveAvatars />
               </div>
               <div className="flex items-center cursor-pointer hover:opacity-75" onClick={handleToggleModal}>
