@@ -31,4 +31,5 @@ export const MESSAGE = {
   IMAGE_SUCCESS: '이미지 등록 완료',
   SELECT_IMAGE: '이미지 선택해주세요',
   SELECT_REPO: '레포지토리 선택해주세요',
+  ERROR_IMAGE: '이미지 파일 형식만 업로드할 수 있습니다',
 };
