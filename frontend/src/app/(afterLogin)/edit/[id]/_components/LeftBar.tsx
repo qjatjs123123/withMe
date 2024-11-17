@@ -11,6 +11,7 @@ import { useMenuItems } from '../_contexts/MenuItemsContext';
 import { useEditor } from '../_contexts/EditorContext';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useInfo } from '../_contexts/InfoContext';
+import { useConnection } from '../_contexts/ConnectionContext';
 import FoldButton from './FoldButton';
 import { RoomProvider } from '@liveblocks/react';
 import { Loading } from './Loading';
@@ -26,10 +27,7 @@ function DeleteModal({ isOpen, onClose, onConfirm }: DeleteModalProps) {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose} />
-
-      {/* Modal */}
       <div className="relative bg-white rounded-lg p-6 w-80 max-w-md">
         <h3 className="text-lg font-semibold mb-2">탭 삭제</h3>
         <p className="text-gray-600 mb-6">이 탭을 삭제하시겠습니까?</p>
@@ -65,14 +63,17 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const { markdowns, setMarkdowns } = useMarkdown();
+  const { rooms } = useConnection();
 
   const storageMenuItems = useStorage((root) => root.menuItems);
   const storageInitialMenuItems = useStorage((root) => root.initialMenuItems);
 
+  const isFeatureDisabled = rooms.size !== 10;
+
   useEffect(() => {
     setMenuItems(storageMenuItems);
     setInitialItems(storageInitialMenuItems);
-  }, [storageMenuItems, setMenuItems, storageInitialMenuItems]);
+  }, [storageMenuItems, setMenuItems, storageInitialMenuItems, setInitialItems]);
 
   useEffect(() => {
     if (menuItems && menuItems.length > 0 && activeId === null) {
@@ -88,7 +89,7 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
 
   const addNewTab = useMutation(
     ({ storage }) => {
-      if (!menuItems || !initialItems) return;
+      if (isFeatureDisabled || !menuItems || !initialItems) return;
 
       const usedIds = new Set(menuItems.map((item) => item.id));
       const availableId = initialItems.find((item) => !usedIds.has(item.id))?.id;
@@ -106,18 +107,25 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
       setEditingId(newTab.id);
       setEditValue('');
     },
-    [menuItems, initialItems, markdowns],
+    [menuItems, initialItems, markdowns, isFeatureDisabled],
   );
 
-  const updateItemLabel = useMutation(({ storage }, { id, newLabel }: { id: string; newLabel: string }) => {
-    const menuItems = storage.get('menuItems');
-    const updatedMenuItems = menuItems.map((item: MenuItem) => (item.id === id ? { ...item, label: newLabel } : item));
-    storage.set('menuItems', updatedMenuItems);
-    setMenuItems(updatedMenuItems);
-  }, []);
+  const updateItemLabel = useMutation(
+    ({ storage }, { id, newLabel }: { id: string; newLabel: string }) => {
+      if (isFeatureDisabled) return;
+      const menuItems = storage.get('menuItems');
+      const updatedMenuItems = menuItems.map((item: MenuItem) =>
+        item.id === id ? { ...item, label: newLabel } : item,
+      );
+      storage.set('menuItems', updatedMenuItems);
+      setMenuItems(updatedMenuItems);
+    },
+    [isFeatureDisabled],
+  );
 
   const deleteItem = useMutation(
     ({ storage }, id: string) => {
+      if (isFeatureDisabled) return;
       const menuItems = storage.get('menuItems');
       if (menuItems.length <= 1) {
         return;
@@ -148,10 +156,11 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
         }
       }
     },
-    [activeId, markdowns],
+    [activeId, markdowns, isFeatureDisabled],
   );
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
+    if (isFeatureDisabled) return;
     e.stopPropagation();
     if (menuItems && menuItems.length <= 1) {
       alert('마지막 탭은 삭제할 수 없습니다.');
@@ -169,12 +178,14 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
   };
 
   const handleEditClick = (e: React.MouseEvent, item: MenuItem) => {
+    if (isFeatureDisabled) return;
     e.stopPropagation();
     setEditingId(item.id);
     setEditValue(item.label);
   };
 
   const handleEditSubmit = (id: string) => {
+    if (isFeatureDisabled) return;
     const newLabel = editValue.trim() || '새로운 탭';
     updateItemLabel({ id, newLabel });
     setEditingId(null);
@@ -182,21 +193,28 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: MenuItem) => {
+    if (isFeatureDisabled) {
+      e.preventDefault();
+      return;
+    }
     setDraggedItem(item);
     e.currentTarget.style.opacity = '0.4';
   };
 
   const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+    if (isFeatureDisabled) return;
     e.currentTarget.style.opacity = '1';
     setDraggedItem(null);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
+    if (isFeatureDisabled) return;
     e.preventDefault();
   };
 
   const handleDrop = useMutation(
     ({ storage }, { draggedItem, targetItem }: { draggedItem: MenuItem; targetItem: MenuItem }) => {
+      if (isFeatureDisabled) return;
       const menuItems = storage.get('menuItems');
       const updatedItems = [...menuItems];
       const draggedIndex = updatedItems.findIndex((item: MenuItem) => item.id === draggedItem.id);
@@ -209,7 +227,7 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
         setMenuItems(updatedItems);
       }
     },
-    [],
+    [isFeatureDisabled],
   );
 
   if (!menuItems) return null;
@@ -220,24 +238,24 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
       {menuItems.map((item: MenuItem) => (
         <div
           key={item.id}
-          draggable={editingId !== item.id}
+          draggable={!isFeatureDisabled && editingId !== item.id}
           onDragStart={(e) => handleDragStart(e, item)}
           onDragEnd={handleDragEnd}
           onDragOver={handleDragOver}
           onDrop={(e) => {
             e.preventDefault();
-            if (!draggedItem) return;
+            if (!draggedItem || isFeatureDisabled) return;
             handleDrop({ draggedItem, targetItem: item });
           }}
           className={`
-            w-full px-4 py-2 rounded-lg
-            transition-colors duration-200
-            text-md font-semibold
-            group
-            ${editingId !== item.id ? 'cursor-grab active:cursor-grabbing' : ''}
-            ${activeId === item.id ? 'bg-gray-200 bg-opacity-70 ' : ' hover:bg-gray-200 hover:bg-opacity-70'}
-            flex items-center justify-between
-          `}
+          w-full px-4 py-2 rounded-lg
+          transition-colors duration-200
+          text-md font-semibold
+          group
+          ${!isFeatureDisabled && editingId !== item.id ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}
+          ${activeId === item.id ? 'bg-gray-200 bg-opacity-70' : 'hover:bg-gray-200 hover:bg-opacity-70'}
+          flex items-center justify-between
+        `}
           onClick={() => handleItemClick(item.id)}
         >
           {editingId === item.id ? (
@@ -259,7 +277,7 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
           ) : (
             <span>{item.label}</span>
           )}
-          {
+          {!isFeatureDisabled && (
             <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity gap-2">
               <button onClick={(e) => handleEditClick(e, item)} className="hover:text-green-500">
                 <EditIcon />
@@ -268,22 +286,26 @@ function LeftBarContent({ isOpen, toggleSidebar }) {
                 <DeleteIcon />
               </button>
             </div>
-          }
+          )}
         </div>
       ))}
 
-      {menuItems.length <= 9 && (
+      {menuItems.length <= 9 && ( // isFeatureDisabled 조건 제거
         <button
           onClick={() => addNewTab()}
-          className="w-full px-4 py-3 rounded-lg
-            transition-all duration-200
-            text-sm font-semibold
-            border-[1.5px] border-dashed border-gray-600
-            
-            hover:bg-black
-            hover:border-gray-400
-            hover:text-white
-            flex items-center justify-center gap-2"
+          disabled={isFeatureDisabled} // disabled 속성 추가
+          className={`
+          w-full px-4 py-3 rounded-lg
+          transition-all duration-200
+          text-sm font-semibold
+          border-[1.5px] border-dashed
+          flex items-center justify-center gap-2
+          ${
+            isFeatureDisabled
+              ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+              : 'border-gray-600 hover:bg-black hover:border-gray-400 hover:text-white'
+          }
+        `}
         >
           <span className="text-lg">+</span>
           <span>새 탭 추가</span>
