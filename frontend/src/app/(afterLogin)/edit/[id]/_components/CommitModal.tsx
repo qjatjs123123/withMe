@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useMarkdown } from '../_contexts/MarkdownContext';
 import { useInfo } from '../_contexts/InfoContext';
+import { useConnection } from '../_contexts/ConnectionContext';
 import { getCookieValue } from '@/util/axiosConfigClient';
 import useErrorHandler from '@/app/(afterLogin)/workspace/business/useErrorHandler';
 
@@ -24,15 +25,33 @@ interface GitLabCommitResponse {
 export function CommitModal({ isOpen, onClose }: CommitModalProps) {
   const { userName, repoName, token, ownerName } = useInfo();
   const { saveMarkdowns, getAllMarkdowns } = useMarkdown();
+  const { rooms } = useConnection();
   const [isCommitting, setIsCommitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [defaultBranch, setDefaultBranch] = useState<string>('');
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const { handlerMessage } = useErrorHandler();
 
   const userDataCookie = getCookieValue('userData');
   const userData = JSON.parse(userDataCookie as string);
   const provider = userData.provider;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
 
   const checkDefaultBranch = async () => {
     try {
@@ -216,8 +235,13 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
 
   if (!isOpen) return null;
 
+  const isCommitDisabled = isCommitting || rooms.size !== 10;
+
   return (
-    <div className="absolute top-16 right-4 bg-white rounded-lg shadow-lg p-5 z-50 border border-gray-200">
+    <div
+      ref={modalRef}
+      className="absolute top-16 right-4 bg-white rounded-lg shadow-lg p-5 z-50 border border-gray-200"
+    >
       <div className="w-[260px]">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg font-semibold">Commit README.md</h2>
@@ -239,6 +263,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
               ref={messageRef}
               className="w-full p-2 border border-gray-300 rounded-md h-14 text-sm edit-scrollbar"
               placeholder="Please enter your commit message..."
+              disabled={rooms.size !== 10}
             />
           </div>
 
@@ -246,9 +271,9 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
             className="w-full text-white py-2 px-4 rounded-md hover:opacity-75 transition-colors disabled:opacity-50"
             style={{ backgroundColor: '#020623' }}
             onClick={handleCommit}
-            disabled={isCommitting}
+            disabled={isCommitDisabled}
           >
-            {isCommitting ? 'Committing...' : 'Commit & Push'}
+            {isCommitting ? 'Committing...' : rooms.size === 10 ? 'Commit & Push' : 'Loading...'}
           </button>
 
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
