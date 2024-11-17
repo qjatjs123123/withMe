@@ -113,7 +113,7 @@ export default function EditPage() {
                             >
                               <LeftMain />
                             </div>
-                            (
+
                             <div
                               className="hide-below-md bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
                               style={{
@@ -125,7 +125,7 @@ export default function EditPage() {
                             >
                               <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
                             </div>
-                            )
+
                             <div
                               style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
                               className="h-full overflow-x-hidden"
