@@ -96,7 +96,7 @@ export function CommitModal({ isOpen, onClose }: CommitModalProps) {
 
   const createCommit = async (message: string) => {
     saveMarkdowns();
-    await handlerMessage('커밋 내용 준비 중...');
+    await handlerMessage('커밋 준비 중...');
 
     if (provider === 'github') {
       const encoder = new TextEncoder();
