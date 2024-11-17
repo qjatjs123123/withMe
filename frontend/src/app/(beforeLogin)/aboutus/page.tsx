@@ -43,7 +43,7 @@ export default function AboutUs() {
             sizes="100%"
           />
         </div>
-        <div className="flex flex-col h-100 ml-[100px]">
+        <div className="flex flex-col h-100 text-end">
           <span className="text-5xl ">
             Real-time Preview <br />
             and Markdown.
@@ -59,7 +59,7 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
-        <div className="flex flex-col h-100 mr-[100px]">
+        <div className="flex flex-col h-100 text-start">
           <span className="text-5xl leading-tight">
             AI-powered Drafts, <br />
             Tailored for Your Project.
@@ -97,7 +97,7 @@ export default function AboutUs() {
             sizes="100%"
           />
         </div>
-        <div className="flex flex-col h-100 ml-[100px]">
+        <div className="flex flex-col h-100 text-end">
           <span className="text-5xl leading-tight">
             Organized Sections, <br />
             Effortless Workflow.
@@ -113,7 +113,7 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full">
-        <div className="flex flex-col h-100 mr-[100px]">
+        <div className="flex flex-col h-100 text-start">
           <span className="text-5xl">
             The happier <br />
             workspace
@@ -151,7 +151,7 @@ export default function AboutUs() {
             sizes="100%"
           />
         </div>
-        <div className="flex flex-col h-100 ml-[100px]">
+        <div className="flex flex-col h-100 text-end">
           <span className="text-5xl">
             Find everthing <br />
             Get Insight
