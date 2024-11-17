@@ -71,6 +71,7 @@ export default function EditPage() {
     const handleResize = () => {
       setIsVertical(window.innerWidth < 768);
     };
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -107,14 +108,14 @@ export default function EditPage() {
                         >
                           <div className="flex flex-col md:flex-row" style={{ height: `calc(100vh - 90px)` }}>
                             <div
-                              style={isVertical ? { height: `${leftSize}%` } : { width: `${leftSize}%` }}
+                              style={isVertical ? { height: `${leftSize}%`, width: '100%' } : { width: `${leftSize}%` }}
                               className="h-full w-full edit-scrollbar"
                             >
                               <LeftMain />
                             </div>
-
+                            (
                             <div
-                              className="bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
+                              className="hide-below-md bg-gray-400 cursor-pointer flex flex-col items-center justify-around"
                               style={{
                                 width: isVertical ? '100%' : '6px',
                                 height: isVertical ? '6px' : '100%',
@@ -124,7 +125,7 @@ export default function EditPage() {
                             >
                               <BiDotsVerticalRounded size={isVertical ? 48 : 24} />
                             </div>
-
+                            )
                             <div
                               style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
                               className="h-full overflow-x-hidden"

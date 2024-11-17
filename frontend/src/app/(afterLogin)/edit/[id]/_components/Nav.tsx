@@ -26,23 +26,25 @@ export default function Nav() {
             // position: 'fixed',
             backgroundColor: 'white', // bg-[#020623]
             width: '100%',
-            padding: '0px 50px', // p-[12px]
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             zIndex: '15',
             height: '90px',
           }}
-          className="border-b-2"
+          className="border-b-2 px-8 md:px-[50px]"
         >
           <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
             <Link href={'/'}>
-              <span className="ml-2 text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+              <span className="text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
                 WithMe
               </span>
             </Link>
             <Link href={'/workspace'}>
-              <span className="cursor-pointer-nav pb-1 text-[20px]" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+              <span
+                className="hide-below-md cursor-pointer-nav pb-1 text-[20px]"
+                style={{ fontFamily: 'samsungsharpsans-bold' }}
+              >
                 Workspace
               </span>
             </Link>
@@ -50,7 +52,7 @@ export default function Nav() {
           <div style={{ flex: '2 1 0%', marginLeft: '10px' }}></div>
           <div style={{ flex: '1 1 0%' }}>
             <div className="flex justify-end items-center">
-              <div className="mr-4">
+              <div className="mr-4 hide-below-md ">
                 <LiveAvatars />
               </div>
               <div className="flex items-center cursor-pointer hover:opacity-75" onClick={handleToggleModal}>
