@@ -19,5 +19,7 @@ public interface ReadMeService {
 
     Flux<String> makeReadMeDraft(ReadMeDraftRequest readMeDraftRequest) throws JsonProcessingException;
 
+    Flux<String> makeReadMeDraftV2(ReadMeDraftRequest readMeDraftRequest) throws JsonProcessingException;
+
     List<WorkspaceSimpleInfoResponse> listReadme(Integer size);
 }

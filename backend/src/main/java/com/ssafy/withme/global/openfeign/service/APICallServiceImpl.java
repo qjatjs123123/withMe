@@ -6,10 +6,13 @@ import com.ssafy.withme.global.exception.BusinessException;
 import com.ssafy.withme.global.exception.ErrorCode;
 import com.ssafy.withme.global.openfeign.FeignGithubAPIClient;
 import com.ssafy.withme.global.openfeign.FeignGitlabAPIClient;
+import com.ssafy.withme.global.openfeign.dto.response.github.GHCommitResponseDTO;
 import com.ssafy.withme.global.openfeign.dto.response.github.GHDetailResponseDTO;
 import com.ssafy.withme.global.openfeign.dto.response.github.GHRepoResponseDTO;
+import com.ssafy.withme.global.openfeign.dto.response.gitlab.GLCommitResponseDTO;
 import com.ssafy.withme.global.openfeign.dto.response.gitlab.GLDetailResponseDTO;
 import com.ssafy.withme.global.openfeign.dto.response.gitlab.GLRepoResponseDTO;
+import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedCommitDTO;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedRepoDTO;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedRepoDetailDTO;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedUserDTO;
@@ -184,4 +187,35 @@ public class APICallServiceImpl implements APICallService {
         }
         return sb.toString();
     }
+
+    @Override
+    public List<RefinedCommitDTO> getCommits(GitToken gitToken, String owner, String repo, String branchOrSHA) {
+        if (gitToken == null) return null;
+
+        if (gitToken.getProvider().equals(Provider.GITHUB)) {
+            List<GHCommitResponseDTO> githubCommits = feignGithubAPIClient.getCommits(
+                    getBearerToken(gitToken), owner, repo, branchOrSHA, null, null
+            );
+            return githubCommits.stream()
+                    .map(RefinedCommitDTO::new)
+                    .toList();
+        } else {
+            String projectId = encodeProjectId(owner + "/" + repo);
+            List<GLCommitResponseDTO> gitlabCommits = feignGitlabAPIClient.getCommits(
+                    getBearerToken(gitToken), projectId, branchOrSHA, null, null, null
+            );
+            return gitlabCommits.stream()
+                    .map(RefinedCommitDTO::new)
+                    .toList();
+        }
+    }
+
+    private String encodeProjectId(String projectId) {
+        try {
+            return URLEncoder.encode(projectId, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST);
+        }
+    }
+
 }

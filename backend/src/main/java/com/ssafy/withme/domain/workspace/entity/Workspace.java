@@ -2,10 +2,7 @@ package com.ssafy.withme.domain.workspace.entity;
 
 import com.ssafy.withme.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -35,7 +32,7 @@ public class Workspace extends BaseTimeEntity {
     @Column(nullable = false, name = "is_created", columnDefinition = "boolean default false")
     private Boolean isCreated = false;
 
-    @Column(columnDefinition = "TEXT", name = "readme_content")
+    @Column(name = "readme_content", columnDefinition = "TEXT")
     private String readmeContent = "";
 
     @Column(nullable = false, name = "is_private", columnDefinition = "boolean default true")
@@ -46,6 +43,9 @@ public class Workspace extends BaseTimeEntity {
 
     @Column(name = "room_id")
     private Long roomId;
+
+    @Column(name = "workspace_info", columnDefinition = "TEXT")
+    private String workspaceInfo;
 
     @Builder
     public Workspace(String name, String owner, String repoUrl, String thumbnail) {
@@ -72,4 +72,6 @@ public class Workspace extends BaseTimeEntity {
     public void changeName(String name) { this.name = name; }
 
     public void changeThumbnail(String thumbnail) { this.thumbnail = thumbnail; }
+
+    public void changeWorkspaceInfo(String workspaceInfo) { this.workspaceInfo = workspaceInfo; }
 }

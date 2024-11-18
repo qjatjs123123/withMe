@@ -1,6 +1,7 @@
 package com.ssafy.withme.global.openfeign.service;
 
 import com.ssafy.withme.domain.member.dto.GitToken;
+import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedCommitDTO;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedRepoDTO;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedRepoDetailDTO;
 import com.ssafy.withme.global.openfeign.dto.response.refined.RefinedUserDTO;
@@ -19,4 +20,7 @@ public interface APICallService {
 
     // 디버깅용 트리 출력 메소드
     String buildTreeString(APICallServiceImpl.TreeNode node, String indent);
+
+    // 커밋 목록 확인 매소드
+    List<RefinedCommitDTO> getCommits(GitToken gitToken, String owner, String repo, String branchOrSHA);
 }

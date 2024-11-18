@@ -18,6 +18,14 @@ public enum ErrorCode {
     REPO_NOT_FOUND(BAD_REQUEST, "REPO001", "해당 레파지토리가 존재하지 않습니다."),
     REPO_NOT_ALLOWED(BAD_REQUEST, "REPO002", "해당 레파지토리에 접근할 권한이 없습니다. "),
 
+    /**OpenFeign*/
+    INVALID_REQUEST(BAD_REQUEST, "Open001", "잘못된 API 호출입니다."),
+
+    /**ChatGpt*/
+    GPT_API_ERROR(BAD_REQUEST, "GPT001", "잘못된 API 호출입니다"),
+    GPT_RESPONSE_EMPTY(BAD_REQUEST, "GPT002", "응답이 비어있습니다"),
+    JSON_PROCESSING_ERROR(BAD_REQUEST, "GPT003", "Json 처리중 에러가 발생했습니다."),
+
     /**WorkSpace*/
     WORKSPACE_NOT_FOUND(BAD_REQUEST,"WORK000", "해당하는 ID의 워크스페이스가 존재하지 않습니다."),
     IMAGE_UPLOAD_FAILED(BAD_REQUEST, "WORK001", "이미지 업로드에 실패했습니다.");
