@@ -81,7 +81,7 @@ export default function RightMain() {
             </div>
           )}
           {activeView === 'ai' && (
-            <div className="w-full mt-4 mb-8 flex justify-center overflow-x-hidden">
+            <div className="w-full mt-4 mb-12 flex justify-center overflow-x-hidden">
               <AIDraft />
             </div>
           )}

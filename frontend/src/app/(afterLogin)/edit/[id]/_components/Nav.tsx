@@ -7,7 +7,7 @@ import { RoomProvider } from '@liveblocks/react';
 import { useInfo } from '../_contexts/InfoContext';
 import Link from 'next/link';
 
-export default function Nav() {
+export default function Nav(isVertical) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { roomId, menuItems } = useInfo();
   const handleToggleModal = () => setIsModalOpen(!isModalOpen);
@@ -30,13 +30,16 @@ export default function Nav() {
             flexDirection: 'row',
             alignItems: 'center',
             zIndex: '15',
-            height: '90px',
+            height: isVertical ? '50px' : '90px',
           }}
           className="border-b-2 px-8 md:px-[50px]"
         >
           <div style={{ flex: '1 1 0%', display: 'flex', gap: '50px' }} className="items-center">
             <Link href={'/'}>
-              <span className="text-3xl" style={{ fontFamily: 'samsungsharpsans-bold' }}>
+              <span
+                className={`${isVertical} ? text-[24]px : text-3xl`}
+                style={{ fontFamily: 'samsungsharpsans-bold' }}
+              >
                 WithMe
               </span>
             </Link>
