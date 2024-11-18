@@ -23,7 +23,7 @@ export default function EditPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
   const mainContainerRef = useRef<HTMLDivElement | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768);
 
   const handleMouseDown = () => setIsDragging(true);
 
@@ -95,7 +95,7 @@ export default function EditPage() {
                 <SnackBarProvider>
                   <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
                     <div className="flex flex-col bg-white h-full">
-                      <Nav />
+                      <Nav isVertical={isVertical} />
                       <div className={`flex h-full ${isVertical ? 'relative' : ''}`}>
                         <div
                           className={`h-full bg-[#f9f9f9] ${isVertical ? 'absolute z-[9999]' : ''}`}
