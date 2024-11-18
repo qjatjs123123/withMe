@@ -39,7 +39,7 @@ export default function RightMain() {
   return (
     <div className="flex flex-col h-full justify-start items-center bg-white">
       <div
-        className="flex w-full px-6 items-center justify-between mt-8 mb-2"
+        className="flex w-full px-6 items-center justify-between mb-2"
         style={{ fontFamily: 'samsungsharpsans-bold' }}
       >
         <div className="flex-1" /> {/* Spacer */}
