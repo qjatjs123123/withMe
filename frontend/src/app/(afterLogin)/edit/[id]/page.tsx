@@ -21,7 +21,7 @@ const LEFT_SIDEBAR_WIDTH = 240;
 export default function EditPage() {
   const [leftSize, setLeftSize] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [isVertical, setIsVertical] = useState(false);
+  const [isVertical, setIsVertical] = useState<boolean>(window.innerWidth < 768);
   const mainContainerRef = useRef<HTMLDivElement | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768);
 
@@ -139,7 +139,7 @@ export default function EditPage() {
 
                             <div
                               style={isVertical ? { height: `${100 - leftSize}%` } : { width: `${100 - leftSize}%` }}
-                              className="h-full overflow-x-hidden"
+                              className={`h-full overflow-x-hidden ${isVertical ? 'mt-2' : 'mt-8'}`}
                             >
                               <RightMain />
                             </div>

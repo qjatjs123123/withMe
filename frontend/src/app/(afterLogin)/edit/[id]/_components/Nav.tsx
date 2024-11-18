@@ -7,7 +7,11 @@ import { RoomProvider } from '@liveblocks/react';
 import { useInfo } from '../_contexts/InfoContext';
 import Link from 'next/link';
 
-export default function Nav(isVertical) {
+interface NavProps {
+  isVertical: boolean;
+}
+
+export default function Nav({ isVertical }: NavProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { roomId, menuItems } = useInfo();
   const handleToggleModal = () => setIsModalOpen(!isModalOpen);
