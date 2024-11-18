@@ -189,9 +189,13 @@ public class ReadMeServiceImpl implements ReadMeService {
     private String getWorkspaceInfoFromGPT(String repoTreeStructure) {
         // GPT 모델에 전달할 프롬프트 생성
         String prompt = String.format(
-                "Analyze the following repository structure and provide a detailed summary:\n\n%s\n\n"
-                        + "The summary should include key aspects like major directories, important files, "
-                        + "and their purposes. Be concise but descriptive.",
+                "Analyze the following repository structure and summarize the project's purpose or topic in 10 lines or less:\n\n%s\n\n"
+                + "Focus on the project's main functionality and purpose based on its directories and files, "
+                + "not detailed structural descriptions."
+
+
+
+                ,
                 repoTreeStructure
         );
 
