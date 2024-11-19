@@ -25,7 +25,7 @@ function RoomWithEditor({ id }: { id: string }) {
   const { activeId } = useActiveId();
   const { menuItems } = useMenuItems();
   const activeMenu = menuItems.find((menu) => menu.id === activeId);
-  const label = activeMenu?.label ?? '';
+  const label = activeMenu && activeMenu.hasOwnProperty('label') ? activeMenu.label : '';
 
   return (
     <RoomProvider
