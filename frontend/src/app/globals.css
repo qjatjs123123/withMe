@@ -2,16 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.s1 {
-  font-size: 100px;
-}
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --card-count: 5;
-  --spacer: calc(var(--card-count) - 1);
-  --width: 20%;
 }
 
 @media (prefers-color-scheme: dark) {
