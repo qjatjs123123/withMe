@@ -7,6 +7,9 @@ pipeline {
 
         frontChanged = true
         backChanged = true
+
+        myEndpoint = 'https://meeting.ssafy.com/hooks/b6gea4i7t3ytim3zei9atukfqy'
+        myChannel = '507jo'
     }
 
     stages {
@@ -47,7 +50,7 @@ pipeline {
                         }
                     }
                     if(frontChanged) {
-                        echo 'build frontend code'
+                        echo 'frontend build will be performed by Docker'
                     }
                 }
             }
@@ -82,10 +85,22 @@ pipeline {
                         }
                     }
                     if(frontChanged) {
-                        dir(FRONT_ROOT) {
-                            script {
-                                sh 'docker build -t taegun1011/withme_frontend .'
+                        withCredentials([string(credentialsId: 'LIVEBLOCKS_SECRET_KEY', variable: 'LB_KEY')]) {
+                            withEnv(["NEXT_PUBLIC_BACKEND_URL=https://k11a507.p.ssafy.io", "NEXT_PUBLIC_BACKEND_URL_D=https://www.withme.my"]) {
+                                dir(FRONT_ROOT) {
+                                    script {
+                                        sh '''
+                                            docker build \
+                                                -t taegun1011/withme_frontend --no-cache --progress=plain\
+                                                --build-arg LIVEBLOCKS_SECRET_KEY=$LB_KEY \
+                                                --build-arg NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL \
+                                                --build-arg NEXT_PUBLIC_BACKEND_URL_D=$NEXT_PUBLIC_BACKEND_URL_D \
+                                                .
+                                            '''
+                                    }
+                                }
                             }
+                            
                         }
                     }
                 }
@@ -106,6 +121,31 @@ pipeline {
                 failure {
                     echo 'Failed to generate docker image...'
                 }
+            }
+        }
+    }
+
+    post {
+        success {
+        	script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'good', 
+                message: "${Author_ID}(${Author_Name})의 빌드 #${env.BUILD_NUMBER} 성공!!!", 
+                endpoint: myEndpoint, 
+                channel: myChannel
+                )
+            }
+        }
+        failure {
+        	script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'danger', 
+                message: "${Author_ID}(${Author_Name})의 빌드 #${env.BUILD_NUMBER} 실패;;;",  
+                endpoint: myEndpoint, 
+                channel: myChannel
+                )
             }
         }
     }
