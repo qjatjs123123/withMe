@@ -1,0 +1,46 @@
+package com.ssafy.withme.global.openfeign.dto.response.gitlab;
+
+import java.util.List;
+
+public record GLUserResponseDTO(
+        String id,
+        String username,
+        String email,
+        String name,
+        String state,
+        Boolean locked,
+        String avatar_url,
+        String web_url,
+        String created_at,
+        String bio,
+        String location,
+        String public_email,
+        String skype,
+        String linkedin,
+        String twitter,
+        String discord,
+        String website_url,
+        String organization,
+        String job_title,
+        String pronouns,
+        Boolean bot,
+        String work_information,
+        Integer followers,
+        Integer following,
+        String local_time,
+        String last_sign_in_at,
+        String confirmed_at,
+        Integer theme_id,
+        String last_activity_on,
+        Integer color_scheme_id,
+        Integer projects_limit,
+        String current_sign_in_at,
+        List<GLUserResponseIdentityDTO> identities,
+        Boolean can_create_group,
+        Boolean can_create_project,
+        Boolean two_factor_enabled,
+        Boolean external,
+        Boolean private_profile,
+        String commit_email
+) {
+}

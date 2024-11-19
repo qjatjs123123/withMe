@@ -1,0 +1,73 @@
+server:
+  port: 4040
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: withme
+  profiles:
+    default: production
+
+  ai:
+    openai:
+      api-key: ENC(e98opFQhXMb/cgglbri7+dNns98aLam2yL+QDgpqgXogquYxAlnDahfVNnUGrPt0hdsrkZ0WqdBsHnaX0NfDHvNdpoej+WW4l0FEn6zv5D3qrFgU26zWR0cxTlpamrCNPw7bigsk8jOGEjxeP0nr2pWSWgoPfKhRk0eLeGjdz2tqOzn8eNfGloBurvMiholNLhtFBUF8BunO8TTAaLhm+8hCSR0SwjRBB+TMj9RFwWk=)
+      base-url: https://api.openai.com
+
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ENC(lshpf6tM+tGvUolf3Qmw79kDmR1XC4v5/CWiA8Uons4=)
+            client-secret: ENC(HpjwapT8/QRAcWHifNO2gsV3n29y03WBTo7xCaBUF+EmuWGvT2qU1iDbnDwZhZCKE5iOoJBmmXA=)
+            redirect-uri: ${client.base-url}/auth/github
+            scope:
+              - repo
+              - read:user
+          gitlab:
+            client-id: ENC(jYHUs/UJYfr2UvwWJQ+yU1SBeKtOr6vswGSqA1jhguwm3Bt9bvJzh1c2din2cyZpF2c4jfnFYNeuZxDhlBzZn2LYaw2qUc2TKFflMJnistM=)
+            client-secret: ENC(KBb65RExaZLmkl7S0XLwZprt29D1P8xkoGrhXtRskx1jbY308EAZL27I5UcKDwAy3obpGmhXuZJy8LqOIKzH1tgF5jW7XJuqso8Ms5WlK3w=)
+            redirect-uri: ${client.base-url}/auth/gitlab
+            scope:
+              - api
+              - read_api
+              - read_user
+              - read_repository
+              - write_repository
+              - openid
+              - profile
+              - email
+        provider:
+          gitlab:
+            issuer-uri: https://lab.ssafy.com
+            authorization-uri: https://lab.ssafy.com/oauth/authorize
+            token-uri: https://lab.ssafy.com/oauth/token
+
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 300MB
+      max-file-size: 50MB
+
+  webflux:
+    base-path: http://localhost:4040
+
+client:
+  base-url: https://www.withme.my
+
+jwt:
+  key-string: ENC(s36WwIXzzl9GZ83rGz7AIJgXaQCUuPfe6zBjQdz2x2vsRUcmEiXuNk2yF4JIlr1QBYWGnLAMOSs=)
+  expires-in:
+    access: 14400
+    refresh: 2592000 #30일
+
+aws:
+  s3:
+    access-key: ENC(gho4wb8/WRR467pw/SUZ3EkruT7UglLZ3yJEq7iQKoU=)
+    secret-key: ENC(/p8QtvW055po7oRxoyytBZtUjjculks4FMLpl+uzvKROdaitWlwGAxcX79AuL31vIF0/JZcUAUU=)
+    bucket-name: ENC(ixmjY7lqDCCuZ/ZUjfkZmA==)
+    region: ENC(+5zLpwQT7zf14yPybIAXsdeX1E+P9vsa)
