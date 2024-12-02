@@ -71,3 +71,6 @@ aws:
     secret-key: ENC(/p8QtvW055po7oRxoyytBZtUjjculks4FMLpl+uzvKROdaitWlwGAxcX79AuL31vIF0/JZcUAUU=)
     bucket-name: ENC(ixmjY7lqDCCuZ/ZUjfkZmA==)
     region: ENC(+5zLpwQT7zf14yPybIAXsdeX1E+P9vsa)
+jasypt:
+  encryptor:
+    password: withme  # 환경 변수 또는 다른 방식으로 설정

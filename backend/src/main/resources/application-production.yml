@@ -6,8 +6,10 @@ spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     url: jdbc:p6spy:mysql://mysql:3306/withme?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: ENC(ABYI7Jo2hk0h4LabfXZHXA==)
-    password: ENC(WyrPclvPH0qnsBmowqnkKg==)
+    # username: ENC(ABYI7Jo2hk0h4LabfXZHXA==)
+    # password: ENC(WyrPclvPH0qnsBmowqnkKg==)
+    username: root
+    password: root
 
   jpa:
     hibernate:
