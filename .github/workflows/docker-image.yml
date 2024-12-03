@@ -21,6 +21,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'  # Temurin JDK 배포판 사용
 
+      # Gradlew 실행 권한 부여
+      - name: Grant execute permission for gradlew
+        working-directory: ./backend
+        run: |
+          chmod +x gradlew
+
       # Gradle 빌드
       - name: Gradle Build
         working-directory: ./backend
