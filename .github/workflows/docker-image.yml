@@ -54,7 +54,14 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3  # GitHub 저장소에서 코드를 클론
-
+      
+    - name: .env setting
+        run: |
+          echo "LIVEBLOCKS_SECRET_KEY=${{ secrets.LIVEBLOCKS_SECRET_KEY }}" >> .env
+          echo "NEXT_PUBLIC_API_TOKEN=${{ secrets.NEXT_PUBLIC_API_TOKEN }}" >> .env
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
+          echo "NEXT_PUBLIC_BACKEND_URL_D=${{ secrets.NEXT_PUBLIC_BACKEND_URL_D }}" >> .env
+        
     # frontend 디렉토리에서 Docker 이미지 빌드
     - name: Build Frontend Docker image
       working-directory: ./frontend  # frontend 폴더에서 작업
