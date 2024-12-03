@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 const liveblocks = new Liveblocks({
   secret: process.env.LIVEBLOCKS_SECRET_KEY!,
 });
-
 // pages/api/liveblocks-auth.ts
 export async function POST(request: NextRequest) {
   try {
+    console.log("123")
     const userDataCookie = request.cookies.get('userData')?.value;
 
     if (!userDataCookie) {
