@@ -50,7 +50,7 @@
 - SSR(Server-Side-Rendering)
 - 시멘틱 태그, 메타 태그를 사용하여 SEO 최적화
 
-💡 **WithME(Main, Explore, Aboutus, Workspace, Login, find 등) 개발**
+💡 **WithMe(Main, Explore, Aboutus, Workspace, Login, find 등) 개발**
 
 💡 **레거시 코드 개선**
 - Context API를 사용하여 Props Drilling을 줄이고 코드 구조를 단순화
@@ -144,6 +144,11 @@
 > - `generateMetadata`를 활용한 동적 메타태그  [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/readme/%5Bid%5D/page.tsx#L16-L47)
 > - `SSR`를 활용한 서버 사이드 렌더링   [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/readme/%5Bid%5D/page.tsx#L48-L1613)
 > - `ReactMarkdown`을 활용한 `시멘틱 태그` [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/readme/%5Bid%5D/page.tsx#L1597-L1599)
+<br />
+
+> ### 레거시 코드 개선
+> - `props drilling`문제로 유지보수가 어렵고, 불필요한 렌더링 발생 → `Context API`를 사용하여 코드의 가독성 및 렌더링 효율성 개선 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/_components/WorkspaceInfoProvider.tsx#L1-L27)
+
 <br />
 
 ## 💁‍♂️ 프로젝트 팀원
