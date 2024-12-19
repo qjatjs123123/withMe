@@ -6,7 +6,8 @@
 ### 개발자를 위한 AI 기반 문서 공동 작성 플랫폼 🖍️
 
 [<img src="https://img.shields.io/badge/release-v0.0.0-ㅎㄱㄷ두?style=flat&logo=google-chrome&logoColor=white" />]() 
-<br/> [<img src="https://img.shields.io/badge/프로젝트 기간-2024.10.14~2024.11.29-fab2ac?style=flat&logo=&logoColor=white" />]()
+<br/> [<img src="https://img.shields.io/badge/프로젝트 기간-2024.10.14~2024.11.29-fab2ac?style=flat&logo=&logoColor=white" />]() <br/>
+<img src="https://img.shields.io/badge/자율 프로젝트 우수상-FFD700?style=for-the-badge&logo=award&logoColor=white" alt="우수상">
 
 </div> 
 
@@ -182,13 +183,25 @@
 >   
 > 💡 **이미지 형식이 아닌 것을 업로드 할 때**
 > - `file Type` 체크 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useImageUpload.ts#L27-L41)
+<br />
 
+> ### 사용자 경험(UX) 향상에 대한 고찰
+> 💡 **SSE 적용으로 GPT 응답 속도 개선**
+> - 기존에 GPT 응답이 완료한 후 전체 문장을 전송 → `SSE(Server-Sent Events)`를 적용하여 부분적으로 실시간으로 응답을 전송
+>
+> 💡 **Edit 페이지 입장 속도 개선**
+> - 기존에는 LiveBlocks Room 생성을 위한 소켓 연결을 10개 완료한 후 입장 → 소켓 연결이 될 때마다 퍼센트가 증가하는 로딩 바 보여줌으로서 UX개선
+>
+> 💡 **사용자가 수행한 작업에 대한 피드백을 제공하는 UI**
+> - alert 창  → 잠시 나타났다가 사라지는 `스낵바 UI` UX 개선
+
+<br />
 
 ## 💁‍♂️ 프로젝트 팀원
-| **Backend** | **Backend** | **Backend** | **Frontend** | **Frontend** | **Frontend** |
+| **Frontend** | **Frontend** | **Frontend** | **Backend** | **Backend** | **Backend** |
 |:---:|:---:|:---:|:---:|:---:|:---:|
-| ![](https://github.com/hoshogi.png?width=120&height=120) | ![](https://github.com/dahyunko.png??width=120&height=120) | ![](https://github.com/wonchul98.png??width=120&height=120) | ![](https://github.com/qjatjs123123.png??width=120&height=120) | ![](https://github.com/chanhyun22.png??width=120&height=120) | ![](https://github.com/monghwadang.png??width=120&height=120) |
-| [이호석](https://github.com/hoshogi) | [고다현](https://github.com/dahyunko) | [신원철](https://github.com/wonchul98) | [홍범선](https://github.com/qjatjs123123) | [변찬현](https://github.com/chanhyun22) | [김명화](https://github.com/monghwadang) |
+| ![](https://github.com/qjatjs123123.png?width=120&height=120) | ![](https://github.com/gyeongmann.png??width=120&height=120) | ![](https://github.com/Jaeyoung9999.png??width=120&height=120) | ![](https://github.com/DKL1231.png??width=120&height=120) | ![](https://github.com/taegun1011.png??width=120&height=120) | ![](https://github.com/wonchul98.png??width=120&height=120) |
+| [홍범선](https://github.com/qjatjs123123) | [현경찬](https://github.com/gyeongmann) | [이재영](https://github.com/Jaeyoung9999) | [이동규](https://github.com/DKL1231) | [황태건](https://github.com/taegun1011) | [신원철](https://github.com/wonchul98) |
 
 
 
