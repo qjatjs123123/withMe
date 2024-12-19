@@ -135,9 +135,9 @@
 ## 🤔 기술적 이슈와 해결 과정
 > ### 인프라 설계
 > <img src="https://github.com/user-attachments/assets/75e8a9ae-87bf-48d8-90c8-6bc922fedda1" width="450"/> <br/>
-> - EC2 비용 문제로 인해, **프론트엔드, 백엔드, DB, Elasticsearch** 서버를 하나의 EC2 인스턴스에 모두 설치했습니다.  
-> - 하나의 서버에서 에러가 발생하더라도 다른 서비스에 영향을 미치지 않도록, 모든 서비스를 **Docker** 환경으로 분리하여 실행했습니다.
-> - **GitHub Actions**를 사용하여 **CI/CD** 파이프라인을 구축했습니다. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/.github/workflows/docker-image.yml#L1-L113)
+> - EC2 비용 문제로 인해, **프론트엔드, 백엔드, DB, Elasticsearch** 서버를 하나의 EC2 인스턴스에 모두 설치.  
+> - 하나의 서버에서 에러가 발생하더라도 다른 서비스에 영향을 미치지 않도록, 모든 서비스를 **Docker** 환경으로 분리하여 실행.
+> - **GitHub Actions**를 사용하여 **CI/CD** 파이프라인을 구축. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/.github/workflows/docker-image.yml#L1-L113)
 <br />
 
 > ### SEO 최적화
@@ -152,6 +152,21 @@
 > - `이미지 업로드` 로직 중복 →  `이미지 업로드` 로직을 커스텀 훅으로 분리하여 재사용성 높임. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useModalClose.ts#L1-L76)
 > - `API 호출 결과 메시지 핸들러` 로직의 중복 문제 → 이를 커스텀 훅으로 분리하여 재사용성을 높임. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useErrorHandler.ts#L1-L40)
 > - 공통 컴포넌트를 분리하고, props를 통해 함수를 전달함으로써 재사용성을 높임. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/_components/CloseBtn.tsx#L5-L21)
+<br />
+
+> ### API 성능 최적화
+> 💡 **상대적으로 오래 걸리는 GIHUB/GITLAB API를 효율적으로 사용하는 법**
+> 
+> - 레포지토리 정보가 자주 변경되지 않는다고 판단 → 모든 레포지토리 정보를 가져오는 API 캐싱처리 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/stores/server/getUserRepoQuery.ts#L1-L40)  
+> - GitHub API로 레포지토리 정보를 처음 가져올 때 DB에 저장하고, 이후에는 DB에서 조회
+<br />
+
+> ### LightHouse 점수 향상
+> 💡 **Next/Image 잘 사용하기** 
+> - Next/Image는 많은 것을 제공한다. webp형식으로 이미지파일을 최적화하고, LazyLoading, 이미지 로드 되기전 크기를 설정할 수 있어 `CLS(누적 레이아웃 이동)`를 방지하고 `페이지 속도 향상`를 향상시킴. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/explore/_components/UserWorkSpace.tsx#L33-L53)  
+> - `HTTP/1.1`에서 `HTTP/2.0`으로 프로토콜 버전을 업그레이드하여 `LCP(Largest Contentful Paint)`를 개선
+> - 브라우저에서 직접 폰트를 가져오는 대신, `next/font`를 사용하여 폰트를 적용하고 최적화하여 렌더링 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/layout.tsx#L6-L40)
+> - 뷰포트에 보이는 용량이 큰 이미지를 `preloading`으로 처리하여 `LCP`를 개선 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/_components/Main.tsx#L26-L33)
 <br />
 
 ## 💁‍♂️ 프로젝트 팀원
