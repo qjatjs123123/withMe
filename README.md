@@ -140,6 +140,10 @@
 > - **GitHub Actions**를 사용하여 **CI/CD** 파이프라인을 구축했습니다. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/.github/workflows/docker-image.yml#L1-L113)
 <br />
 
+> ### SEO 최적화
+> - `generateMetadata`를 활용한 동적 메타태그  [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/readme/%5Bid%5D/page.tsx#L16-L47)
+> - `SSR`를 활용한 서버 사이드 렌더링   [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/readme/%5Bid%5D/page.tsx#L48-L1613)
+<br />
 
 ## 💁‍♂️ 프로젝트 팀원
 | **Backend** | **Backend** | **Backend** | **Frontend** | **Frontend** | **Frontend** |
