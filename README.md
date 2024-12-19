@@ -167,6 +167,7 @@
 > - `HTTP/1.1`에서 `HTTP/2.0`으로 프로토콜 버전을 업그레이드하여 `LCP(Largest Contentful Paint)`를 개선
 > - 브라우저에서 직접 폰트를 가져오는 대신, `next/font`를 사용하여 폰트를 적용하고 최적화하여 렌더링 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/layout.tsx#L6-L40)
 > - 뷰포트에 보이는 용량이 큰 이미지를 `preloading`으로 처리하여 `LCP`를 개선 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/_components/Main.tsx#L26-L33)
+> - `Main 페이지`, `About 페이지` 등과 같은 단순 조회 기능은 `SSR(Server-Side Rendering)`로 처리
 <br />
 
 ## 💁‍♂️ 프로젝트 팀원
