@@ -162,13 +162,27 @@
 <br />
 
 > ### LightHouse 점수 향상
-> 💡 **Next/Image 잘 사용하기** 
+> 💡 **Next 잘 사용하기** 
 > - Next/Image는 많은 것을 제공한다. webp형식으로 이미지파일을 최적화하고, LazyLoading, 이미지 로드 되기전 크기를 설정할 수 있어 `CLS(누적 레이아웃 이동)`를 방지하고 `페이지 속도 향상`를 향상시킴. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(beforeLogin)/explore/_components/UserWorkSpace.tsx#L33-L53)  
 > - `HTTP/1.1`에서 `HTTP/2.0`으로 프로토콜 버전을 업그레이드하여 `LCP(Largest Contentful Paint)`를 개선
 > - 브라우저에서 직접 폰트를 가져오는 대신, `next/font`를 사용하여 폰트를 적용하고 최적화하여 렌더링 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/layout.tsx#L6-L40)
 > - 뷰포트에 보이는 용량이 큰 이미지를 `preloading`으로 처리하여 `LCP`를 개선 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/_components/Main.tsx#L26-L33)
 > - `Main 페이지`, `About 페이지` 등과 같은 단순 조회 기능은 `SSR(Server-Side Rendering)`로 처리
 <br />
+
+> ### 반응형 디자인
+> - 뷰포트 크기에 맞춰서 Font 설정하기 → `clamp`사용 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/globals.css#L42-L44)
+> - 뷰포트 크기에 맞춰서 Grid 조정하기 → `Grid`사용 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/globals.css#L100-L136)
+> - 뷰포트 크기에 맞춰서 양쪽 여백 조정하기 → `미디어 쿼리` 사용 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/globals.css#L81-L98) 
+<br />
+
+> ### 예외 처리
+> 💡 **로그인 하지 않는 사용자가 edit 페이지 접속할 때**
+> - `middleware`에서 예외 처리 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/middleware.ts#L1-L15)
+>   
+> 💡 **이미지 형식이 아닌 것을 업로드 할 때**
+> - `file Type` 체크 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useImageUpload.ts#L27-L41)
+
 
 ## 💁‍♂️ 프로젝트 팀원
 | **Backend** | **Backend** | **Backend** | **Frontend** | **Frontend** | **Frontend** |
