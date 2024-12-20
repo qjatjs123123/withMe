@@ -61,7 +61,7 @@
 💡 **API 호출 성능 최적화**
 - React-Query를 사용하여 캐싱 처리
 
-💡 **CLS, LCP등 LightHouse 점수 향상**
+💡 **CLS, LCP등 LightHouse 점수 향상** 
 - Next/Image, Skeleton UI로 CLS 향상
 - Lazy Loading, 이미지 및 폰트 최적화
 
