@@ -148,7 +148,7 @@
 <br />
 
 > ### 레거시 코드 개선
-> - `props drilling`문제로 유지보수가 어렵고, 불필요한 렌더링 발생. → `Context API`를 사용하여 코드의 가독성 및 렌더링 효율성 개선 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/_components/WorkspaceInfoProvider.tsx#L1-L27)
+> - `props drilling`문제로 유지보수가 어려움. → `Context API`를 사용하여 코드의 가독성  개선 [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/_components/WorkspaceInfoProvider.tsx#L1-L27)
 > - `모달창`이 닫힐 때 생기는 로직 중복 →  `모달창`이 닫힐 때 필요한 로직을 커스텀 훅으로 분리하여 재사용성 높임. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useModalClose.ts#L1-L36)
 > - `이미지 업로드` 로직 중복 →  `이미지 업로드` 로직을 커스텀 훅으로 분리하여 재사용성 높임. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useModalClose.ts#L1-L76)
 > - `API 호출 결과 메시지 핸들러` 로직의 중복 문제 → 이를 커스텀 훅으로 분리하여 재사용성을 높임. [코드 바로보기](https://github.com/qjatjs123123/withMe/blob/master/frontend/src/app/(afterLogin)/workspace/business/useErrorHandler.ts#L1-L40)
