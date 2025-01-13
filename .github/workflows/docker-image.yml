@@ -106,7 +106,7 @@ jobs:
           docker pull hongboemsun682/frontend:latest
 
           # Backend 컨테이너 실행 (포트 8080)
-          docker run -d -p 8080:4040 --name backend   --network back   -e SPRING_DATASOURCE_URL="jdbc:p6spy:mysql://mysql:3306/withme?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"   -e SPRING_DATASOURCE_USERNAME="root"   -e SPRING_DATASOURCE_PASSWORD="root"   -e SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.p6spy.engine.spy.P6SpyDriver"   backend
+          docker run -d -p 8080:4040 --name backend   --network back   -e SPRING_DATASOURCE_URL="jdbc:p6spy:mysql://mysql:3306/withme?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"   -e SPRING_DATASOURCE_USERNAME="root"   -e SPRING_DATASOURCE_PASSWORD="root"   -e SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.p6spy.engine.spy.P6SpyDriver"   hongboemsun682/backend:latest
 
           # Frontend 컨테이너 실행 (포트 3000)
           docker run -d --name frontend -p 3000:3000 hongboemsun682/frontend:latest
