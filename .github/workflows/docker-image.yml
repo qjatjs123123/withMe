@@ -48,66 +48,87 @@ jobs:
       - name: Push Backend Docker image to Docker Hub
         run: |
           docker push hongboemsun682/backend:latest
-  build-frontend:
-    runs-on: ubuntu-latest  # Ubuntu 최신 버전에서 실행
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3  # GitHub 저장소에서 코드를 클론
-      
-    - name: .env setting
-      working-directory: ./frontend
-      run: |
-        echo "LIVEBLOCKS_SECRET_KEY=${{ secrets.LIVEBLOCKS_SECRET_KEY }}" >> .env
-        echo "NEXT_PUBLIC_API_TOKEN=${{ secrets.NEXT_PUBLIC_API_TOKEN }}" >> .env
-        echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
-        echo "NEXT_PUBLIC_BACKEND_URL_D=${{ secrets.NEXT_PUBLIC_BACKEND_URL_D }}" >> .env
-        
-    # frontend 디렉토리에서 Docker 이미지 빌드
-    - name: Build Frontend Docker image
-      working-directory: ./frontend  # frontend 폴더에서 작업
-      run: |
-        docker build -t hongboemsun682/frontend:latest .  # frontend 이미지를 빌드
-
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Push Frontend Docker image to Docker Hub
-      run: |
-        docker push hongboemsun682/frontend:latest  # frontend 이미지를 Docker Hub에 푸시
-  deploy-to-ec2:
+  
+  deploy-backend-to-ec2:
     runs-on: ubuntu-latest
-    needs: [build-backend, build-frontend]  # backend, frontend 빌드 후에 실행
+    needs: build-backend
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key for EC2 access
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
+
+      - name: SSH into EC2 and Run Backend Container
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+            # Docker 로그인
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            # Backend Docker 이미지 Pull 및 실행
+            docker pull hongboemsun682/backend:latest
+            docker run -d -p 8080:4040 --name backend --network back -e SPRING_DATASOURCE_URL="jdbc:p6spy:mysql://mysql:3306/withme?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true" -e SPRING_DATASOURCE_USERNAME="root" -e SPRING_DATASOURCE_PASSWORD="root" -e SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.p6spy.engine.spy.P6SpyDriver" hongboemsun682/backend:latest
+          EOF
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    needs: deploy-backend-to-ec2
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-    - name: Set up SSH key for EC2 access
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
+      - name: .env setting
+        working-directory: ./frontend
+        run: |
+          echo "LIVEBLOCKS_SECRET_KEY=${{ secrets.LIVEBLOCKS_SECRET_KEY }}" >> .env
+          echo "NEXT_PUBLIC_API_TOKEN=${{ secrets.NEXT_PUBLIC_API_TOKEN }}" >> .env
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
+          echo "NEXT_PUBLIC_BACKEND_URL_D=${{ secrets.NEXT_PUBLIC_BACKEND_URL_D }}" >> .env
 
-    - name: SSH into EC2 and Pull & Run Docker Images
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          # Docker 로그인
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      # frontend 디렉토리에서 Docker 이미지 빌드
+      - name: Build Frontend Docker image
+        working-directory: ./frontend
+        run: |
+          docker build -t hongboemsun682/frontend:latest .
 
-          # Backend Docker 이미지 Pull
-          docker pull hongboemsun682/backend:latest
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-          # Frontend Docker 이미지 Pull
-          docker pull hongboemsun682/frontend:latest
+      - name: Push Frontend Docker image to Docker Hub
+        run: |
+          docker push hongboemsun682/frontend:latest
 
-          # Backend 컨테이너 실행 (포트 8080)
-          docker run -d -p 8080:4040 --name backend   --network back   -e SPRING_DATASOURCE_URL="jdbc:p6spy:mysql://mysql:3306/withme?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"   -e SPRING_DATASOURCE_USERNAME="root"   -e SPRING_DATASOURCE_PASSWORD="root"   -e SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.p6spy.engine.spy.P6SpyDriver"   hongboemsun682/backend:latest
+  deploy-frontend-to-ec2:
+    runs-on: ubuntu-latest
+    needs: build-frontend
 
-          # Frontend 컨테이너 실행 (포트 3000)
-          docker run -d --name frontend -p 3000:3000 hongboemsun682/frontend:latest
-        EOF
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key for EC2 access
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
+
+      - name: SSH into EC2 and Run Frontend Container
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+            # Docker 로그인
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            # Frontend Docker 이미지 Pull 및 실행
+            docker pull hongboemsun682/frontend:latest
+            docker run -d --name frontend -p 3000:3000 hongboemsun682/frontend:latest
+          EOF
