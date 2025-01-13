@@ -13,6 +13,28 @@ interface Params {
   };
 }
 
+function truncateDescription(text, maxWords = 50) {
+  if (!text) return '';
+
+  let result = '';
+  let count = 0;
+
+  for (const char of text) {
+    // 특수문자가 아닌 문자만 추출
+    if (/^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]$/.test(char)) {
+      result += char;
+      count++;
+    }
+
+    // maxLength에 도달하면 중단
+    if (count >= maxWords) {
+      break;
+    }
+  }
+
+  return result;
+}
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
   let workSpace_data = null;
@@ -30,18 +52,18 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   return {
     title: workSpace_data ? workSpace_data.name : '기본 제목',
-    description: workSpace_data ? workSpace_data.name : '기본 제목',
+    description: truncateDescription(workSpace_data ? workSpace_data.readmeContent : '기본 제목'),
     openGraph: {
       title: workSpace_data?.name || '기본 제목',
-      description: workSpace_data?.name || '기본 설명',
+      description: truncateDescription(workSpace_data?.readmeContent || '기본 설명'),
       images: [workSpace_data?.thumbnail || '기본 이미지 URL'],
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/readme/${id}`,
     },
     twitter: {
       card: 'summary_large_image',
       title: workSpace_data?.name || '기본 제목',
-      description: workSpace_data?.name || '기본 설명',
-      images: workSpace_data?.thumbnail || '기본 이미지 URL',
+      description: truncateDescription(workSpace_data?.readmeContent || '기본 설명'),
+      images: [workSpace_data?.thumbnail || '기본 이미지 URL'],
     },
   };
 }
@@ -61,7 +83,7 @@ export default async function ReadMe({ params }: Params) {
   }
 
   return (
-    <div className="responsive_mainResponsive markdown-wrapper flex flex-col mb-[30px]">
+    <article className="responsive_mainResponsive markdown-wrapper flex flex-col mb-[30px]">
       <div
         className="inner"
         style={{
@@ -1607,6 +1629,6 @@ img {
   box-sizing: border-box;
 }
         `}</style>
-    </div>
+    </article>
   );
 }
