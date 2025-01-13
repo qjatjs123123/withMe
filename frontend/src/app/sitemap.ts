@@ -33,6 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
+  console.log(workspaceUrls);
+
   const defaultUrls: MetadataRoute.Sitemap = [
     {
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}`,
@@ -41,13 +43,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/about`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/aboutus`,
       lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/blog`,
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL_D}/explore`,
       lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'weekly',
       priority: 0.5,
