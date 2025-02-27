@@ -67,6 +67,16 @@ export default async function Nav() {
         </div>
         <style>
           {`
+            .bg-ssafy_logo {
+                width: 44px; height: 31px;
+                background: url('https://hong-410567123.imgix.net/logo_sprites.png?q=75&fm=webp') -10px -10px;
+            }
+                
+
+            .bg-githubLogo {
+                width: 31px; height: 31px;
+                background: url('https://hong-410567123.imgix.net/logo_sprites.png?q=75&fm=webp') -74px -10px;
+            }
 
 @media (prefers-color-scheme: dark) {
   :root {
