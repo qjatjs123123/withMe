@@ -37,7 +37,6 @@ export default function LoginModal() {
               alt="loginLogo of the image"
               width={25}
               height={25}
-              sizes="100%"
             />
             Github
           </button>
@@ -54,7 +53,6 @@ export default function LoginModal() {
               alt="loginLogo of the image"
               width={30}
               height={30}
-              sizes="100%"
             />
             <div className="-ml-[5px]">SSAFY GitLab</div>
           </button>

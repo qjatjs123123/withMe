@@ -43,15 +43,10 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
           className="absolute workspace-image cursor-pointer"
           src={workspace.thumbnail}
           alt="Description of the image"
-          width={0}
-          height={0}
-          sizes="100%"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            border: '1px solid #eeeeee',
-          }}
+          width={500}
+          height={500}
+          layout="fill"
+          
         />
 
         {/* Hover 시 보여질 div */}

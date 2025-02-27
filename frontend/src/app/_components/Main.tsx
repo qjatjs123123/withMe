@@ -3,11 +3,12 @@ import { SamsungOneKorean400 } from '../layout';
 import { SamsungSharpSansBold } from '../layout';
 
 // 이미지 파일 import
-import MainImg1 from '/public/MainImg1.png';
-import MainImage2 from '/public/MainImage2.jpeg';
-import MainLogo2 from '/public/MainLogo2.jpg';
+const  MainImg1 =  '/MainImg1.png';
+const MainImage2 =   '/MainImage2.jpeg';
+const MainLogo2  =  '/MainLogo2.jpg';
 
 export default function Main() {
+
   return (
     <div className="flex items-center w-full responsive_container pt-[30px] flex-col">
       <div className="w-full items-center h-full justify-center">
@@ -20,17 +21,18 @@ export default function Main() {
             리드미 작업, 협업으로 가치를 더하다
           </span>
         </div>
-        <div></div>
-        <div className="flex-1 mt-[30px] flex justify-center w-full h-[auto] items-center">
-          <div className="w-[80%] h-[auto]">
+        <div style={{display:'flex', justifyContent: 'center', alignItems: 'center', paddingLeft:'5%', paddingRight:'5%'}}>
+          <div className="relative flex-1  mt-[30px] flex justify-center w-full items-center" style={{paddingBottom:'47.83%', marginTop:'30px', width:'100%'}}>
+            
             <Image
               className="image"
               src={MainImg1}
               alt="Main logo of the image"
               sizes="100%"
-              style={{ width: '100%', height: 'auto' }}
-              priority
+              layout='fill'
+              objectFit="contain"
             />
+
           </div>
         </div>
       </div>
@@ -43,13 +45,15 @@ export default function Main() {
           </span>
         </div>
       </div>
-      <div className="flex-1 mt-[30px] flex justify-center w-full h-[60%]">
-        <Image
+      <div className="relative flex-1 mt-[30px] flex justify-center w-full" style={{position:"relative", width:"100%",paddingBottom:'57.18%'}}>
+      <Image
           className="image"
           src={MainImage2}
           alt="Main logo of the image"
           sizes="100%"
-          style={{ width: '100%', height: 'auto' }}
+          layout='fill'
+          objectFit="contain"
+
         />
       </div>
 
@@ -61,13 +65,14 @@ export default function Main() {
           </span>
         </div>
       </div>
-      <div className="flex-1 mt-[30px] flex justify-center w-full">
-        <Image
+      <div className="relative flex-1 mt-[30px] flex justify-center w-full" style={{ position:"relative", width:"100%", paddingBottom:'55.93%'}}>
+      <Image
           className="image"
           src={MainLogo2}
           alt="Main logo of the image"
           sizes="100%"
-          style={{ width: '100%', height: 'auto' }}
+          layout='fill'
+          objectFit="contain"
         />
       </div>
       <div

@@ -4,8 +4,8 @@ import Image from 'next/image';
 export default function AboutUs() {
   return (
     <div className="responsive_aboutResponsive ">
-      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
-        <div className="flex flex-col h-100 mr-[100px]">
+      <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]" style={{height:'50%'}}>
+        <div className="flex flex-col h-100 mr-[100px]" style={{flex : 1}}>
           <span className="text-5xl">
             Build perfect <br />
             Readme, together.
@@ -16,15 +16,14 @@ export default function AboutUs() {
             and ask AI to add the finishing touches.
           </span>
         </div>
-        <div className="">
+        <div className="" style={{flex : 2, height:'100%', position:'relative', paddingBottom:'30%',minHeight: '300px'}}>
           <Image
             className="image border-2 border-gray-200 rounded-xl"
             src="/edit.png"
             alt="Editor full view"
-            width={800}
-            height={600}
-            style={{ width: '100%' }}
             sizes="100%"
+            layout='fill'
+            objectFit="contain"
           />
         </div>
       </div>
@@ -32,18 +31,17 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
-        <div className="">
+        <div className="" style={{flex : 2, height:'100%', position:'relative', paddingBottom:'30%',minHeight: '300px'}}>
           <Image
             className="image border-4 border-gray-200 rounded-xl aboutImage "
-            src="/preview&markdown.png"
+            src="/markdown.png"
             alt="preview&markdown"
-            width={800}
-            height={600}
-            style={{ width: '100%' }}
             sizes="100%"
+            layout='fill'
+            objectFit="contain"
           />
         </div>
-        <div className="flex flex-col h-100 text-end ">
+        <div className="flex flex-col h-100 text-end " style={{flex : 1}}>
           <span className="text-5xl ">
             Real-time Preview <br />
             and Markdown.
@@ -59,7 +57,7 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
-        <div className="flex flex-col h-100 text-start">
+        <div className="flex flex-col h-100 text-start" style={{flex : 1}}>
           <span className="text-5xl leading-tight">
             AI-powered Drafts, <br />
             Tailored for Your Project.
@@ -70,15 +68,14 @@ export default function AboutUs() {
             based on your project’s directory and goals.
           </span>
         </div>
-        <div>
+        <div className="" style={{flex : 2, height:'100%', position:'relative', paddingBottom:'30%',minHeight: '300px'}}>
           <Image
             className="image border-2 border-gray-200 rounded-xl"
             src="/AIDraft.png"
             alt="AIDraft"
-            width={800}
-            height={600}
-            style={{ width: '100%' }}
             sizes="100%"
+            layout='fill'
+            objectFit="contain"
           />
         </div>
       </div>
@@ -86,18 +83,17 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
-        <div>
+        <div className="" style={{flex : 2, height:'100%', position:'relative', paddingBottom:'30%',minHeight: '300px'}}>
           <Image
             className="image  "
             src="/tab_group.png"
             alt="tab_group"
-            width={800}
-            height={600}
-            style={{ width: '100%' }}
             sizes="100%"
+            layout='fill'
+            objectFit="contain"
           />
         </div>
-        <div className="flex flex-col h-100 text-end">
+        <div className="flex flex-col h-100 text-end" style={{flex : 1}}>
           <span className="text-5xl leading-tight">
             Organized Sections, <br />
             Effortless Workflow.
@@ -113,7 +109,7 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
-        <div className="flex flex-col h-100 text-start">
+        <div className="flex flex-col h-100 text-start" style={{flex : 1}}>
           <span className="text-5xl">
             The happier <br />
             workspace
@@ -124,15 +120,14 @@ export default function AboutUs() {
             git social login
           </span>
         </div>
-        <div className="">
+        <div className="" style={{flex : 2, height:'100%', position:'relative', paddingBottom:'30%',minHeight: '300px'}}>
           <Image
             className="image border-2 border-gray-200 rounded-xl"
             src="/capture1.PNG"
             alt="capture of the Editor image"
-            width={800}
-            height={600}
-            style={{ width: '100%' }}
             sizes="100%"
+            layout='fill'
+            objectFit="contain"
           />
         </div>
       </div>
@@ -140,18 +135,17 @@ export default function AboutUs() {
       <div className="w-full border-t-2 border-gray-2"></div>
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
-        <div className="">
+      <div className="" style={{flex : 2, height:'100%', position:'relative', paddingBottom:'30%',minHeight: '300px'}}>
           <Image
             className="image border-4 border-gray-200 rounded-xl"
             src="/capture2.PNG"
             alt="capture of the Editor image"
-            width={800}
-            height={600}
-            style={{ width: '100%' }}
             sizes="100%"
+            layout='fill'
+            objectFit="contain"
           />
         </div>
-        <div className="flex flex-col h-100 text-end">
+        <div className="flex flex-col h-100 text-end" style={{flex : 1}}>
           <span className="text-5xl">
             Find everthing <br />
             Get Insight

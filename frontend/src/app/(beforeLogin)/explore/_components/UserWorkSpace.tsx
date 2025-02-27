@@ -38,16 +38,13 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
     >
       <div className="w-full h-[70%] relative group">
         <Image
-          className="absolute workspace-image cursor-pointer"
+          className="workspace-image cursor-pointer"
           src={workspace.thumbnail}
           alt="Description of the image"
-          width={0}
-          height={0}
-          sizes="100%"
+          layout="fill" // ✅ fill 사용
+          objectFit="cover" // ✅ 부모 크기에 맞춰 자동 조정
+          sizes="(max-width: 768px) 100vw, (max-width: 1056px) 50vw, (max-width: 1440px) 33.33vw, 25vw"
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
             border: '1px solid #eeeeee',
           }}
         />
