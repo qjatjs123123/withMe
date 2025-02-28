@@ -9,7 +9,7 @@ export default function SearchBtn() {
   if (pathname === '/find') return null;
 
   return (
-    <Link href="/find">
+    <Link href="/find" prefetch={false}>
       <svg
         className="cursor-pointer"
         fill="#000000"
