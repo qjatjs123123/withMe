@@ -21,15 +21,14 @@ export default async function ReadMe({ params }: Params) {
 
     const apiData = await fetchDataFromAPI();
     if (apiData) {
-      redis.set(redisKey, JSON.stringify(apiData)); // 데이터를 캐시
+      redis.set(redisKey, JSON.stringify(apiData), 'EX', 60); // 데이터를 캐시
     }
 
     return apiData;
   };
-
+  console.log("build")
   workspaces = await fetchData();
-  console.log(workspaces);
-
+  
   return (
     <div className="responsive_container">
       <header className="pt-[55px] "></header>
@@ -62,7 +61,7 @@ const fetchDataFromAPI = async () => {
         'Content-Type': 'application/json',
       },
     });
-
+    console.log("fetch")
     if (!response.ok) throw new Error('Network response was not ok');
 
     const data = await response.json();
