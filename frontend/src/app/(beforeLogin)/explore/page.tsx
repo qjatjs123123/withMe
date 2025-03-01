@@ -60,7 +60,11 @@ const fetchDataFromAPI = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
+      next: {
+        revalidate: 60, 
+      },
     });
+    
     console.log("fetch")
     if (!response.ok) throw new Error('Network response was not ok');
 
@@ -71,4 +75,3 @@ const fetchDataFromAPI = async () => {
     return null;
   }
 };
-export const revalidate = 60;

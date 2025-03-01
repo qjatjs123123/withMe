@@ -1,6 +1,8 @@
 import Footer from '@/app/_components/Footer';
 import Image from 'next/image';
 
+export const dynamic = 'force-static';
+
 export default function AboutUs() {
   return (
     <div className="responsive_aboutResponsive ">

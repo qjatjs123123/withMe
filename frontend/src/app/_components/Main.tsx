@@ -8,7 +8,7 @@ const MainImage2 =   '/MainImage2.jpeg';
 const MainLogo2  =  '/MainLogo2.jpg';
 
 export default function Main() {
-
+  console.log("main");
   return (
     <div className="flex items-center w-full responsive_container pt-[30px] flex-col">
       <div className="w-full items-center h-full justify-center">

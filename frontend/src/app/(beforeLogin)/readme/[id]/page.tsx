@@ -7,6 +7,8 @@ import rehypeRaw from 'rehype-raw';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 
+export const dynamic = 'force-dynamic';
+
 interface Params {
   params: {
     id: string;
