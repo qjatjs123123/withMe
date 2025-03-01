@@ -1,8 +1,4 @@
-import { WorkspaceStateProvider } from '@/app/(afterLogin)/_components/WorkspaceInfoProvider';
-import UserWorkSpace from '@/app/(afterLogin)/workspace/_component/UserWorkSpace';
-import PageHeader from '@/app/_components/PageHeader';
-import { PAGE_HEADER } from '@/util/constants';
-import axios from 'axios';
+
 import WorkSpaceContainer from './_components/WorkspaceContainer';
 import Footer from '@/app/_components/Footer';
 
@@ -16,10 +12,23 @@ export default async function ReadMe({ params }: Params) {
   const keyword = '';
   let data = null;
   let workspaces = null;
+
   try {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/search?keyword=${keyword}`);
-    data = response.data;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/search?keyword=${keyword}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    data = await response.json();
     if (data) workspaces = data.data;
+
+    console.log(data);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -34,3 +43,5 @@ export default async function ReadMe({ params }: Params) {
     </div>
   );
 }
+
+export const revalidate = 30;

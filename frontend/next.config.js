@@ -13,15 +13,28 @@ const config = {
       'withme.s3.amazonaws.com',
       'secure.gravatar.com',
     ],
-    loader: 'custom',  // 로더를 Imgix로 설정
+    loader: 'custom',  
     loaderFile: './customImgLoader.js',
   },
   typescript: {
-    ignoreBuildErrors: true, // This will ignore TypeScript errors during the build process
+    ignoreBuildErrors: true, 
   },
 
   output: 'standalone',
-  assetPrefix: 'https://d2khml1veaagc6.cloudfront.net'
+  assetPrefix: 'https://d2khml1veaagc6.cloudfront.net',
+  async headers() {
+    return [
+      {
+        source: '/explore', 
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=30, stale-while-revalidate=30', 
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = config;
