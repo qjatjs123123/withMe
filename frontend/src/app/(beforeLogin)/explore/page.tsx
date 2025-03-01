@@ -1,4 +1,4 @@
-
+import redis from '@/util/redis';
 import WorkSpaceContainer from './_components/WorkspaceContainer';
 import Footer from '@/app/_components/Footer';
 
@@ -8,30 +8,27 @@ interface Params {
   };
 }
 
+const redisKey = 'workspaceData'
+
 export default async function ReadMe({ params }: Params) {
-  const keyword = '';
-  let data = null;
   let workspaces = null;
 
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/search?keyword=${keyword}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+  const fetchData = async () => {
+    const cachedData = await getCachedData();
+    if (cachedData) {
+      return cachedData;
     }
 
-    data = await response.json();
-    if (data) workspaces = data.data;
+    const apiData = await fetchDataFromAPI();
+    if (apiData) {
+      redis.set(redisKey, JSON.stringify(apiData)); // 데이터를 캐시
+    }
 
-    console.log(data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
+    return apiData;
+  };
+
+  workspaces = await fetchData();
+  console.log(workspaces);
 
   return (
     <div className="responsive_container">
@@ -44,4 +41,35 @@ export default async function ReadMe({ params }: Params) {
   );
 }
 
-export const revalidate = 30;
+// 캐시에서 데이터 가져오는 함수
+const getCachedData = async () => {
+  try {
+    const cachedData = await redis.get(redisKey);
+    return cachedData ? JSON.parse(cachedData) : null;
+  } catch (error) {
+    console.error('Error fetching cached data:', error);
+    return null;
+  }
+};
+
+// API에서 데이터 가져오는 함수
+const fetchDataFromAPI = async () => {
+  try {
+    const keyword = '';
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/readme/search?keyword=${keyword}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Network response was not ok');
+
+    const data = await response.json();
+    return data?.data || null;
+  } catch (error) {
+    console.error('Error fetching data from API:', error);
+    return null;
+  }
+};
+export const revalidate = 60;
