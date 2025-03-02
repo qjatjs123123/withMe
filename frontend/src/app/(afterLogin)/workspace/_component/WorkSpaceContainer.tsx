@@ -5,7 +5,7 @@ import { InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { getPostWorkSpace } from '../page';
 import { ApiResponse, RootResponse, WorkspaceContent } from '../model/workSpaceItem'; // 타입 파일 경로에 맞게 수정
 import UserWorkSpace from './UserWorkSpace';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { WorkspaceStateProvider } from '../../_components/WorkspaceInfoProvider';
 
 interface PageParam {
@@ -13,6 +13,7 @@ interface PageParam {
   cursor: string | null;
 }
 export default function WorkSpaceContainer() {
+  
   const {
     data: apiResponse,
     fetchNextPage,
@@ -25,15 +26,24 @@ export default function WorkSpaceContainer() {
       return isLastPage ? null : { page: allPages.length, cursor: lastPage.data.timestamp || null };
     },
     initialPageParam: { page: 0, cursor: null },
+    enabled: false,
   });
 
   const workspaces: WorkspaceContent[] = apiResponse?.pages.flatMap((page) => page.data.data.content) || [];
+  
+  // const workspaces: WorkspaceContent[] = useMemo(
+  //   () => apiResponse?.pages.flatMap((page) => page.data.data.content) || [],
+  //   [apiResponse]
+  // );
+  
+
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
+        if (entries[0].isIntersecting && hasNextPage) { 
           fetchNextPage();
         }
       },
@@ -67,9 +77,8 @@ export default function WorkSpaceContainer() {
         </div>
       ) : (
         workspaces.map((workspace) => (
-          <WorkspaceStateProvider key={`${workspace.id}`}>
+     
             <UserWorkSpace key={`${workspace.id}-user-workspace`} workspace={workspace} />
-          </WorkspaceStateProvider>
         ))
       )}
       {hasNextPage && <div ref={observerRef} style={{ height: '20px', backgroundColor: 'transparent' }} />}

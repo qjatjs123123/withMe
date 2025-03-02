@@ -1,4 +1,4 @@
-import React, { createContext, useRef, ReactNode, useContext, useState } from 'react';
+import React, { createContext, useRef, ReactNode, useContext, useState, useCallback } from 'react';
 
 // 전역 상태 타입 정의
 
@@ -9,9 +9,9 @@ const WorkspaceStateContext = createContext(undefined);
 export const WorkspaceStateProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const curWorkspace = useRef(''); // useRef로 관리
 
-  const setWorkspace = (workspace) => {
-    curWorkspace.current = workspace; // 값 설정
-  };
+  const setWorkspace = useCallback((workspace: string) => {
+    curWorkspace.current = workspace; // 상태 설정
+  }, []);
 
   return (
     <WorkspaceStateContext.Provider value={{ curWorkspace, setWorkspace }}>{children}</WorkspaceStateContext.Provider>

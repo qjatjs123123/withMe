@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import React from 'react';
 
-export default function EditIcon({ src }) {
+const EditIcon = ({ src }) => {
   return (
     <Link href={`/edit/${src}`}>
       <svg
@@ -25,3 +26,5 @@ export default function EditIcon({ src }) {
     </Link>
   );
 }
+
+export default React.memo(EditIcon);

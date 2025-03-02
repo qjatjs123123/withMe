@@ -18,7 +18,6 @@ interface UserWorkSpaceProps {
 }
 
 const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
-  console.log(workspace);
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);

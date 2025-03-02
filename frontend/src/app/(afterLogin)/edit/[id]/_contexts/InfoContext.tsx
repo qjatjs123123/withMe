@@ -87,7 +87,7 @@ export function InfoProvider({ children }: { children: React.ReactNode }) {
             workspace_id: workspaceId,
           },
         );
-        console.log(response.data);
+      
         setRepoName(response.data.data.name);
         setRepoUrl(response.data.data.repoUrl);
         setRoomId(response.data.data.roomId);

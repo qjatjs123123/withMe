@@ -7,7 +7,6 @@ const liveblocks = new Liveblocks({
 // pages/api/liveblocks-auth.ts
 export async function POST(request: NextRequest) {
   try {
-    console.log("123")
     const userDataCookie = request.cookies.get('userData')?.value;
 
     if (!userDataCookie) {

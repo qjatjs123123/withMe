@@ -1,9 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import SettingModal from './SettingModal';
 import useModalClose from '../(afterLogin)/workspace/business/useModalClose';
+import React from 'react';
+import { useWorkspaceState } from '../(afterLogin)/_components/WorkspaceInfoProvider';
 
-export default function MoreBtn() {
+const  MoreBtn = ({workspace}) => {
   const { isVisible, modalRef, btnRef, changeState, setIsVisible } = useModalClose();
+  const { setWorkspace } = useWorkspaceState();
+
+  useEffect(() => {
+    setWorkspace(workspace)
+  }, [])
 
   return (
     <>
@@ -26,3 +33,5 @@ export default function MoreBtn() {
     </>
   );
 }
+
+export default React.memo(MoreBtn);

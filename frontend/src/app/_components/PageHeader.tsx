@@ -4,6 +4,7 @@ interface PageHeaderProps {
 }
 
 export default function PageHeader({ title, content }: PageHeaderProps) {
+
   return (
     <>
       <div

@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import React from 'react';
 
-export default function ViewIcon({ src }) {
+const  ViewIcon = ({ src }) => {
   return (
     <Link href={`${src}`}>
       <svg
@@ -19,3 +20,6 @@ export default function ViewIcon({ src }) {
     </Link>
   );
 }
+
+
+export default ViewIcon;

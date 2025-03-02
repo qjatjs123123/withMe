@@ -26,7 +26,6 @@ export default async function ReadMe({ params }: Params) {
 
     return apiData;
   };
-  console.log("build")
   workspaces = await fetchData();
   
   return (
@@ -65,7 +64,6 @@ const fetchDataFromAPI = async () => {
       },
     });
     
-    console.log("fetch")
     if (!response.ok) throw new Error('Network response was not ok');
 
     const data = await response.json();
