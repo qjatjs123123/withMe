@@ -89,7 +89,17 @@
 <br />
 
 ## 🤔 기술적 이슈와 해결 과정
-#### 1)  CDN을 활용한 JS, CSS, 이미지 파일 loaded시간 `60배` 향상
+#### 1)  로드밸런싱 환경에서 캐싱 동기화 문제 해결법
+<details>
+  <summary>📌 기술 블로그</summary> 
+  
+  [SSG와 ISR을 활용한 캐싱 및 Redis를 이용한 동기화](https://qjatjs123123.tistory.com/45)
+</details>
+
+<br />
+
+
+#### 2)  CDN을 활용한 JS, CSS, 이미지 파일 loaded시간 `60배` 향상
 <details>
   <summary>📌 기술 블로그</summary> 
   
@@ -98,7 +108,7 @@
 
 <br />
 
-#### 2)  Next/Image를 활용한 이미지 최적화, 로드된 이미지 총 용량이 `2MB에서 240KB로 10배` 향상
+#### 3)  Next/Image를 활용한 이미지 최적화, 로드된 이미지 총 용량이 `2MB에서 240KB로 10배` 향상
 <details>
   <summary>📌 기술 블로그</summary>
   
@@ -107,7 +117,7 @@
 
 <br />
 
-#### 3)  이미지 스프라이트 활용, 작은 이미지의 HTTP 요청 수를 `2개에서 1개`로 감소
+#### 4)  이미지 스프라이트 활용, 작은 이미지의 HTTP 요청 수를 `2개에서 1개`로 감소
 <details>
   <summary>📌 기술 블로그</summary>
   
@@ -116,7 +126,7 @@
 
 <br />
 
-#### 4)  CSS 애니메이션 최적화, `1.5배` 개선
+#### 5)  CSS 애니메이션 최적화, `1.5배` 개선
 <details>
   <summary>📌 기술 블로그</summary>
   
