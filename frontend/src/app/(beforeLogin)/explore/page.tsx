@@ -27,12 +27,12 @@ export default async function ReadMe({ params }: Params) {
     global.hasSubscribed = true; // 구독 상태 설정
   } else {
   }
-  const sendMessageToSubscribers = async (message: string) => {
-    await publisher.publish('workspace_channel', message);
-    console.log('메시지를 Redis 채널로 발행했습니다:', message);
+  const sendMessageToSubscribers = async () => {
+    await publisher.publish('workspace_channel', "revalidate");
+    console.log('메시지를 Redis 채널로 발행했습니다:');
   };
 
-  await sendMessageToSubscribers("!@3")
+  await sendMessageToSubscribers()
   const workspaces = await fetchDataFromAPI();
   
   return (
