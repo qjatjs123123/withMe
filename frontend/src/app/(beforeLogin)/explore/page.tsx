@@ -1,6 +1,9 @@
-import redis from '@/util/redis';
+// import redis from '@/util/redis';
 import WorkSpaceContainer from './_components/WorkspaceContainer';
 import Footer from '@/app/_components/Footer';
+import {subscriber, publisher} from '@/util/redis';
+import Redis from 'ioredis';
+import { revalidatePath } from 'next/cache';
 
 interface Params {
   params: {
@@ -11,22 +14,26 @@ interface Params {
 const redisKey = 'workspaceData'
 
 export default async function ReadMe({ params }: Params) {
-  let workspaces = null;
 
-  const fetchData = async () => {
-    const cachedData = await getCachedData();
-    if (cachedData) {
-      return cachedData;
-    }
+  
+  if (!global.hasSubscribed) {
+    console.log("서버 시작 시 Redis 구독 시작...");
+    await subscriber.subscribe('workspace_channel');
+    subscriber.on('message', async (channel, message) => {
+      console.log(`Redis 채널 ${channel}에서 메시지 받음: ${message}`);
 
-    const apiData = await fetchDataFromAPI();
-    if (apiData) {
-      redis.set(redisKey, JSON.stringify(apiData), 'EX', 60); // 데이터를 캐시
-    }
-
-    return apiData;
+      await fetch(`http://localhost:3000/api/revalidate`);
+    });
+    global.hasSubscribed = true; // 구독 상태 설정
+  } else {
+  }
+  const sendMessageToSubscribers = async (message: string) => {
+    await publisher.publish('workspace_channel', message);
+    console.log('메시지를 Redis 채널로 발행했습니다:', message);
   };
-  workspaces = await fetchData();
+
+  await sendMessageToSubscribers("!@3")
+  const workspaces = await fetchDataFromAPI();
   
   return (
     <div className="responsive_container">
@@ -39,16 +46,6 @@ export default async function ReadMe({ params }: Params) {
   );
 }
 
-// 캐시에서 데이터 가져오는 함수
-const getCachedData = async () => {
-  try {
-    const cachedData = await redis.get(redisKey);
-    return cachedData ? JSON.parse(cachedData) : null;
-  } catch (error) {
-    console.error('Error fetching cached data:', error);
-    return null;
-  }
-};
 
 // API에서 데이터 가져오는 함수
 const fetchDataFromAPI = async () => {

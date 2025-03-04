@@ -41,11 +41,12 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
           className="workspace-image cursor-pointer"
           src={workspace.thumbnail}
           alt="Description of the image"
-          layout="fill" // ✅ fill 사용
-          objectFit="cover" // ✅ 부모 크기에 맞춰 자동 조정
+          fill // ✅ fill 사용
+        
           sizes="(max-width: 768px) 100vw, (max-width: 1056px) 50vw, (max-width: 1440px) 33.33vw, 25vw"
           style={{
             border: '1px solid #eeeeee',
+            objectFit: 'cover'
           }}
         />
 
