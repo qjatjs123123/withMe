@@ -29,7 +29,9 @@ export default function Nav() {
     <nav className="fixed w-full bg-white flex flex-row items-center z-[15] h-[90px] px-8 md:px-[50px]">
       <div className="items-center" style={{ flex: '1 1 0%', flexDirection: 'row', display: 'flex', gap: '50px' }}>
         <Link href={isLogin ? '/' : '/'} className={` text-3xl`}>
-          WithMe
+        <span className={`ml-2 text-3xl`} style={{ fontFamily: 'SamsungSharpSansBold'  }} >
+          WITHMe
+        </span>
         </Link>
 
         <NavList fontClassName={''} />

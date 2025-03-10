@@ -253,6 +253,25 @@ h1 {
 }
 
 @font-face {
+  font-family: 'SamsungSharpSansBold';
+  src: url('/fonts/subset-SamsungSharpSans-Bold.woff2') format('woff2');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'SamsungOneKorean400';
+  src: url('/fonts/subset-SamsungOneKorean-400.woff2') format('woff2');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'SamsungOneKorean700';
+  src: url('/fonts/subset-SamsungOneKorean-700.woff2') format('woff2');
+  font-display: fallback;
+}
+
+/* 
+@font-face {
   font-family: 'samsungsharpsans-bold';
   src: url('/fonts/samsungsharpsans-bold.otf') format('opentype');
   unicode-range: U+0000-007F;
@@ -276,14 +295,12 @@ h1 {
   unicode-range: U+AC00-D7AF;
 }
 body:lang(en) {
-  font-family: 'samsungsharpsans-bold'; /* 기본 폰트는 Roboto로 설정 */
+  font-family: 'samsungsharpsans-bold'; 
 }
 
-/* 한글이 포함된 부분은 Nanum Gothic 폰트로 설정 */
-/* HTML 요소에서 lang 속성을 활용해 한글에 다른 폰트 적용 */
 body:lang(ko) {
   font-family: 'SamsungOneKorean-700', 'SamsungSharpSans-Bold', sans-serif;
-}
+} */
 
 .cursor-pointer-nav {
   position: relative;

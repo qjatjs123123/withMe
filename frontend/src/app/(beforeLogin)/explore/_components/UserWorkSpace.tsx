@@ -58,7 +58,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
         </div>
       </div>
 
-      <div style={{ fontSize: '30px' }} className="flex items-end  font-bold overflow-hidden text-ellipsis1">
+      <div style={{ fontSize: '30px', fontFamily: 'SamsungOneKorean700' }} className="flex items-end  font-bold overflow-hidden text-ellipsis1">
         {workspace.name}
       </div>
       <div className="h-[55px] text-ellipsis2">
@@ -66,7 +66,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
           href={workspace.repoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ fontFamily: 'SamsungOneKorean-400' }}
+          style={{ fontFamily: 'SamsungOneKorean400' }}
         >
           {workspace.repoUrl}
         </a>
@@ -74,7 +74,7 @@ const UserWorkSpace: React.FC<UserWorkSpaceProps> = ({ workspace }) => {
       <div>
         <div className="flex  justify-between">
           <div
-            style={{ fontSize: '12px', fontFamily: 'SamsungOneKorean-400' }}
+            style={{ fontSize: '12px', fontFamily: 'SamsungOneKorean400' }}
             className=" text-ellipsis1 flex flex-row justify-start"
           >
             <span>{workspace.owner}</span>

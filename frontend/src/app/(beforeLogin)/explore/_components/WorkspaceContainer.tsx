@@ -27,7 +27,7 @@ export default function WorkSpaceContainer({ workspaces }: WorkSpaceContainerPro
   return (
     <>
       {workspaces.length === 0 ? (
-        <p className="font-bold text-[30px]">죄송합니다. 검색 결과가 없습니다.</p>
+        <p style={{ fontFamily:'SamsungOneKorean700' }} className="font-bold text-[30px]">죄송합니다. 검색 결과가 없습니다.</p>
       ) : (
         workspaces.map((workspace) => (
           <WorkspaceStateProvider key={`${workspace.id}-user1-workspace`}>

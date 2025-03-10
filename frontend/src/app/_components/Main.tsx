@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import { SamsungOneKorean400 } from '../layout';
-import { SamsungSharpSansBold } from '../layout';
 
 // 이미지 파일 import
 const  MainImg1 =  '/MainImg1.png';
@@ -15,8 +13,8 @@ export default function Main() {
           style={{ fontSize: 'clamp(24px, 4vw, 48px)' }}
           className="flex flex-col sm:mb-4 flex-1 w-full justify-start"
         >
-          <span className={SamsungSharpSansBold.className}>Create Your ReadMe Together</span>
-          <span className={SamsungOneKorean400.className} style={{ fontSize: 'clamp(18px, 3vw, 24px)' }}>
+          <span style={{fontFamily:'SamsungSharpSansBold'}}>Create Your ReadMe Together</span>
+          <span  style={{ fontFamily:'SamsungOneKorean400', fontSize: 'clamp(18px, 3vw, 24px)' }}>
             리드미 작업, 협업으로 가치를 더하다
           </span>
         </div>
@@ -38,8 +36,8 @@ export default function Main() {
 
       <div className="flex-1 mt-[30px] flex justify-center w-full pt-[130px]">
         <div style={{ fontSize: 'clamp(24px, 4vw, 48px)' }} className="flex flex-col sm:mb-4 flex-1 w-full text-start">
-          <span className={SamsungSharpSansBold.className}>Recommend your ReadMe draft</span>
-          <span className={SamsungOneKorean400.className} style={{ fontSize: 'clamp(18px, 3vw, 24px)' }}>
+          <span style={{fontFamily:'SamsungSharpSansBold'}}>Recommend your ReadMe draft</span>
+          <span  style={{ fontFamily:'SamsungOneKorean400', fontSize: 'clamp(18px, 3vw, 24px)' }}>
             레포지토리 파일명 기반으로 리드미 초안 정확도를 높이다
           </span>
         </div>
@@ -58,8 +56,8 @@ export default function Main() {
 
       <div className="flex-1 mt-[30px] flex justify-center w-full pt-[130px]">
         <div style={{ fontSize: 'clamp(24px, 4vw, 48px)' }} className="flex flex-col sm:mb-4 flex-1 w-full text-start">
-          <span className={SamsungSharpSansBold.className}>Share your ReadMe</span>
-          <span className={SamsungOneKorean400.className} style={{ fontSize: 'clamp(18px, 3vw, 24px)' }}>
+          <span style={{fontFamily:'SamsungSharpSansBold'}}>Share your ReadMe</span>
+          <span  style={{ fontFamily:'SamsungOneKorean400', fontSize: 'clamp(18px, 3vw, 24px)' }}>
             작성한 리드미를 공유하여 더 나은 결과를 만들다
           </span>
         </div>
@@ -75,10 +73,11 @@ export default function Main() {
         />
       </div>
       <div
-        className={`${SamsungSharpSansBold.className} h-[40px] flex flex-row text-[24px] mt-[200px] w-full text-start items-center gap-[20px]`}
+        style={{fontFamily:'SamsungSharpSansBold'}}
+        className={` h-[40px] flex flex-row text-[24px] mt-[200px] w-full text-start items-center gap-[20px]`}
       >
         WITHME
-        <span className={SamsungOneKorean400.className} style={{ fontSize: '16px' }}>
+        <span style={{ fontFamily:'SamsungOneKorean400', fontSize: '16px' }}>
           © SSAFY All Rights Reserved
         </span>
       </div>

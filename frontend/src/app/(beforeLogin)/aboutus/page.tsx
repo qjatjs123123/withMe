@@ -8,12 +8,12 @@ export default function AboutUs() {
     <div className="responsive_aboutResponsive ">
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]" style={{height:'50%'}}>
         <div className="flex flex-col h-100 mr-[100px]" style={{flex : 1}}>
-          <span className="text-5xl">
+          <span style={{ fontFamily:'SamsungSharpSansBold'}} className="text-5xl">
             Build perfect <br />
             Readme, together.
           </span>{' '}
           <br />
-          <span className="text-xl text-[#ccc]">
+          <span  className="text-xl text-[#ccc]">
             Capture your ideas, get feedback from teammates, <br />
             and ask AI to add the finishing touches.
           </span>
@@ -44,7 +44,7 @@ export default function AboutUs() {
           />
         </div>
         <div className="flex flex-col h-100 text-end " style={{flex : 1}}>
-          <span className="text-5xl ">
+          <span style={{ fontFamily:'SamsungSharpSansBold'}} className="text-5xl ">
             Real-time Preview <br />
             and Markdown.
           </span>{' '}
@@ -60,7 +60,7 @@ export default function AboutUs() {
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="flex flex-col h-100 text-start" style={{flex : 1}}>
-          <span className="text-5xl leading-tight">
+          <span style={{ fontFamily:'SamsungSharpSansBold'}} className="text-5xl leading-tight">
             AI-powered Drafts, <br />
             Tailored for Your Project.
           </span>{' '}
@@ -96,7 +96,7 @@ export default function AboutUs() {
           />
         </div>
         <div className="flex flex-col h-100 text-end" style={{flex : 1}}>
-          <span className="text-5xl leading-tight">
+          <span style={{ fontFamily:'SamsungSharpSansBold'}} className="text-5xl leading-tight">
             Organized Sections, <br />
             Effortless Workflow.
           </span>{' '}
@@ -112,7 +112,7 @@ export default function AboutUs() {
 
       <div className="flex aboutus-responsive-image justify-between my-[100px] w-full gap-[100px]">
         <div className="flex flex-col h-100 text-start" style={{flex : 1}}>
-          <span className="text-5xl">
+          <span style={{ fontFamily:'SamsungSharpSansBold'}} className="text-5xl">
             The happier <br />
             workspace
           </span>{' '}
@@ -148,7 +148,7 @@ export default function AboutUs() {
           />
         </div>
         <div className="flex flex-col h-100 text-end" style={{flex : 1}}>
-          <span className="text-5xl">
+          <span style={{ fontFamily:'SamsungSharpSansBold'}} className="text-5xl">
             Find everthing <br />
             Get Insight
           </span>{' '}

@@ -13,11 +13,11 @@ export default function NavList({ fontClassName }) {
   return (
     <div className={` ${fontClassName} flex flex-row text-[20px] items-center gap-[50px] hidden-header hidden`}>
       <Link href={'/explore'}>
-        <div className={getLinkClassName('/explore')}>EXPLORE</div>
+        <div style={{ fontFamily:'SamsungSharpSansBold'}} className={getLinkClassName('/explore')}>EXPLORE</div>
       </Link>
 
       <Link href={'/aboutus'}>
-        <div className={getLinkClassName('/aboutus')}>ABOUT US</div>
+        <div style={{ fontFamily:'SamsungSharpSansBold'}} className={getLinkClassName('/aboutus')}>ABOUT US</div>
       </Link>
     </div>
   );
