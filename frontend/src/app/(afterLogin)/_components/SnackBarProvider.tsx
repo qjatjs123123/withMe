@@ -1,3 +1,4 @@
+'use client'
 import React, { createContext, useRef, ReactNode, useContext, useState } from 'react';
 
 // 전역 상태 타입 정의

@@ -1,3 +1,5 @@
+'use client'
+
 import { useGlobalState } from '../../_components/RepoModalProvider';
 import useErrorHandler from '../business/useErrorHandler';
 import RepoList from './RepoList';
@@ -22,7 +24,7 @@ export default function CreateProject({ onNextClick }: CreateProjectProps) {
 
   const handlerNextClick = async () => {
     if (!curRepo.current) {
-      await handlerMessage(MESSAGE.SELECT_REPO);
+      // await handlerMessage(MESSAGE.SELECT_REPO);
       return;
     }
     onNextClick(true);

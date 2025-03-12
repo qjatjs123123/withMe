@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { GlobalStateProvider } from '../../_components/RepoModalProvider';
 import RepoBtn from './RepoBtn';
 

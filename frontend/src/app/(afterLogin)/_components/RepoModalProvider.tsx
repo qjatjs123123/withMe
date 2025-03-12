@@ -1,3 +1,5 @@
+'use client'
+
 import React, { createContext, useRef, ReactNode, useContext, useState } from 'react';
 import useModalClose from '../workspace/business/useModalClose';
 

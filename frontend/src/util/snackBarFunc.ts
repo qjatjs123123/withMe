@@ -10,11 +10,11 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 export const delaySetApiInfo = async ( 
-  setApiInfo: React.Dispatch<React.SetStateAction<ApiInfo>>, 
+  setApiInfo, 
   message: string,
   DELAY_TIME_END: number
 ) => {
-  // 메시지를 설정
+
   setApiInfo((prev: ApiInfo) => ({
       ...prev,
       state: true,
@@ -22,7 +22,7 @@ export const delaySetApiInfo = async (
   }));
 
   await delay(DELAY_TIME_END); 
-
+  
   setApiInfo((prev: ApiInfo) => ({
       ...prev,
       state: false, 

@@ -1,8 +1,6 @@
 'use client';
 
 import { useUserSyncQuery } from '@/stores/server/getUserSyncQuery';
-import { delaySetApiInfo } from '@/util/snackBarFunc';
-import { useSnackBarState } from '../../_components/SnackBarProvider';
 import useErrorHandler from '../business/useErrorHandler';
 import { useUserRepoQuery } from '@/stores/server/getUserRepoQuery';
 
@@ -11,6 +9,7 @@ export default function SyncBtn() {
   const { handlerRefetch } = useErrorHandler();
   const { refetch: repoRefetch } = useUserRepoQuery(null);
   const handleClick = async () => {
+    await refetch()
     await handlerRefetch(refetch, repoRefetch);
   };
 

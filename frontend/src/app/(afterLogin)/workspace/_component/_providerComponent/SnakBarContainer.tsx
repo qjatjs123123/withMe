@@ -1,4 +1,3 @@
-'use client';
 import { SnackBarProvider } from '@/app/(afterLogin)/_components/SnackBarProvider';
 import PageHeader from '@/app/_components/PageHeader';
 import { PAGE_HEADER } from '@/util/constants';
@@ -9,7 +8,7 @@ import RepoBtnContainer from '../RepoBtnContainer';
 
 export default function SnakBarContainer() {
   return (
-    <SnackBarProvider>
+      <>
       <header
         style={{ paddingBottom: '50px', paddingTop: '0px' }}
         className="flex responsive_workspaceheader justify-between !flex-row "
@@ -18,12 +17,15 @@ export default function SnakBarContainer() {
         <div className="flex  h-full gap-3 ">
           {/* <SyncBtn /> */}
           <RepoBtnContainer />
+          <SnackBarProvider>
+            <SnackBarUI />
+          </SnackBarProvider>
         </div>
       </header>
       <div className="grid_mainGrid ">
         <WorkSpaceContainer />
       </div>
-      <SnackBarUI />
-    </SnackBarProvider>
+      
+      </>
   );
 }
