@@ -12,6 +12,7 @@
     "@blocknote/core": "^0.18.0",
     "@blocknote/mantine": "^0.18.1",
     "@blocknote/react": "^0.18.1",
+    "@fortedigital/nextjs-cache-handler": "^1.2.0",
     "@liveblocks/client": "^2.10.2",
     "@liveblocks/node": "^2.10.2",
     "@liveblocks/react": "^2.10.2",

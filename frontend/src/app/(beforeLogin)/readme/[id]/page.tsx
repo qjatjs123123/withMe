@@ -1,13 +1,16 @@
 import ReadMeBtn from '@/app/_components/ReadMeBtn';
-import axios from 'axios';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 
-export const dynamic = 'force-dynamic';
+
+// export const dynamic = 'force-dynamic';
+
+export function generateStaticParams() {
+  return [{id:"472"} , {id : "379"}, {id : "457"}]
+}
 
 interface Params {
   params: {
@@ -38,15 +41,24 @@ function truncateDescription(text, maxWords = 50) {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = params;
   let workSpace_data = null;
   if (!(id && !isNaN(Number(id)))) return;
   try {
-    const response1 = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
-      workspace_id: id,
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ workspace_id: id }),
     });
 
-    workSpace_data = response1.data.data;
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    workSpace_data = responseData.data;
   } catch (error) {
     console.error('Error fetching data:', error);
     return { title: '페이지를 찾을 수 없습니다' };
@@ -70,19 +82,30 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 export default async function ReadMe({ params }: Params) {
-  const { id } = await params;
-  let data = null;
+  const { id } = params;
   if (!(id && !isNaN(Number(id)))) return;
 
+  let data = null;
+
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
-      workspace_id: id,
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_D}/api/workspace/simple`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ workspace_id: id }),
     });
-    data = response.data;
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    data = await response.json();
   } catch (error) {
     console.error('Error fetching data:', error);
     return;
   }
+
 
   return (
     <article className="responsive_mainResponsive markdown-wrapper flex flex-col mb-[30px]">

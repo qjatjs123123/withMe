@@ -20,6 +20,26 @@ body {
   overflow-y: scroll;
 }
 
+.repo_check {
+  width: 20px;
+  height: inherit;
+}
+.repo-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  height: 200px;
+}
+.repo-item {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+}
+.repo-item:hover {
+  background-color: #f0f0f0;
+}
+
 .responsive_workspaceheader {
   display: flex;
   flex-direction: column; /* 기본적으로 세로 정렬 */

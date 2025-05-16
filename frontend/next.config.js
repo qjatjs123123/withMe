@@ -13,15 +13,15 @@ const config = {
       'withme.s3.amazonaws.com',
       'secure.gravatar.com',
     ],
-    loader: 'custom',  
-    loaderFile: './customImgLoader.js',
+    // loader: 'custom',  
+    // loaderFile: './customImgLoader.js',
   },
   typescript: {
     ignoreBuildErrors: true, 
   },
 
   output: 'standalone',
-  assetPrefix: 'https://d2khml1veaagc6.cloudfront.net',
+  // assetPrefix: 'https://d2khml1veaagc6.cloudfront.net',
   async headers() {
     return [
       {
